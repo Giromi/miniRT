@@ -2,19 +2,17 @@
 
 void info_init(t_info *info, char *file)
 {
-	char		**split;
-	int			fd;
-	char		*line;
+	char	**split;
+	char	*line;
+	int		fd;
 
-	fd = open(file, O_RDONLY);
-	if (fd < 0)
-		ft_strerror("파일 못열었음");
+	fd = my_open(file, O_RDONLY);
 	line = get_next_line(fd);
 	if (line == NULL)
-		ft_strerror("읽을 거 없음");
+		ft_strerror("err: empty file");
 	while(line)
 	{
-		if (line[0] == '#')
+		if (line[0] == COMMENT)
 		{
 			free(line);
 			line = get_next_line(fd);
@@ -22,7 +20,7 @@ void info_init(t_info *info, char *file)
 		}
 		split = ft_split(line, ' ');
 		if (split == NULL)
-			ft_strerror("스플릿 실패(할당 실패)");
+			ft_strerror("err: allocation failed");
 		put_info(info, split);
 		split_free(split);
 		free(line);
@@ -94,7 +92,7 @@ t_ray	ray_init(t_point orig, t_vec dir)
 	return (init);
 }
 
-void    set_face_normal(t_ray ray, t_hit_record *rec)
+void    set_face_normal(t_ray ray, t_record *rec)
 {
     rec->front_face = vec_dot(ray.dir, rec->normal) < 0;
 	if (rec->front_face == 0)
@@ -159,19 +157,16 @@ int main(int argc, char **argv)
 
 	// atexit(ae);
 	if (argc != 2)
-		ft_strerror("인자 잘못넣음");
+		ft_strerror("err: wrong arguments");
 	ft_memset(&info, 0, sizeof(t_info));
 	info.mlx.ptr = mlx_init();
-	info.mlx.win = mlx_new_window(info.mlx.ptr, WIN_W, WIN_H, "HojinySesiMinsukiR2");
-
-	info.mlx.img.img_ptr = mlx_new_image(info.mlx.ptr, IMG_W, IMG_H);
-
+	info.mlx.win = mlx_new_window(info.mlx.ptr, WIN_W, WIN_H, "min?RT");
+	info.mlx.img.img_ptr = mlx_new_image(info.mlx.ptr, WIN_W, WIN_H);
 	info.mlx.img.addr = mlx_get_data_addr(info.mlx.img.img_ptr, \
 											&(info.mlx.img.bits_per_pixel), \
 											&(info.mlx.img.line_length), \
 											&(info.mlx.img.endian));
 	info_init(&info, argv[1]);
-	// print_obj(info.obj);
 	ft_draw(&info, &info.mlx);
 	mlx_put_image_to_window(info.mlx.ptr, info.mlx.win, info.mlx.img.img_ptr, 0, 0);
 	mlx_hook(info.mlx.win, EVENT_KEY_PRESS, 0, key_press, &info);

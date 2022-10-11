@@ -73,39 +73,49 @@ void    light_add(t_light **list, t_light *new)
 
 void	put_a(t_info *info, char **argv, int cnt)
 {
-	double	brightness;
 	t_color	color;
+	double	lighting_ratio;
 
 	if (cnt != 3)
-		ft_strerror("a 인자 개수 안맞음");
-	brightness = ft_atod(argv[1]);
+		ft_strerror("err: wrong numbers of element 'A'");
+	lighting_ratio = ft_atod(argv[1]);
 	color = vec_div_double(ft_atovec(argv[2], RGB), 255);
-	info->ambient = vec_multi_double(color, brightness);
+	info->ambient = vec_multi_double(color, lighting_ratio);
+}
+
+void	get_mlx_vector(t_vec *mlx_vector, t_vec normal, double *viewport, int flag)
+{
+	t_vec	res;
+	t_vec	basis_vec;
+
+	if ((normal.x == 0 && normal.y == 1 && normal.z == 0))
+		basis_vec = vec_init(0, 0, 1);
+	else if((normal.x == 0 && normal.y == -1 && normal.z == 0))
+		basis_vec = vec_init(0, 0, -1);
+	else
+		basis_vec = vec_init(0, 1, 0);
+	mlx_vector[0] = vec_multi_double(vec_unit(vec_cross(normal, basis_vec)), viewport[0]);
+	mlx_vector[1] = vec_multi_double(vec_unit(vec_cross(mlx_vector[0], normal)), viewport[1]);
 }
 
 t_camera    *camera_init(t_point coor, t_vec normal, int fov)
 {
     t_camera    *init;
 
-    if (!(init = (t_camera *)calloc(1, sizeof(t_camera))))
-        return (NULL);
+	init = my_calloc(1, sizeof(t_camera));
 	init->orig = coor;
 	init->normal = normal;
-	init->viewport_w = tan((double)fov / 2 * M_PI / 180) * 2;
-	init->viewport_h = init->viewport_w * WIN_H / WIN_W;
-	if ((normal.x == 0 && normal.y == 1 && normal.z == 0))
-		init->horizontal = vec_multi_double(vec_unit(vec_cross(normal, vec_init(0, 0, 1))), init->viewport_w);
-	else if((normal.x == 0 && normal.y == -1 && normal.z == 0))
-		init->horizontal = vec_multi_double(vec_unit(vec_cross(normal, vec_init(0, 0, -1))), init->viewport_w);
-	else
-		init->horizontal = vec_multi_double(vec_unit(vec_cross(normal, vec_init(0, 1, 0))), init->viewport_w); // RT파일에서 불가능한 회전
-	debugPrintVec("hor", &init->horizontal);
-	init->vertical =  vec_multi_double(vec_unit(vec_cross(init->horizontal, normal)), init->viewport_h);
-	debugPrintVec("ver", &init->vertical);
-	// init->start_point = vec_sub(vec_sub(vec_sub(init->orig, vec_div_double(init->horizontal, 2)),
-    //                             vec_div_double(init->vertical, 2)), normal);
-	init->start_point = vec_sub(vec_sub(vec_sub(init->orig, vec_div_double(init->horizontal, 2)),
-                                vec_div_double(init->vertical, 2)), vec_multi_double(vec_multi_double(normal, -1),1));
+	init->viewport[0] = tan((double)fov / 2 * M_PI / 180) * 2;
+	init->viewport[1] = init->viewport[0] * WIN_H / WIN_W;
+	// if ((normal.x == 0 && normal.y == 1 && normal.z == 0))
+	// 	init->mlx_vector[0] = vec_multi_double(vec_unit(vec_cross(normal, vec_init(0, 0, 1))), init->viewport[0]);
+	// else if((normal.x == 0 && normal.y == -1 && normal.z == 0))
+	// 	init->mlx_vector[0] = vec_multi_double(vec_unit(vec_cross(normal, vec_init(0, 0, -1))), init->viewport[0]);
+	// else
+	// 	init->mlx_vector[0] = vec_multi_double(vec_unit(vec_cross(normal, vec_init(0, 1, 0))), init->viewport[0]); // RT파일에서 불가능한 회전
+
+	init->start_point = vec_sub(vec_sub(vec_sub(init->orig, vec_div_double(init->mlx_vector[1], 2)),
+                                vec_div_double(init->mlx_vector[1], 2)), vec_multi_double(vec_multi_double(normal, -1),1));
     return (init);
 }
 
@@ -130,20 +140,18 @@ void    camera_add(t_camera **list, t_camera *new)
 
 void	put_c(t_info *info, char **argv, int cnt)
 {
-	t_point	coor;
-	t_vec	normal;
-	int		fov;
-	t_camera *tmp;
+	t_camera	*tmp;
+	t_point		coor;
+	t_vec		normal;
+	int			fov;
 
 	if (cnt != 4)
-		ft_strerror("c인자 개수 안맞음");
+		ft_strerror("err: wrong number of element 'C'");
 	coor = ft_atovec(argv[1], XYZ);
-	// normal = ft_atovec(argv[2], UNIT);
 	normal = ft_atovec(argv[2], UNIT);
 	fov = ft_atoi(argv[3]); //잘못들어오면 exit해야함
 	if (fov < 0 || fov > 180)
-		ft_strerror("카메라 앵글 잘못됨"); //에러메시지 출력
-
+		ft_strerror("err: wrong camera angle");
 	tmp = camera_init(coor, normal, fov);
 	camera_add(&(info->camera), tmp);
 }
@@ -315,7 +323,7 @@ void	put_cn(t_info *info, char **argv, int cnt)
 int 	check_format(char *format)
 {
 	if (!format)
-		return (-1);
+		return (ERROR);
 	if (!ft_strncmp(format, "sp", 3) || !ft_strncmp(format, "sp-ch", 6))
 		return (SP);
 	else if (!ft_strncmp(format, "pl", 3) || !ft_strncmp(format, "pl-ch", 6))
@@ -331,21 +339,22 @@ int 	check_format(char *format)
 	else if (!ft_strncmp(format, "L", 2)) //맨대토리 따로 작성 L
 		return (L);
 	else
-		ft_strerror("포맷 잘못받음");
-	return (-1);
+		ft_strerror("err: wrong format");
+	return (ERROR);
 }
 
-void	put_info(t_info *info, char **argv)
+void	put_info(t_info *info, char **elem_arg)
 {
-	static void	(*run[7])(t_info *, char **, int) = {put_a, put_c, put_l, put_sp, put_pl, put_cy, put_cn};
+	const void	(*run[7])(t_info *, char **, int) = \
+				{put_a, put_c, put_l, put_sp, put_pl, put_cy, put_cn};
 	int			type;
 	int			cnt;
 
-	type = check_format(argv[0]);
-	if (type == -1)
+	type = check_format(elem_arg[0]);
+	if (type == ERROR)
 		return ;
 	cnt = 0;
-	while (argv[cnt])
+	while (elem_arg[cnt])
 		cnt++;
-	run[type](info, argv, cnt);
+	run[type](info, elem_arg, cnt);
 }

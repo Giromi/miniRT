@@ -10,7 +10,7 @@ t_vec	convert_int_to_rgb(int	color)
 	return (res);
 }
 
-t_vec	tex_rgb(t_object *obj, t_hit_record *rec)
+t_vec	tex_rgb(t_object *obj, t_record *rec)
 {
 	int x;
 	int y;
@@ -23,7 +23,7 @@ t_vec	tex_rgb(t_object *obj, t_hit_record *rec)
 	return (tmp);
 }
 
-t_vec	bump_normal(t_object *obj, t_hit_record *rec)
+t_vec	bump_normal(t_object *obj, t_record *rec)
 {
 	int x;
 	int y;
@@ -55,16 +55,16 @@ t_point	ray_at(t_ray ray, double t)
 	return (at);
 }
 
-void record_init(t_hit_record *rec)
+void record_init(t_record *rec)
 {
-	ft_memset(rec, 0, sizeof(t_hit_record));
+	ft_memset(rec, 0, sizeof(t_record));
     rec->tmin = EPSILON;
     rec->tmax = 10000000;
 }
 
 int in_shadow(t_object *objs, t_ray light_ray, double light_len)
 {
-    t_hit_record rec;
+    t_record rec;
 
     rec.tmin = 0;
     rec.tmax = light_len;
@@ -73,7 +73,7 @@ int in_shadow(t_object *objs, t_ray light_ray, double light_len)
     return (FALSE);
 }
 
-void	get_cylinder_uv(t_hit_record *rec, t_point center, t_vec normal, double size, double r)
+void	get_cylinder_uv(t_record *rec, t_point center, t_vec normal, double size, double r)
 {
 	double			theta;
 	t_vec			e1;
@@ -106,7 +106,7 @@ void	get_cylinder_uv(t_hit_record *rec, t_point center, t_vec normal, double siz
 	rec->v = fmod(rec->v, size) / size;
 }
 
-int	hit_cylinder(t_object *obj, t_ray ray, t_hit_record *rec)
+int	hit_cylinder(t_object *obj, t_ray ray, t_record *rec)
 {
 	t_cylinder	*cy;
 	t_vec		oc;
@@ -129,7 +129,7 @@ int	hit_cylinder(t_object *obj, t_ray ray, t_hit_record *rec)
 		return (FALSE);
 	sqrtd = sqrt(dis);
 	root = (-half_b - sqrtd) / a;
-	t_hit_record tmp;
+	t_record tmp;
 	tmp.t = root;
 	tmp.p = ray_at(ray, root);
 	// rec->t = root;
@@ -167,7 +167,7 @@ int	hit_cylinder(t_object *obj, t_ray ray, t_hit_record *rec)
     return (TRUE);
 }
 
-int	hit_cone(t_object *obj, t_ray ray, t_hit_record *rec)
+int	hit_cone(t_object *obj, t_ray ray, t_record *rec)
 {
 	t_cylinder	*cy;
 	double		a;
@@ -231,7 +231,7 @@ int	hit_cone(t_object *obj, t_ray ray, t_hit_record *rec)
     return (FALSE);
 }
 
-void	get_sphere_uv(t_hit_record *rec, t_point center, double size)
+void	get_sphere_uv(t_record *rec, t_point center, double size)
 {
 	double			phi;
 	double			theta;
@@ -258,7 +258,7 @@ void	get_sphere_uv(t_hit_record *rec, t_point center, double size)
 	rec->v = fmod(rec->v, size) / size;
 }
 
-int	hit_sphere(t_object *obj, t_ray ray, t_hit_record *rec)
+int	hit_sphere(t_object *obj, t_ray ray, t_record *rec)
 {
 	t_sphere	*sp;
 	t_vec		oc;
@@ -299,7 +299,7 @@ int	hit_sphere(t_object *obj, t_ray ray, t_hit_record *rec)
 	return (TRUE);
 }
 
-void	get_cap_uv(t_hit_record *rec, t_point center, t_vec normal, double size, double r)
+void	get_cap_uv(t_record *rec, t_point center, t_vec normal, double size, double r)
 {
 	double			theta;
 	t_vec			n = rec->normal;
@@ -333,7 +333,7 @@ void	get_cap_uv(t_hit_record *rec, t_point center, t_vec normal, double size, do
 	// debugPrintDouble("u", "v", rec->u, rec->v);
 }
 
-int	hit_cap(t_object *obj, t_ray ray, t_hit_record *rec)
+int	hit_cap(t_object *obj, t_ray ray, t_record *rec)
 {
 	t_plane	*pl;
 	double	root;
@@ -367,7 +367,7 @@ int	hit_cap(t_object *obj, t_ray ray, t_hit_record *rec)
 	return (TRUE);
 }
 
-void	get_plane_uv(t_hit_record *rec, t_point center, double size)
+void	get_plane_uv(t_record *rec, t_point center, double size)
 {
 	const t_vec		p = vec_sub(rec->p, center);
 	const t_vec		n = rec->normal;
@@ -390,7 +390,7 @@ void	get_plane_uv(t_hit_record *rec, t_point center, double size)
 	rec->v = 1 - rec->v;
 }
 
-int	hit_plane(t_object *obj, t_ray ray, t_hit_record *rec)
+int	hit_plane(t_object *obj, t_ray ray, t_record *rec)
 {
 	t_plane	*pl;
 	double	root;
@@ -420,7 +420,7 @@ int	hit_plane(t_object *obj, t_ray ray, t_hit_record *rec)
 	return (TRUE);
 }
 
-int hit_obj(t_object *obj, t_ray ray, t_hit_record *rec)
+int hit_obj(t_object *obj, t_ray ray, t_record *rec)
 {
     int  hit_result;
 
@@ -438,10 +438,10 @@ int hit_obj(t_object *obj, t_ray ray, t_hit_record *rec)
     return (hit_result);
 }
 
-int hit(t_object *obj, t_ray ray, t_hit_record *rec)
+int hit(t_object *obj, t_ray ray, t_record *rec)
 {
 	int				hit_anything;
-    t_hit_record    temp_rec;
+    t_record    temp_rec;
 
     temp_rec = *rec;
     hit_anything = FALSE;
@@ -505,7 +505,7 @@ t_vec        point_light_get(t_info *info, t_light *light)
     return (vec_multi_double(vec_add(diffuse, specular), brightness));
 }
 
-t_color	checkerboard_value(t_hit_record rec)
+t_color	checkerboard_value(t_record rec)
 {
 	const int		width = 10;
 	const int		height = 10;
