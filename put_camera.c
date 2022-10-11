@@ -6,7 +6,7 @@
 /*   By: minsuki2 <minsuki2@student.42seoul.kr      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 21:25:13 by minsuki2          #+#    #+#             */
-/*   Updated: 2022/10/11 21:28:36 by minsuki2         ###   ########.fr       */
+/*   Updated: 2022/10/11 22:53:03 by minsuki2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,8 @@ t_camera    *camera_init(t_point coor, t_vector normal, int fov)
 	get_mlx_vector(init->mlx_vec, init->normal, init->viewport);
 	minus_half_mlx_vec[HORI] = vec_div_double(init->mlx_vec[HORI], -2);
 	minus_half_mlx_vec[VERT] = vec_div_double(init->mlx_vec[VERT], -2);
-	init->start_point = vec_multi_add(minus_half_mlx_vec[HORI], \
-											minus_half_mlx_vec[VERT], normal);
+	init->start_point = vec_once_add_at_point(init->orig, \
+					minus_half_mlx_vec[HORI], minus_half_mlx_vec[VERT], normal);
     return (init);
 }
 

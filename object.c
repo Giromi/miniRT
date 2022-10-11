@@ -360,7 +360,7 @@ int	hit_cap(t_object *obj, t_ray ray, t_hit_record *rec)
 	if (obj->bump->file_name)
 	{
 		// if (obj->tex->img_ptr)
-		// 	rec->albedo = tex_rgb(obj, rec);
+		//     rec->albedo = tex_rgb(obj, rec);
 		rec->normal = bump_normal(obj, rec);
 	}
 	set_face_normal(ray, rec);
@@ -534,6 +534,5 @@ t_vector	phong_lighting(t_info *info)
 		color = checkerboard_value((info->rec));
 	else
 		color = info->rec.albedo;
-	// info->rec.normal == vec_init(0,0,0);
     return (vec_multi_double(vec_min(vec_multi(light_color, color), vec_init(1, 1, 1)), 255));
 }

@@ -6,7 +6,7 @@
 /*   By: minsuki2 <minsuki2@student.42seoul.kr      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 21:10:46 by minsuki2          #+#    #+#             */
-/*   Updated: 2022/10/11 21:43:18 by minsuki2         ###   ########.fr       */
+/*   Updated: 2022/10/11 22:52:44 by minsuki2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -218,8 +218,8 @@ typedef struct s_info
 }					t_info;
 
 t_vector	vec_min(t_vector vec1, t_vector vec2);
+t_vector	vec_once_add_at_point(t_point o, t_vector a, t_vector b, t_vector c);
 t_vector	vec_add(t_vector u, t_vector v);
-t_vector	vec_multi_add(t_vector a, t_vector b, t_vector c);
 t_vector	vec_sub(t_vector u, t_vector v);
 t_vector	vec_multi(t_vector u, t_vector v);
 t_vector	vec_div(t_vector u, t_vector v);
