@@ -1,6 +1,6 @@
 #include "minirt.h"
 
-t_vec  vec_min(t_vec vec1, t_vec vec2)
+t_vector  vec_min(t_vector vec1, t_vector vec2)
 {
     if (vec1.x > vec2.x)
         vec1.x = vec2.x;
@@ -12,9 +12,9 @@ t_vec  vec_min(t_vec vec1, t_vec vec2)
 }
 
 
-t_vec	vec_add(t_vec u, t_vec v)
+t_vector	vec_add(t_vector u, t_vector v)
 {
-    t_vec   init;
+    t_vector   init;
 
     init.x = u.x + v.x;
     init.y = u.y + v.y;
@@ -22,9 +22,19 @@ t_vec	vec_add(t_vec u, t_vec v)
     return (init);
 }
 
-t_vec	vec_sub(t_vec u, t_vec v)
+t_vector	vec_multi_add(t_vector a, t_vector b, t_vector c)
 {
-    t_vec   init;
+    t_vector   init;
+
+    init.x = a.x + b.x + c.x;
+    init.y = a.y + b.y + c.y;
+    init.z = a.z + b.z + c.z;
+    return (init);
+}
+
+t_vector	vec_sub(t_vector u, t_vector v)
+{
+    t_vector   init;
 
     init.x = u.x - v.x;
     init.y = u.y - v.y;
@@ -32,9 +42,9 @@ t_vec	vec_sub(t_vec u, t_vec v)
     return (init);
 }
 
-t_vec	vec_multi(t_vec u, t_vec v)
+t_vector	vec_multi(t_vector u, t_vector v)
 {
-    t_vec   init;
+    t_vector   init;
 
     init.x = u.x * v.x;
     init.y = u.y * v.y;
@@ -42,9 +52,9 @@ t_vec	vec_multi(t_vec u, t_vec v)
     return (init);
 }
 
-t_vec	vec_div(t_vec u, t_vec v)
+t_vector	vec_div(t_vector u, t_vector v)
 {
-    t_vec   init;
+    t_vector   init;
 
     if (v.x == 0 || v.y == 0 || v.z == 0)
         ft_strerror("0 넣지마");
@@ -54,9 +64,9 @@ t_vec	vec_div(t_vec u, t_vec v)
     return (init);
 }
 
-t_vec	vec_multi_double(t_vec u, double n)
+t_vector	vec_multi_double(t_vector u, double n)
 {
-    t_vec   init;
+    t_vector   init;
 
     init.x = u.x * n;
     init.y = u.y * n;
@@ -64,9 +74,9 @@ t_vec	vec_multi_double(t_vec u, double n)
     return (init);
 }
 
-t_vec	vec_div_double(t_vec u, double n)
+t_vector	vec_div_double(t_vector u, double n)
 {
-    // t_vec   init;
+    // t_vector   init;
 
     // init.x = u.x / n;
     // init.y = u.y / n;
@@ -75,14 +85,14 @@ t_vec	vec_div_double(t_vec u, double n)
     return (vec_multi_double(u, (1 / n)));
 }
 
-double	vec_dot(t_vec u, t_vec v)
+double	vec_dot(t_vector u, t_vector v)
 {
 	return (u.x * v.x + u.y * v.y + u.z * v.z);
 }
 
-t_vec	vec_cross(t_vec u, t_vec v)
+t_vector	vec_cross(t_vector u, t_vector v)
 {
-	t_vec init;
+	t_vector init;
 	
 	init.x = u.y * v.z - u.z * v.y;
 	init.y = u.z * v.x - u.x * v.z;
@@ -90,21 +100,21 @@ t_vec	vec_cross(t_vec u, t_vec v)
 	return (init);
 }
 
-double	vec_len(t_vec u)
+double	vec_len(t_vector u)
 {
 	return (sqrt(pow(u.x, 2.0) + pow(u.y, 2.0) + pow(u.z, 2.0)));
 }
-double	vec_len_sqr(t_vec u)
+double	vec_len_sqr(t_vector u)
 {
     return (pow(u.x, 2.0) + pow(u.y, 2.0) + pow(u.z, 2.0));
 }
-t_vec	vec_unit(t_vec u)
+t_vector	vec_unit(t_vector u)
 {
 	return (vec_div_double(u, vec_len(u)));
 }
-t_vec	vec_init(double x, double y, double z)
+t_vector	vec_init(double x, double y, double z)
 {
-	t_vec init;
+	t_vector init;
 	
 	init.x = x;
 	init.y = y;

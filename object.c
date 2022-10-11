@@ -1,8 +1,8 @@
 #include "minirt.h"
 
-t_vec	convert_int_to_rgb(int	color)
+t_vector	convert_int_to_rgb(int	color)
 {
-	t_vec	res;
+	t_vector	res;
 
 	res.x = color >> 16 & 0xFF;
 	res.y = color >> 8 & 0xFF;
@@ -10,11 +10,11 @@ t_vec	convert_int_to_rgb(int	color)
 	return (res);
 }
 
-t_vec	tex_rgb(t_object *obj, t_hit_record *rec)
+t_vector	tex_rgb(t_object *obj, t_hit_record *rec)
 {
 	int x;
 	int y;
-	t_vec tmp;
+	t_vector tmp;
 
 	x = (int)(rec->u * obj->tex->width);
 	y = (int)(rec->v * obj->tex->height);
@@ -23,12 +23,12 @@ t_vec	tex_rgb(t_object *obj, t_hit_record *rec)
 	return (tmp);
 }
 
-t_vec	bump_normal(t_object *obj, t_hit_record *rec)
+t_vector	bump_normal(t_object *obj, t_hit_record *rec)
 {
 	int x;
 	int y;
-	t_vec tmp;
-	t_vec ul, vl, zl;
+	t_vector tmp;
+	t_vector ul, vl, zl;
 
 	// Local = t * UL + b * VL + n * ZL
 	x = (int)(rec->u * (double)(obj->bump->width - 1));
@@ -73,11 +73,11 @@ int in_shadow(t_object *objs, t_ray light_ray, double light_len)
     return (FALSE);
 }
 
-void	get_cylinder_uv(t_hit_record *rec, t_point center, t_vec normal, double size, double r)
+void	get_cylinder_uv(t_hit_record *rec, t_point center, t_vector normal, double size, double r)
 {
 	double			theta;
-	t_vec			e1;
-	t_vec			e2;
+	t_vector			e1;
+	t_vector			e2;
 	double			p_e1;
 	double			p_e2;
 
@@ -109,14 +109,14 @@ void	get_cylinder_uv(t_hit_record *rec, t_point center, t_vec normal, double siz
 int	hit_cylinder(t_object *obj, t_ray ray, t_hit_record *rec)
 {
 	t_cylinder	*cy;
-	t_vec		oc;
+	t_vector		oc;
 	double		a;
 	double		half_b;
 	double		c;
 	double		dis;
 	double		sqrtd;
 	double		root;
-	t_vec		cp, cq;
+	t_vector		cp, cq;
 	double		cq_val;
 
 	cy = (t_cylinder *)obj->element;
@@ -177,7 +177,7 @@ int	hit_cone(t_object *obj, t_ray ray, t_hit_record *rec)
 	double		sqrtd;
 	double		root;
 	double	m;
-	t_vec	w;
+	t_vector	w;
 
 	cy = (t_cylinder *)obj->element;
 	w = vec_sub(ray.orig, cy->center);
@@ -235,9 +235,9 @@ void	get_sphere_uv(t_hit_record *rec, t_point center, double size)
 {
 	double			phi;
 	double			theta;
-	const t_vec		n = rec->normal;
-	t_vec			e1;
-	t_vec			e2;
+	const t_vector		n = rec->normal;
+	t_vector			e1;
+	t_vector			e2;
 
 	if ((n.x == 0 && n.y == 1 && n.z == 0))
 		e1 = vec_unit(vec_cross(vec_init(0, 0, -1), n));
@@ -261,7 +261,7 @@ void	get_sphere_uv(t_hit_record *rec, t_point center, double size)
 int	hit_sphere(t_object *obj, t_ray ray, t_hit_record *rec)
 {
 	t_sphere	*sp;
-	t_vec		oc;
+	t_vector		oc;
 	double		a;
 	double		c;
 	double		dis;
@@ -299,12 +299,12 @@ int	hit_sphere(t_object *obj, t_ray ray, t_hit_record *rec)
 	return (TRUE);
 }
 
-void	get_cap_uv(t_hit_record *rec, t_point center, t_vec normal, double size, double r)
+void	get_cap_uv(t_hit_record *rec, t_point center, t_vector normal, double size, double r)
 {
 	double			theta;
-	t_vec			n = rec->normal;
-	t_vec			e1;
-	t_vec			e2;
+	t_vector			n = rec->normal;
+	t_vector			e1;
+	t_vector			e2;
 	double			p_e1;
 	double			p_e2;
 
@@ -351,7 +351,7 @@ int	hit_cap(t_object *obj, t_ray ray, t_hit_record *rec)
 	rec->t = root;
 	rec->p = ray_at(ray, root);
 	// debugPrintVec("pl center", &pl->center);
-    t_vec pcv = vec_sub(rec->p, pl->center);
+    t_vector pcv = vec_sub(rec->p, pl->center);
     if (vec_dot(pcv, pcv) > pl->radius * pl->radius)
         return (FALSE);
 	rec->albedo = obj->albedo;
@@ -369,10 +369,10 @@ int	hit_cap(t_object *obj, t_ray ray, t_hit_record *rec)
 
 void	get_plane_uv(t_hit_record *rec, t_point center, double size)
 {
-	const t_vec		p = vec_sub(rec->p, center);
-	const t_vec		n = rec->normal;
-	t_vec			e1;
-	t_vec			e2;
+	const t_vector		p = vec_sub(rec->p, center);
+	const t_vector		n = rec->normal;
+	t_vector			e1;
+	t_vector			e2;
 
 	if ((n.x == 0 && n.y == 1 && n.z == 0))
 		e1 = vec_unit(vec_cross(vec_init(0, 0, -1), n));
@@ -460,20 +460,20 @@ int hit(t_object *obj, t_ray ray, t_hit_record *rec)
     return (hit_anything);
 }
 
-t_vec          reflect(t_vec v, t_vec n)
+t_vector          reflect(t_vector v, t_vector n)
 {
     return (vec_sub(v, vec_multi_double(n, vec_dot(v, n) * 2)));
 }
 
-t_vec        point_light_get(t_info *info, t_light *light)
+t_vector        point_light_get(t_info *info, t_light *light)
 {
     t_color    diffuse;
-    t_vec      light_dir;
+    t_vector      light_dir;
     double      kd; // diffuse의 강도
 
     t_color    specular;
-    t_vec      view_dir;
-    t_vec      reflect_dir;
+    t_vector      view_dir;
+    t_vector      reflect_dir;
 
     double       light_len;
     t_ray       light_ray;
@@ -516,7 +516,7 @@ t_color	checkerboard_value(t_hit_record rec)
 	return (vec_init(1, 1, 1));
 }
 
-t_vec	phong_lighting(t_info *info)
+t_vector	phong_lighting(t_info *info)
 {
     t_color		light_color;
     t_light		*lights;

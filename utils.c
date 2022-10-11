@@ -80,7 +80,7 @@ double	ft_atod(char *str)
 
 void	check_unit(double *x, double *y, double *z, int flag)
 {
-	t_vec tmp;
+	t_vector tmp;
 
 	if (flag == RGB)
 	{
@@ -104,9 +104,9 @@ void	check_unit(double *x, double *y, double *z, int flag)
 	}
 }
 
-t_vec	ft_atovec(char *str, int flag)
+t_vector	ft_atovec(char *str, int flag)
 {
-	t_vec	res;
+	t_vector	res;
 	char	**vec;
 	int		i;
 	int		cnt;

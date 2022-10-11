@@ -1,6 +1,6 @@
 #include "minirt.h"
 
-t_object    *object_init(t_object_type type, void *element, t_vec albedo, int checker)
+t_object    *object_init(t_object_type type, void *element, t_vector albedo, int checker)
 {
     t_object    *new;
 
@@ -26,7 +26,7 @@ t_sphere	*sphere_init(t_point center, double radius)
 	return (init);
 }
 
-t_plane	*plane_init(t_point center, t_vec normal, double radius)
+t_plane	*plane_init(t_point center, t_vector normal, double radius)
 {
 	t_plane *init;
 
@@ -40,7 +40,7 @@ t_plane	*plane_init(t_point center, t_vec normal, double radius)
 	return (init);
 }
 
-t_cylinder	*cylinder_init(t_point center, double radius, double height, t_vec normal)
+t_cylinder	*cylinder_init(t_point center, double radius, double height, t_vector normal)
 {
 	t_cylinder *init;
 
@@ -55,7 +55,7 @@ t_cylinder	*cylinder_init(t_point center, double radius, double height, t_vec no
 	return (init);
 }
 
-t_cone	*cone_init(t_point center, double radius, double height, t_vec normal)
+t_cone	*cone_init(t_point center, double radius, double height, t_vector normal)
 {
 	t_cone *init;
 
@@ -70,7 +70,7 @@ t_cone	*cone_init(t_point center, double radius, double height, t_vec normal)
 	return (init);
 }
 
-t_light     *light_init(t_vec light_origin, t_vec light_color, double brightness)
+t_light     *light_init(t_vector light_origin, t_vector light_color, double brightness)
 {
     t_light *light;
 

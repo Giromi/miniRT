@@ -1,6 +1,6 @@
 #include "minirt.h"
 
-void debugPrintVec(char *str, t_vec *vector)
+void debugPrintVec(char *str, t_vector *vector)
 {
 	printf("%s : x = %lf ",  str, vector->x);
 	printf("%s : y = %lf ",  str, vector->y);
@@ -25,8 +25,8 @@ void	print_cam(t_camera *cam) // 지워야함
 		printf("orign x : %lf ", (curr->orig.x));
 		printf("orign y : %lf ", (curr->orig.y));
 		printf("orign z : %lf \n", (curr->orig.z));
-		printf("viewport_w : %lf \n", (curr->viewport_w));
-		printf("viewport_h : %lf \n", (curr->viewport_h));
+		printf("viewport_w : %lf \n", (curr->viewport[0]));
+		printf("viewport_h : %lf \n", (curr->viewport[1]));
 		printf("normal x : %lf ", curr->normal.x);
 		printf("normal y : %lf ", curr->normal.y);
 		printf("normal z : %lf \n", curr->normal.z);

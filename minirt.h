@@ -6,7 +6,7 @@
 # include <math.h>
 # include <fcntl.h>
 # include "libft/libft.h"
-# include "mlx2/mlx.h"
+# include "mlx/mlx.h"
 
 # define EVENT_KEY_PRESS 2
 # define EVENT_MOUSE_CLICK 4
@@ -34,11 +34,18 @@
 # define U 0
 # define V 1
 
-# define IMG_H 720
-# define IMG_W 1280
+# define IMG_W WIN_W
+# define IMG_H WIN_H
 
-# define WIN_H 720
 # define WIN_W 1280
+# define WIN_H 720
+
+
+enum e_horizontal_vertical
+{
+	HORI,
+	VERT
+};
 
 enum e_material_type
 {
@@ -66,10 +73,10 @@ typedef struct s_vec
 	double	x;
 	double	y;
 	double	z;
-}		    t_vec;
+}		    t_vector;
 
-typedef t_vec	t_color;
-typedef t_vec	t_point;
+typedef t_vector	t_color;
+typedef t_vector	t_point;
 
 typedef struct s_img
 {
@@ -93,19 +100,17 @@ typedef struct	s_mlx
 typedef struct s_ray
 {
 	t_point	orig;
-	t_vec	dir;
+	t_vector	dir;
 }			t_ray;
 
 typedef struct s_camera
 {
 	t_point	orig;
-	double	viewport_h;
-	double	viewport_w;
-	t_vec	horizontal;
-	t_vec	vertical;
+	t_vector	mlx_vec[2];
+	double	viewport[2];
 	double	focal_len;
 	t_point	start_point;
-	t_vec	normal;
+	t_vector	normal;
 	int		fov;
 	void            *next;
 }			    t_camera;
@@ -120,7 +125,7 @@ typedef struct s_sphere
 typedef struct s_plane
 {
 	t_point	center;
-	t_vec	normal;
+	t_vector	normal;
 	double	radius;
 }			t_plane;
 
@@ -131,7 +136,7 @@ typedef struct s_cylinder
 	double	radius;
 	double	radius2;
 	double	height;
-	t_vec	normal;
+	t_vector	normal;
 }			t_cylinder;
 
 typedef t_cylinder	t_cone;
@@ -150,25 +155,25 @@ typedef struct  s_object
 typedef struct s_hit_record
 {
     t_point		p;
-    t_vec		normal;
-    t_vec		normal2;
+    t_vector		normal;
+    t_vector		normal2;
     double		tmin;
     double		tmax;
     double		t;
     int			front_face;
 	int			type;
-	t_vec		albedo;
+	t_vector		albedo;
 	double		u;
 	double		v;
-	t_vec		e1;
-	t_vec		e2;
+	t_vector		e1;
+	t_vector		e2;
 	int			checker;
 }				t_hit_record;
 
 typedef struct  s_light
 {
-    t_vec	origin;
-    t_vec	light_color;
+    t_vector	origin;
+    t_vector	light_color;
     double	brightness;
 	void	*next;
 }			t_light;
@@ -185,27 +190,28 @@ typedef struct s_info
     t_hit_record	rec;
 }					t_info;
 
-t_vec 	vec_min(t_vec vec1, t_vec vec2);
-t_vec	vec_add(t_vec u, t_vec v);
-t_vec	vec_sub(t_vec u, t_vec v);
-t_vec	vec_multi(t_vec u, t_vec v);
-t_vec	vec_div(t_vec u, t_vec v);
-t_vec	vec_multi_double(t_vec u, double n);
-t_vec	vec_div_double(t_vec u, double n);
-double	vec_dot(t_vec u, t_vec v);
-t_vec	vec_cross(t_vec u, t_vec v);
-double	vec_len(t_vec u);
-double	vec_len_sqr(t_vec u);
-t_vec	vec_unit(t_vec u);
-t_vec	vec_init(double x, double y, double z);
+t_vector 	vec_min(t_vector vec1, t_vector vec2);
+t_vector	vec_add(t_vector u, t_vector v);
+t_vector	vec_multi_add(t_vector a, t_vector b, t_vector c);
+t_vector	vec_sub(t_vector u, t_vector v);
+t_vector	vec_multi(t_vector u, t_vector v);
+t_vector	vec_div(t_vector u, t_vector v);
+t_vector	vec_multi_double(t_vector u, double n);
+t_vector	vec_div_double(t_vector u, double n);
+double	vec_dot(t_vector u, t_vector v);
+t_vector	vec_cross(t_vector u, t_vector v);
+double	vec_len(t_vector u);
+double	vec_len_sqr(t_vector u);
+t_vector	vec_unit(t_vector u);
+t_vector	vec_init(double x, double y, double z);
 
 
-t_object    *object_init(t_object_type type, void *element, t_vec albedo, int checker);
+t_object    *object_init(t_object_type type, void *element, t_vector albedo, int checker);
 t_sphere	*sphere_init(t_point center, double radius);
-t_plane		*plane_init(t_point center, t_vec normal, double radius);
-t_cylinder	*cylinder_init(t_point center, double radius, double height, t_vec normal);
-t_light     *light_init(t_vec light_origin, t_vec light_color, double brightness);
-t_cone		*cone_init(t_point center, double radius, double height, t_vec normal);
+t_plane		*plane_init(t_point center, t_vector normal, double radius);
+t_cylinder	*cylinder_init(t_point center, double radius, double height, t_vector normal);
+t_light     *light_init(t_vector light_origin, t_vector light_color, double brightness);
+t_cone		*cone_init(t_point center, double radius, double height, t_vector normal);
 
 
 
@@ -213,7 +219,7 @@ t_cone		*cone_init(t_point center, double radius, double height, t_vec normal);
 void	is_sign(char *str, int *idx, double *sign);
 double	ft_atod(char *str);
 void	check_unit(double *x, double *y, double *z, int flag);
-t_vec	ft_atovec(char *str, int flag);
+t_vector	ft_atovec(char *str, int flag);
 void	ft_strerror(char *err);
 void	split_free(char **split);
 
@@ -223,42 +229,42 @@ void			record_init(t_hit_record *rec);
 int				hit_sphere(t_object *obj, t_ray ray, t_hit_record *rec);
 int				hit_obj(t_object *obj, t_ray ray, t_hit_record *rec);
 int				hit(t_object *obj, t_ray ray, t_hit_record *rec);
-t_vec			point_light_get(t_info *info, t_light *light);
-t_vec	phong_lighting(t_info *info);
+t_vector			point_light_get(t_info *info, t_light *light);
+t_vector	phong_lighting(t_info *info);
 t_point			ray_at(t_ray ray, double t);
 int				hit_plane(t_object *obj, t_ray ray, t_hit_record *rec);
 int				in_shadow(t_object *objs, t_ray light_ray, double light_len);
-t_ray			ray_init(t_point orig, t_vec dir);
+t_ray			ray_init(t_point orig, t_vector dir);
 
 void    set_face_normal(t_ray ray, t_hit_record *rec);
-t_vec	convert_color_to_normal(int	color);
+t_vector	convert_color_to_normal(int	color);
 
 
 // ---------put.c--------//
 void    obj_add(t_object **list, t_object *new);
 void    light_add(t_light **list, t_light *new);
 void	put_a(t_info *info, char **argv, int cnt);
-t_camera    *camera_init(t_point coor, t_vec normal, int fov);
+t_camera    *camera_init(t_point coor, t_vector normal, int fov);
 void    camera_add(t_camera **list, t_camera *new);
 void	put_c(t_info *info, char **argv, int cnt);
 void	put_l(t_info *info, char **argv, int cnt);
 void	put_sp(t_info *info, char **argv, int cnt);
 void	put_pl(t_info *info, char **argv, int cnt);
-t_point	get_cap_point(t_point center, double height, t_vec normal, double sign);
+t_point	get_cap_point(t_point center, double height, t_vector normal, double sign);
 void	put_cy(t_info *info, char **argv, int cnt);
 void	put_cn(t_info *info, char **argv, int cnt);
 int 	check_format(char *format);
-void	put_info(t_info *info, char **argv);
 void	get_bump_addr(t_object *bump, t_mlx *mlx);
+void	put_info(t_info *info, char **argv);
 
 // ---------minirt.c--------//
 void info_init(t_info *info, char *file);
-t_vec	convert_color_to_normal(int	color);
-int	convert_color(t_vec clr);
+t_vector	convert_color_to_normal(int	color);
+int	convert_color(t_vector clr);
 void  my_mlx_pixel_put(t_img *img, int x, int y, t_color color);
 void	ray_primary(t_ray *ray, t_camera *cam, double u, double v);
 t_color    ray_color(t_info *info);
-t_ray	ray_init(t_point orig, t_vec dir);
+t_ray	ray_init(t_point orig, t_vector dir);
 void    set_face_normal(t_ray ray, t_hit_record *rec);
 void ft_draw(t_info *info, t_mlx *mlx);
 void	main_loop(t_info *info, t_mlx *mlx, int key);
@@ -268,9 +274,11 @@ int	key_press(int keycode, void *param);
 // ---------tmp--------//
 void	print_obj(t_object *obj);
 void	print_cam(t_camera *cam);
-void debugPrintVec(char *str, t_vec *vector);
+void debugPrintVec(char *str, t_vector *vector);
 void	ae();
 void debugPrintDouble(char *str1, char *str2, double a, double b);
 
+int		my_open(const char *path, int oflag);
+void	*my_calloc(size_t count, size_t size);
 
 #endif

@@ -3,10 +3,9 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: jinypark <jinypark@student.42.fr>          +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
+#    By: jinypark <jinypark@student.42.fr>          +#+  +:+       +#+         # +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/24 17:01:08 by jinypark          #+#    #+#              #
-#    Updated: 2022/10/11 18:39:06 by minsuki2         ###   ########.fr        #
+#    Updated: 2022/10/11 20:14:22 by minsuki2         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +18,8 @@ LIBFT		=	libft.a
 LIBMLX_DIR 	=	mlx
 LIBMLX 		=	libmlx.dylib
 
-MANDA_SRCS 	=	minirt.c vector.c material.c utils.c object.c put.c remove.c
+MANDA_SRCS 	=	minirt.c vector.c material.c utils.c object.c put.c remove.c \
+				my_func.c
 BONUS_SRCS 	=	minirt.c vector.c
 
 OBJS_MANDA 	=	$(MANDA_SRCS:.c=.o)
@@ -63,8 +63,8 @@ clean:
 
 fclean: clean
 	@echo ">>>>>>fclean deleted list<<<<<<<"
-	@$(RM) $(LIBFT_DIR)/$(LIBFT)
-	@$(RM) $(LIBMLX)
+	# @$(RM) $(LIBFT_DIR)/$(LIBFT)
+	# @$(RM) $(LIBMLX)
 	@$(RM) $(NAME)
 
 re:

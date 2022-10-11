@@ -83,29 +83,40 @@ void	put_a(t_info *info, char **argv, int cnt)
 	info->ambient = vec_multi_double(color, brightness);
 }
 
-t_camera    *camera_init(t_point coor, t_vec normal, int fov)
+void	get_mlx_vector(t_vector *mlx_vec, t_vector cam_normal, \
+															double *viewport)
+{
+	t_vector	basis_vec;
+	t_vector	unit_mlx_vec[2];
+
+	if ((cam_normal.x == 0 && cam_normal.y == 1 && cam_normal.z == 0))
+		basis_vec = vec_init(0, 0, 1);
+	else if((cam_normal.x == 0 && cam_normal.y == -1 && cam_normal.z == 0))
+		basis_vec = vec_init(0, 0, -1);
+	else
+		basis_vec = vec_init(0, 1, 0);
+	unit_mlx_vec[HORI] = vec_unit(vec_cross(cam_normal, basis_vec));
+	unit_mlx_vec[VERT] = vec_unit(vec_cross(unit_mlx_vec[HORI], cam_normal));
+	mlx_vec[HORI] = vec_multi_double(unit_mlx_vec[HORI], viewport[HORI]);
+	mlx_vec[VERT] = vec_multi_double(unit_mlx_vec[VERT], viewport[VERT]);
+}
+
+t_camera    *camera_init(t_point coor, t_vector normal, int fov)
 {
     t_camera    *init;
+	t_vector	minus_half_mlx_vec[2];
 
     if (!(init = (t_camera *)calloc(1, sizeof(t_camera))))
         return (NULL);
 	init->orig = coor;
 	init->normal = normal;
-	init->viewport_w = tan((double)fov / 2 * M_PI / 180) * 2;
-	init->viewport_h = init->viewport_w * WIN_H / WIN_W;
-	if ((normal.x == 0 && normal.y == 1 && normal.z == 0))
-		init->horizontal = vec_multi_double(vec_unit(vec_cross(normal, vec_init(0, 0, 1))), init->viewport_w);
-	else if((normal.x == 0 && normal.y == -1 && normal.z == 0))
-		init->horizontal = vec_multi_double(vec_unit(vec_cross(normal, vec_init(0, 0, -1))), init->viewport_w);
-	else
-		init->horizontal = vec_multi_double(vec_unit(vec_cross(normal, vec_init(0, 1, 0))), init->viewport_w); // RT파일에서 불가능한 회전
-	debugPrintVec("hor", &init->horizontal);
-	init->vertical =  vec_multi_double(vec_unit(vec_cross(init->horizontal, normal)), init->viewport_h);
-	debugPrintVec("ver", &init->vertical);
-	// init->start_point = vec_sub(vec_sub(vec_sub(init->orig, vec_div_double(init->horizontal, 2)),
-    //                             vec_div_double(init->vertical, 2)), normal);
-	init->start_point = vec_sub(vec_sub(vec_sub(init->orig, vec_div_double(init->horizontal, 2)),
-                                vec_div_double(init->vertical, 2)), vec_multi_double(vec_multi_double(normal, -1),1));
+	init->viewport[0] = tan((double)fov / 2 * M_PI / 180) * 2;
+	init->viewport[1] = init->viewport[0] * WIN_H / WIN_W;
+	get_mlx_vector(init->mlx_vec, init->normal, init->viewport);
+	minus_half_mlx_vec[HORI] = vec_div_double(init->mlx_vec[HORI], -2);
+	minus_half_mlx_vec[VERT] = vec_div_double(init->mlx_vec[VERT], -2);
+	init->start_point = \
+			vec_multi_add(minus_half_mlx_vec[0], minus_half_mlx_vec[1], normal);
     return (init);
 }
 
@@ -131,7 +142,7 @@ void    camera_add(t_camera **list, t_camera *new)
 void	put_c(t_info *info, char **argv, int cnt)
 {
 	t_point	coor;
-	t_vec	normal;
+	t_vector	normal;
 	int		fov;
 	t_camera *tmp;
 
@@ -151,7 +162,7 @@ void	put_c(t_info *info, char **argv, int cnt)
 void	put_l(t_info *info, char **argv, int cnt)
 {
 	t_light	*tmp;
-	t_vec	origin;
+	t_vector	origin;
 	double	brightness;
 	t_color	color;
 
@@ -168,7 +179,7 @@ void	put_l(t_info *info, char **argv, int cnt)
 void	put_sp(t_info *info, char **argv, int cnt)
 {
 	t_object	*tmp;
-	t_vec		origin;
+	t_vector		origin;
 	double		radius;
 	t_color		color;
 	int			checker;
@@ -196,8 +207,8 @@ void	put_sp(t_info *info, char **argv, int cnt)
 void	put_pl(t_info *info, char **argv, int cnt)
 {
 	t_object	*tmp;
-	t_vec		origin;
-	t_vec		normal;
+	t_vector		origin;
+	t_vector		normal;
 	t_color		color;
 	int			checker;
 
@@ -220,9 +231,9 @@ void	put_pl(t_info *info, char **argv, int cnt)
 		ft_strerror("pl인자 개수 안맞음");
 }
 
-t_point	get_cap_point(t_point center, double height, t_vec normal, double sign)
+t_point	get_cap_point(t_point center, double height, t_vector normal, double sign)
 {
-	t_vec	ccprime;
+	t_vector	ccprime;
 
 	ccprime = vec_multi_double(vec_multi_double(normal, sign), height / 2);
 	return (vec_add(center, ccprime));
@@ -232,7 +243,7 @@ void	put_cy(t_info *info, char **argv, int cnt)
 {
 	t_object	*tmp;
 	t_point		center;
-	t_vec		normal;
+	t_vector		normal;
 	double		format[2];
 	t_color		color;
 	int			checker;
@@ -279,7 +290,7 @@ void	put_cn(t_info *info, char **argv, int cnt)
 {
 	t_object	*tmp;
 	t_point		center;
-	t_vec		normal;
+	t_vector		normal;
 	double		format[2];
 	t_color		color;
 	int			checker;
@@ -337,7 +348,8 @@ int 	check_format(char *format)
 
 void	put_info(t_info *info, char **argv)
 {
-	static void	(*run[7])(t_info *, char **, int) = {put_a, put_c, put_l, put_sp, put_pl, put_cy, put_cn};
+	static void	(*run[7])(t_info *, char **, int) \
+					= {put_a, put_c, put_l, put_sp, put_pl, put_cy, put_cn};
 	int			type;
 	int			cnt;
 
