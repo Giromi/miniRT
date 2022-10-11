@@ -19,7 +19,7 @@ LIBMLX_DIR 	=	mlx
 LIBMLX 		=	libmlx.dylib
 
 MANDA_SRCS 	=	minirt.c vector.c material.c utils.c object.c put.c remove.c \
-				my_func.c
+				my_func.c put_camera.c put_objects.c
 BONUS_SRCS 	=	minirt.c vector.c
 
 OBJS_MANDA 	=	$(MANDA_SRCS:.c=.o)

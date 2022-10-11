@@ -12,7 +12,7 @@ void info_init(t_info *info, char *file)
 		ft_strerror("err: empty file");
 	while(line)
 	{
-		if (line[0] == '#')
+		if (line[0] == COMMENT)
 		{
 			free(line);
 			line = get_next_line(fd);

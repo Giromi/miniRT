@@ -77,87 +77,21 @@ void	put_a(t_info *info, char **argv, int cnt)
 	t_color	color;
 
 	if (cnt != 3)
-		ft_strerror("a 인자 개수 안맞음");
+		ft_strerror("err: wrong 'ambient' element arguments");
 	brightness = ft_atod(argv[1]);
 	color = vec_div_double(ft_atovec(argv[2], RGB), 255);
 	info->ambient = vec_multi_double(color, brightness);
 }
 
-void	get_mlx_vector(t_vector *mlx_vec, t_vector cam_normal, \
-															double *viewport)
-{
-	t_vector	basis_vec;
-	t_vector	unit_mlx_vec[2];
 
-	if ((cam_normal.x == 0 && cam_normal.y == 1 && cam_normal.z == 0))
-		basis_vec = vec_init(0, 0, 1);
-	else if((cam_normal.x == 0 && cam_normal.y == -1 && cam_normal.z == 0))
-		basis_vec = vec_init(0, 0, -1);
-	else
-		basis_vec = vec_init(0, 1, 0);
-	unit_mlx_vec[HORI] = vec_unit(vec_cross(cam_normal, basis_vec));
-	unit_mlx_vec[VERT] = vec_unit(vec_cross(unit_mlx_vec[HORI], cam_normal));
-	mlx_vec[HORI] = vec_multi_double(unit_mlx_vec[HORI], viewport[HORI]);
-	mlx_vec[VERT] = vec_multi_double(unit_mlx_vec[VERT], viewport[VERT]);
+t_point	get_cap_point(t_point center, double height, t_vector normal, double sign)
+{
+	t_vector	ccprime;
+
+	ccprime = vec_multi_double(vec_multi_double(normal, sign), height / 2);
+	return (vec_add(center, ccprime));
 }
 
-t_camera    *camera_init(t_point coor, t_vector normal, int fov)
-{
-    t_camera    *init;
-	t_vector	minus_half_mlx_vec[2];
-
-    if (!(init = (t_camera *)calloc(1, sizeof(t_camera))))
-        return (NULL);
-	init->orig = coor;
-	init->normal = normal;
-	init->viewport[0] = tan((double)fov / 2 * M_PI / 180) * 2;
-	init->viewport[1] = init->viewport[0] * WIN_H / WIN_W;
-	get_mlx_vector(init->mlx_vec, init->normal, init->viewport);
-	minus_half_mlx_vec[HORI] = vec_div_double(init->mlx_vec[HORI], -2);
-	minus_half_mlx_vec[VERT] = vec_div_double(init->mlx_vec[VERT], -2);
-	init->start_point = \
-			vec_multi_add(minus_half_mlx_vec[0], minus_half_mlx_vec[1], normal);
-    return (init);
-}
-
-void    camera_add(t_camera **list, t_camera *new)
-{
-    t_camera    *cur;
-
-    if (list == NULL)
-        return ;
-    if (*list == NULL)
-    {
-        *list = new;
-		(*list)->next = *list;
-        return ;
-    }
-    cur = *list;
-    while (cur->next && cur->next != *list)
-        cur = cur->next;
-    cur->next = new;
-	new->next = *list;
-}
-
-void	put_c(t_info *info, char **argv, int cnt)
-{
-	t_point	coor;
-	t_vector	normal;
-	int		fov;
-	t_camera *tmp;
-
-	if (cnt != 4)
-		ft_strerror("c인자 개수 안맞음");
-	coor = ft_atovec(argv[1], XYZ);
-	// normal = ft_atovec(argv[2], UNIT);
-	normal = ft_atovec(argv[2], UNIT);
-	fov = ft_atoi(argv[3]); //잘못들어오면 exit해야함
-	if (fov < 0 || fov > 180)
-		ft_strerror("카메라 앵글 잘못됨"); //에러메시지 출력
-
-	tmp = camera_init(coor, normal, fov);
-	camera_add(&(info->camera), tmp);
-}
 
 void	put_l(t_info *info, char **argv, int cnt)
 {
@@ -171,157 +105,10 @@ void	put_l(t_info *info, char **argv, int cnt)
 	origin = ft_atovec(argv[1], XYZ);
 	brightness = ft_atod(argv[2]);
 	color = vec_div_double(ft_atovec(argv[3], RGB), 255);
-
 	tmp = light_init(origin, color, brightness); // 더미 albedo
 	light_add(&(info->light), tmp);
 }
 
-void	put_sp(t_info *info, char **argv, int cnt)
-{
-	t_object	*tmp;
-	t_vector		origin;
-	double		radius;
-	t_color		color;
-	int			checker;
-
-	if (cnt == 4 || cnt == 5)
-	{
-		checker = (ft_strlen(argv[0]) == 5);
-		origin = ft_atovec(argv[1], XYZ);
-		radius = ft_atod(argv[2]) / 2;
-		color = ft_atovec(argv[3], RGB);
-		tmp = object_init(SP, sphere_init(origin, radius), vec_div_double(color, 255), checker);
-		tmp->bump = ft_calloc(1, sizeof(t_img));
-		tmp->tex = ft_calloc(1, sizeof(t_img));
-		if (cnt == 5)
-		{
-			tmp->bump->file_name = ft_strdup(argv[4]);
-			get_bump_addr(tmp, &info->mlx);
-			// get_texture_addr(tmp, &info->mlx);
-		}
-		obj_add(&(info->obj), tmp);
-	}
-	else
-		ft_strerror("sp인자 개수 안맞음");
-}
-void	put_pl(t_info *info, char **argv, int cnt)
-{
-	t_object	*tmp;
-	t_vector		origin;
-	t_vector		normal;
-	t_color		color;
-	int			checker;
-
-	if (cnt == 4 || cnt == 5)
-	{
-		checker = (ft_strlen(argv[0]) == 5);
-		origin = ft_atovec(argv[1], XYZ);
-		normal = ft_atovec(argv[2], UNIT);
-		color = ft_atovec(argv[3], RGB);
-		tmp = object_init(PL, plane_init(origin, normal, 0), vec_div_double(color, 255), checker);
-		tmp->bump = ft_calloc(1, sizeof(t_img));
-		if (cnt == 5)
-		{
-			tmp->bump->file_name = ft_strdup(argv[4]);
-			get_bump_addr(tmp, &info->mlx);
-		}
-		obj_add(&(info->obj), tmp);
-	}
-	else
-		ft_strerror("pl인자 개수 안맞음");
-}
-
-t_point	get_cap_point(t_point center, double height, t_vector normal, double sign)
-{
-	t_vector	ccprime;
-
-	ccprime = vec_multi_double(vec_multi_double(normal, sign), height / 2);
-	return (vec_add(center, ccprime));
-}
-
-void	put_cy(t_info *info, char **argv, int cnt)
-{
-	t_object	*tmp;
-	t_point		center;
-	t_vector		normal;
-	double		format[2];
-	t_color		color;
-	int			checker;
-	t_object	*tmp_obj;
-
-	if (cnt == 6 || cnt == 7)
-	{
-		checker = (ft_strlen(argv[0]) == 5);
-		center = ft_atovec(argv[1], XYZ);
-		normal = ft_atovec(argv[2], UNIT);
-		format[0] = ft_atod(argv[3]) / 2;
-		format[1] = ft_atod(argv[4]);
-		color = ft_atovec(argv[5], RGB);
-		tmp = object_init(CY, cylinder_init(get_cap_point(center, format[1], normal, -1), format[0], format[1], normal), vec_div_double(color, 255), checker);
-		tmp->bump = ft_calloc(1, sizeof(t_img));
-		tmp->tex = ft_calloc(1, sizeof(t_img));
-		if (cnt == 7)
-		{
-			tmp->bump->file_name = ft_strdup(argv[6]);
-			get_bump_addr(tmp, &info->mlx);
-			// get_texture_addr(tmp, &info->mlx);
-		}
-		obj_add(&(info->obj), tmp);
-		tmp_obj = tmp;
-		// tmp = object_init(CAP,plane_init(get_cap_point(center, format[1], normal, -1), normal, format[0]), vec_div_double(color, 255), checker);
-		// // if (cnt == 7)
-		// // 		tmp->bump->file_name = argv[6];
-		
-		// obj_add(&(info->obj), tmp);
-		tmp = object_init(CAP,plane_init(get_cap_point(center, format[1], normal, 1), normal, format[0]), vec_div_double(color, 255), checker);
-		if (cnt == 7)
-		{
-			// tmp->bump->file_name = argv[6];
-			tmp->bump = tmp_obj->bump;
-			// printf("%s\n", tmp->bump->file_name);
-		}
-		obj_add(&(info->obj), tmp);
-	}
-	else
-		ft_strerror("cy인자 개수 안맞음");
-}
-
-void	put_cn(t_info *info, char **argv, int cnt)
-{
-	t_object	*tmp;
-	t_point		center;
-	t_vector		normal;
-	double		format[2];
-	t_color		color;
-	int			checker;
-	t_object	*tmp_obj;
-
-	if (cnt == 6 || cnt == 7)
-	{
-		checker = (ft_strlen(argv[0]) == 5);
-		center = ft_atovec(argv[1], XYZ);
-		normal = ft_atovec(argv[2], UNIT);
-		format[0] = ft_atod(argv[3]) / 2;
-		format[1] = ft_atod(argv[4]);
-		color = ft_atovec(argv[5], RGB);
-		tmp = object_init(CN, cone_init(get_cap_point(center, format[1], normal, -1), format[0], format[1], normal), vec_div_double(color, 255), checker);
-		tmp->bump = ft_calloc(1, sizeof(t_img));
-		tmp->tex = ft_calloc(1, sizeof(t_img));
-		if (cnt == 7)
-		{
-			tmp->bump->file_name = ft_strdup(argv[6]);
-			get_bump_addr(tmp, &info->mlx);
-		}
-		obj_add(&(info->obj), tmp);
-		tmp_obj = tmp;
-		tmp = object_init(CAP,plane_init(get_cap_point(center, format[1], normal, -1), normal, format[0]), vec_div_double(color, 255), checker);
-		if (cnt == 7)
-			tmp->bump = tmp_obj->bump;
-		obj_add(&(info->obj), tmp);
-	}
-	else
-		ft_strerror("cn인자 개수 안맞음");
-}
 
 int 	check_format(char *format)
 {
