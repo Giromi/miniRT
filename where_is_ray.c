@@ -20,20 +20,14 @@ static int _ray_at_obj(t_object *obj, t_ray ray, t_hit_record *rec)
 
 int is_ray_hit(t_object *obj, t_ray ray, t_hit_record *rec)
 {
-	t_hit_record	temp_rec;
-	int				hit_flag;
+	int	hit_flag;
 
-	temp_rec = *rec;
 	hit_flag = FALSE;
 	while(obj)
 	{
-		hit_flag = _ray_at_obj(obj, ray, &temp_rec);
+		hit_flag = _ray_at_obj(obj, ray, rec);
 		if (hit_flag)
-		{
-			temp_rec.tmax = temp_rec.t;
-			// temp_rec.checker = obj->checker;
-			*rec = temp_rec;
-		}
+			rec->tmax = rec->t;
 		obj = obj->next;
 	}
 	return (hit_flag);

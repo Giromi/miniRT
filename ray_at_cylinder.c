@@ -34,28 +34,15 @@ void	get_cylinder_uv(t_hit_record *rec, t_point center, t_vector normal, double 
 
 int	ray_at_cylinder(t_object *obj, t_ray ray, t_hit_record *rec)
 {
-	t_cylinder	*cy;
-	t_vector		oc;
-	double		a;
-	double		half_b;
-	double		c;
-	double		dis;
-	double		sqrtd;
-	double		root;
-	t_vector		cp, cq;
-	double		cq_val;
+	const t_cylinder	*cy = obj->elem;
+	t_hit_record		tmp;
+	t_vector			coor[2];
+	double				term[3];
+	double				root[2];
 
-	cy = (t_cylinder *)obj->element;
-	oc = vec_sub(ray.orig, cy->center);
-	a = vec_dot(ray.dir, ray.dir) - vec_dot(ray.dir, cy->normal) * vec_dot(ray.dir, cy->normal);
-	half_b = vec_dot(oc, ray.dir) - ((vec_dot(ray.dir, cy->normal)) *  vec_dot(oc, cy->normal));
-	c = vec_len_sqr(oc) - vec_dot(oc, cy->normal) * vec_dot(oc, cy->normal) - (cy->radius) * (cy->radius);
-	dis = half_b * half_b - a * c;
-	if (dis < 0)
+	get_cy_abc(term, &ray, cy);
+	if (get_2d_root(term, root) == ERROR)
 		return (FALSE);
-	sqrtd = sqrt(dis);
-	root = (-half_b - sqrtd) / a;
-	t_hit_record tmp;
 	tmp.t = root;
 	tmp.p = ray_at(ray, root);
 	// rec->t = root;

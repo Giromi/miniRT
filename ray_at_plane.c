@@ -94,9 +94,7 @@ void	get_plane_uv(t_hit_record *rec, t_point center, double size)
 int	ray_at_plane(t_object *obj, t_ray ray, t_hit_record *rec)
 {
 	t_plane	*pl;
-	double	root;
-	double	numrator;
-	double	denominator;
+	double	val[3];
 
 	pl = (t_plane *)obj->element;
 	denominator = vec_dot(ray.dir, pl->normal);

@@ -6,7 +6,7 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 21:10:46 by minsuki2          #+#    #+#             */
-/*   Updated: 2022/10/12 17:38:18 by sesim            ###   ########.fr       */
+/*   Updated: 2022/10/12 18:31:55 by sesim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,12 @@ enum e_three_idx
 	X		=		0,
 	Y		=		1,
 	Z		=		2,
+	A		=		0,
+	B		=		1,
+	C		=		2,
+	V_N		=		0,
+	W_V		=		1,
+	W_N		=		2,
 	CENTER	=		0,
 	COLOR	=		1,
 	ALBEDO	=		2,
@@ -327,6 +333,10 @@ int is_ray_hit(t_object *obj, t_ray ray, t_hit_record *rec);
 
 
 
+/*****  math funcs  *****/
+void		get_cy_abc(double *term, t_ray *ray, t_model *cy);
+void		get_cn_abc(double *term, t_ray *ray, t_model *cy);
+int			get_2d_root(double *term, double *root);
 
 /*****  utils funcs  *****/
 void		split_free(char **split);
