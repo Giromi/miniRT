@@ -6,7 +6,7 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 21:10:46 by minsuki2          #+#    #+#             */
-/*   Updated: 2022/10/12 11:13:11 by sesim            ###   ########.fr       */
+/*   Updated: 2022/10/12 11:57:36 by sesim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ enum e_tool
 	UNIT
 };
 
-enum e_idx
+enum e_two_idx
 {
 	X		=		0,
 	Y		=		1,
@@ -79,6 +79,14 @@ enum e_idx
 	H		=		1,
 	HORI	=		0,
 	VERT	=		1
+};
+
+enum e_three_idx
+{
+	CENTER	=	0,
+	COLOR	=	1,
+	ALBEDO	=	2,
+	NORMAL	=	3
 };
 
 enum e_material_type
@@ -123,7 +131,7 @@ typedef struct s_mlx
 	void		*ptr;
 	void		*win;
 	t_image		img;
-}			t_mlx;
+}	t_mlx;
 
 typedef struct s_ray
 {
@@ -131,66 +139,66 @@ typedef struct s_ray
 	t_vector	dir;
 }	t_ray;
 
-typedef struct s_camera
+typedef struct s_cam
 {
+	struct s_cam	*next;
 	t_vector		mlx_vec[2];
 	t_vector		normal;
 	t_point			orig;
 	t_point			start_point;
 	double			viewport[2];
 	double			focal_len;
-	void			*next;
 	int				fov;
 }	t_camera;
 
-typedef struct s_sphere
-{
-	t_point	center;
-	double	radius;
-	double	radius2;
-}			t_sphere;
+// typedef struct s_sphere
+// {
+// 	t_point	center;
+// 	double	radius;
+// 	double	radius2;
+// }	t_sphere;
 
-typedef struct s_plane
-{
-	t_point		center;
-	t_vector	normal;
-	double		radius;
-}			t_plane;
-
-typedef struct s_cylinder
-{
-	t_point		center;
-	double		radius;
-	double		radius2;
-	double		height;
-	t_vector	normal;
-}	t_cylinder;
-
-typedef t_cylinder	t_cone;
-
-// typedef struct s_model   // radius 2 지움
+// typedef struct s_plane
 // {
 // 	t_point		center;
 // 	t_vector	normal;
 // 	double		radius;
-// 	double		height;
-// }	t_model;
+// }	t_plane;
 
-// typedef t_model	t_plane;
-// typedef t_model	t_sphere;
-// typedef t_model	t_cylinder;
-// typedef t_model	t_cone;
-
-// typedef struct	s_object
+// typedef struct s_cylinder
 // {
-//     struct s_object	*next;
-// 	t_image			*bump;
-// 	t_image			*tex;
-// 	t_model			*elem;
-// 	t_color			albedo;
-// 	t_object_type   type;
-// 	int				checker;
-// }	t_object;
+// 	t_point		center;
+// 	double		radius;
+// 	double		radius2;
+// 	double		height;
+// 	t_vector	normal;
+// }	t_cylinder;
+
+// typedef t_cylinder	t_cone;
+
+typedef struct s_model   // radius 2 지움
+{
+	t_point		center;
+	t_vector	normal;
+	double		radius;
+	double		height;
+}	t_model;
+
+typedef t_model		t_plane;
+typedef t_model		t_sphere;
+typedef t_model		t_cylinder;
+typedef t_model		t_cone;
+
+typedef struct	s_object
+{
+    struct s_object	*next;
+	t_image			*bump;
+	t_image			*tex;
+	t_model			*elem;
+	t_color			albedo;
+	t_object_type   type;
+	int				checker;
+}	t_object;
 
 typedef struct s_object
 {
@@ -219,15 +227,15 @@ typedef struct s_hit_record
 	int			front_face;
 	int			checker;
 	int			type;
-}				t_hit_record;
+}	t_hit_record;
 
 typedef struct s_light
 {
-	t_vector	origin;
-	t_vector	light_color;
-	double		brightness;
-	void		*next;
-}			t_light;
+	struct s_light	*next;
+	t_vector		origin;
+	t_vector		light_color;
+	double			brightness;
+}	t_light;
 
 typedef struct s_info
 {
@@ -239,8 +247,10 @@ typedef struct s_info
 	t_light			*light;
 	t_color			ambient;
 	t_ray			ray;
-}					t_info;
+}	t_info;
 
+/***** vector func *****/
+t_point		get_cap_point(t_point center, double height, t_vector normal, double sign);
 t_vector	vec_min(t_vector vec1, t_vector vec2);
 t_vector	vec_once_add_at_point(t_point o, t_vector a, t_vector b, t_vector c);
 t_vector	vec_add(t_vector u, t_vector v);
@@ -249,23 +259,23 @@ t_vector	vec_multi(t_vector u, t_vector v);
 t_vector	vec_div(t_vector u, t_vector v);
 t_vector	vec_multi_double(t_vector u, double n);
 t_vector	vec_div_double(t_vector u, double n);
-double		vec_dot(t_vector u, t_vector v);
 t_vector	vec_cross(t_vector u, t_vector v);
-double		vec_len(t_vector u);
-double		vec_len_sqr(t_vector u);
 t_vector	vec_unit(t_vector u);
 t_vector	vec_init(double x, double y, double z);
+double		vec_dot(t_vector u, t_vector v);
+double		vec_len(t_vector u);
+double		vec_len_sqr(t_vector u);
 
-t_object	*object_init(t_object_type type, void *element, t_vector albedo, \
-																int checker);
+/***** init func *****/
+t_light		*light_init(t_vector l_origin, t_vector l_color, double br);
+t_object	*object_init(t_object_type type, t_vector albedo, \
+						void *element, int checker);
 t_sphere	*sphere_init(t_point center, double radius);
 t_plane		*plane_init(t_point center, t_vector normal, double radius);
-t_cylinder	*cylinder_init(t_point center, double radius, double height, \
-															t_vector normal);
-t_light		*light_init(t_vector light_origin, t_vector light_color, \
-															double brightness);
-t_cone		*cone_init(t_point center, double radius, double height, \
-															t_vector normal);
+t_cylinder	*cylinder_init(t_point center, t_vector normal, \
+							double radius, double height);
+t_cone		*cone_init(t_point center, t_vector normal, \
+						double radius, double height);
 
 // ---------utils.c---------//
 void		is_sign(char *str, int *idx, double *sign);
@@ -304,7 +314,6 @@ t_point		get_cap_point(t_point center, double height, t_vector normal, \
 																double sign);
 void		put_cy(t_info *info, char **argv, int cnt);
 void		put_cn(t_info *info, char **argv, int cnt);
-int			check_format(char *format, int *form_check);
 void		get_bump_addr(t_object *bump, t_mlx *mlx);
 void		put_info(t_info *info, char **argv, int *form_check);
 

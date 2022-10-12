@@ -11,7 +11,6 @@ t_vector  vec_min(t_vector vec1, t_vector vec2)
     return (vec1);
 }
 
-
 t_vector	vec_add(t_vector u, t_vector v)
 {
     t_vector   init;
