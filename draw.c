@@ -35,7 +35,7 @@ static t_color	_cur_point_color(t_info *info)
     const double	t = 0.5 * (info->ray.dir.y + 1.0);
 
 	_record_init(&(info->rec));
-	if (hit(info->obj, info->ray, &(info->rec)))
+	if (is_ray_hit(info->obj, info->ray, &(info->rec)))
 		return (phong_lighting(info));
 	else
 		return (vec_add(vec_multi_double(vec_init(255, 255, 255), 1.0 - t), vec_multi_double(vec_init(128, 178, 255), t)));
