@@ -3,29 +3,28 @@
 void info_init(t_info *info, char *file)
 {
 	char		**split;
-	int			fd;
 	char		*line;
+	int			form_check[3];
+	int			fd;
 
 	fd = my_open(file, O_RDONLY);
+	ft_bzero(form_check, sizeof(form_check));
 	line = get_next_line(fd);
 	if (line == NULL)
 		ft_strerror("err: empty file");
 	while(line)
 	{
-		if (line[0] == COMMENT)
+		if (line[0] != COMMENT)
 		{
-			free(line);
-			line = get_next_line(fd);
-			continue ;
+			split = my_split(line, ' ');
+			put_info(info, split, form_check);
+			split_free(split);
 		}
-		split = ft_split(line, ' ');
-		if (split == NULL)
-			ft_strerror("err: allocation failed");
-		put_info(info, split);
-		split_free(split);
 		free(line);
 		line = get_next_line(fd);
 	}
+	if (form_check[A] != 1 || form_check[L] < 1 || form_check[C] < 1)
+		ft_strerror("err: wrong format");
 }
 
 t_vector	convert_color_to_normal(int	color)
@@ -48,7 +47,7 @@ int	convert_color(t_vector clr)
 	return (tmp);
 }
 
-void  my_mlx_pixel_put(t_img *img, int x, int y, t_color color)
+void  my_mlx_pixel_put(t_image *img, int x, int y, t_color color)
 {
 	char	*dst;
 
