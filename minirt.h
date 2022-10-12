@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: minsuki2 <minsuki2@student.42seoul.kr      +#+  +:+       +#+        */
+/*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 21:10:46 by minsuki2          #+#    #+#             */
-/*   Updated: 2022/10/11 22:52:44 by minsuki2         ###   ########.fr       */
+/*   Updated: 2022/10/12 10:34:10 by sesim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,30 +143,54 @@ typedef struct s_camera
 	void			*next;
 }	t_camera;
 
-typedef struct s_sphere
+// typedef struct s_sphere
+// {
+// 	t_point	center;
+// 	double	radius;
+// 	double	radius2;
+// }			t_sphere;
+
+// typedef struct s_plane
+// {
+// 	t_point		center;
+// 	t_vector	normal;
+// 	double		radius;
+// }			t_plane;
+
+// typedef struct s_cylinder
+// {
+// 	t_point		center;
+// 	double		radius;
+// 	double		radius2;
+// 	double		height;
+// 	t_vector	normal;
+// }	t_cylinder;
+
+// typedef t_cylinder	t_cone;
+
+typedef struct s_model   // radius 2 지움
 {
 	t_point	center;
+	t_vec	normal;
 	double	radius;
-	double	radius2;
-}			t_sphere;
+	double	height;
+}	t_model;
 
-typedef struct s_plane
+typedef t_model	t_plane;
+typedef t_model	t_sphere;
+typedef t_model	t_cylinder;
+typedef t_model	t_cone;
+
+typedef struct	s_object
 {
-	t_point		center;
-	t_vector	normal;
-	double		radius;
-}			t_plane;
-
-typedef struct s_cylinder
-{
-	t_point		center;
-	double		radius;
-	double		radius2;
-	double		height;
-	t_vector	normal;
-}	t_cylinder;
-
-typedef t_cylinder	t_cone;
+    struct s_object	*next;
+	t_img			*bump;
+	t_img			*tex;
+	t_model			*elem;
+	t_color			albedo;
+	t_object_type   type;
+	int				checker;
+}	t_object;
 
 typedef struct s_object
 {

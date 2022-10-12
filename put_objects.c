@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   put_objects.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: minsuki2 <minsuki2@student.42seoul.kr      +#+  +:+       +#+        */
+/*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 21:23:01 by minsuki2          #+#    #+#             */
-/*   Updated: 2022/10/11 23:11:00 by minsuki2         ###   ########.fr       */
+/*   Updated: 2022/10/12 10:26:15 by sesim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,10 +100,7 @@ void	put_cy(t_info *info, char **argv, int cnt)
 		tmp_obj = tmp;
 		tmp = object_init(CAP,plane_init(get_cap_point(center, format[1], normal, 1), normal, format[0]), vec_div_double(color, 255), checker);
 		if (cnt == 7)
-		{
 			tmp->bump = tmp_obj->bump;
-			// tmp->bump->file_name = tmp_obj->bump->file_name;
-		}
 		obj_add(&(info->obj), tmp);
 		// tmp = object_init(CAP,plane_init(get_cap_point(center, format[1], normal, -1), normal, format[0]), vec_div_double(color, 255), checker);
 		// // if (cnt == 7)

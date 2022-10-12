@@ -357,7 +357,7 @@ int	hit_cap(t_object *obj, t_ray ray, t_hit_record *rec)
 	rec->albedo = obj->albedo;
 	rec->normal = pl->normal;
 	get_cap_uv(rec, pl->center, pl->normal, 1, pl->radius);
-	if (obj->bump->file_name)
+	if (obj->bump)
 	{
 		// if (obj->tex->img_ptr)
 		//     rec->albedo = tex_rgb(obj, rec);
