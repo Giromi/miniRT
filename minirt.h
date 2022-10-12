@@ -6,7 +6,7 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 21:10:46 by minsuki2          #+#    #+#             */
-/*   Updated: 2022/10/12 16:39:29 by sesim            ###   ########.fr       */
+/*   Updated: 2022/10/12 17:28:18 by sesim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@
 # define WIN_H 720
 
 # define EPSILON 1e-6
+# define MAX_VIEW 1e6
 # define LUMEN 3
 # define COMMENT '#'
 
@@ -86,8 +87,6 @@ enum e_tool
 
 enum e_two_idx
 {
-	X		=		0,
-	Y		=		1,
 	U		=		0,
 	V		=		1,
 	W		=		0,
@@ -100,10 +99,13 @@ enum e_two_idx
 
 enum e_three_idx
 {
-	CENTER	=	0,
-	COLOR	=	1,
-	ALBEDO	=	2,
-	NORMAL	=	3
+	X		=		0,
+	Y		=		1,
+	Z		=		2,
+	CENTER	=		0,
+	COLOR	=		1,
+	ALBEDO	=		2,
+	NORMAL	=		3
 };
 
 // enum e_material_type
@@ -278,7 +280,7 @@ t_vector	vec_unit(t_vector u);
 t_vector	vec_init(double x, double y, double z);
 double		vec_dot(t_vector u, t_vector v);
 double		vec_len(t_vector u);
-double		vec_len_sqr(t_vector u);
+double		vec_len_pow(t_vector u);
 
 /***** init funcs *****/
 t_sphere	*sp_init(t_point center, double radius);
@@ -311,6 +313,19 @@ void		init_conlinder(t_vector *vec, double *format, char **argv);
 void		bump_init(t_mlx *mlx, t_object *new, char *argv);
 t_cone		*cone_init(t_point center, t_vector normal, \
 						double radius, double height);
+
+/***** draw funcs *****/
+void		 ft_draw(t_info *info, t_mlx *mlx);
+
+/***** draw utils funcs *****/
+t_vector		convert_color_to_normal(int	color);
+int				convert_color(t_vector clr);
+
+
+/***** ray funcs *****/
+
+
+
 
 
 /*****  utils funcs  *****/

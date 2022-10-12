@@ -34,8 +34,8 @@ t_cylinder	*cy_init(t_point center, t_vector normal, \
 	return (init);
 }
 
-t_cone		*cone_init(t_point center, t_vector normal, \
-						double radius, double height)
+t_cone	*cone_init(t_point center, t_vector normal, \
+					double radius, double height)
 {
 	t_cone *init;
 

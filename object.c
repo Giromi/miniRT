@@ -55,12 +55,7 @@ t_point	ray_at(t_ray ray, double t)
 	return (at);
 }
 
-void record_init(t_hit_record *rec)
-{
-	ft_memset(rec, 0, sizeof(t_hit_record));
-    rec->tmin = EPSILON;
-    rec->tmax = 10000000;
-}
+
 
 int in_shadow(t_object *objs, t_ray light_ray, double light_len)
 {

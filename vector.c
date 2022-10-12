@@ -21,8 +21,7 @@ t_vector	vec_add(t_vector u, t_vector v)
     return (init);
 }
 
-t_vector	vec_once_add_point(t_point o, t_vector a, t_vector b, \
-																	t_vector c)
+t_vector	vec_once_add_point(t_point o, t_vector a, t_vector b, t_vector c)
 {
     t_vector   init;
 
@@ -76,12 +75,6 @@ t_vector	vec_multi_double(t_vector u, double n)
 
 t_vector	vec_div_double(t_vector u, double n)
 {
-    // t_vector   init;
-
-    // init.x = u.x / n;
-    // init.y = u.y / n;
-    // init.z = u.z / n;
-    // return (init);
     return (vec_multi_double(u, (1 / n)));
 }
 
@@ -100,18 +93,26 @@ t_vector	vec_cross(t_vector u, t_vector v)
 	return (init);
 }
 
+double	vec_len_pow(t_vector u)
+{
+    double  pow_val[3];
+
+    pow_val[X] = u.x * u.x;
+    pow_val[Y] = u.y * u.y;
+    pow_val[Z] = u.z * u.z;
+    return (pow_val[X] + pow_val[Y] + pow_val[Z]);
+}
+
 double	vec_len(t_vector u)
 {
-	return (sqrt(pow(u.x, 2.0) + pow(u.y, 2.0) + pow(u.z, 2.0)));
+	return (sqrt(vec_len_pow(u)));
 }
-double	vec_len_sqr(t_vector u)
-{
-    return (pow(u.x, 2.0) + pow(u.y, 2.0) + pow(u.z, 2.0));
-}
+
 t_vector	vec_unit(t_vector u)
 {
 	return (vec_div_double(u, vec_len(u)));
 }
+
 t_vector	vec_init(double x, double y, double z)
 {
 	t_vector init;
