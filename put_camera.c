@@ -6,7 +6,7 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 21:25:13 by minsuki2          #+#    #+#             */
-/*   Updated: 2022/10/12 11:40:36 by sesim            ###   ########.fr       */
+/*   Updated: 2022/10/12 15:45:51 by sesim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ t_camera    *camera_init(t_point coor, t_vector normal, int fov)
 	get_mlx_vector(init->mlx_vec, init->normal, init->viewport);
 	minus_half_mlx_vec[HORI] = vec_div_double(init->mlx_vec[HORI], -2);
 	minus_half_mlx_vec[VERT] = vec_div_double(init->mlx_vec[VERT], -2);
-	init->start_point = vec_once_add_at_point(init->orig, \
+	init->start_point = vec_once_add_point(init->orig, \
 					minus_half_mlx_vec[HORI], minus_half_mlx_vec[VERT], normal);
     return (init);
 }
@@ -67,14 +67,14 @@ void    camera_add(t_camera **list, t_camera *new)
 	new->next = *list;
 }
 
-void	put_c(t_info *info, char **argv, int cnt)
+void	put_c(t_info *info, char **argv, int cnt, int type)
 {
 	t_point	coor;
 	t_vector	normal;
 	int		fov;
 	t_camera *tmp;
 
-	if (cnt != 4)
+	if (cnt != 4 || type != C)
 		ft_strerror("err: wrong 'camera' element arguments");
 	coor = ft_atovec(argv[1], XYZ);
 	normal = ft_atovec(argv[2], UNIT);

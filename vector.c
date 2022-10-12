@@ -21,7 +21,7 @@ t_vector	vec_add(t_vector u, t_vector v)
     return (init);
 }
 
-t_vector	vec_once_add_at_point(t_point o, t_vector a, t_vector b, \
+t_vector	vec_once_add_point(t_point o, t_vector a, t_vector b, \
 																	t_vector c)
 {
     t_vector   init;

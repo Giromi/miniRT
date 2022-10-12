@@ -78,7 +78,7 @@ double	ft_atod(char *str)
 	return (sign * res);
 }
 
-void	check_unit(double *x, double *y, double *z, int flag)
+static void	check_unit(double *x, double *y, double *z, int flag)
 {
 	t_vector tmp;
 

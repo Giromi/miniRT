@@ -6,7 +6,7 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 21:10:46 by minsuki2          #+#    #+#             */
-/*   Updated: 2022/10/12 11:57:36 by sesim            ###   ########.fr       */
+/*   Updated: 2022/10/12 16:39:29 by sesim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,8 @@
 # include <limits.h>
 # include <math.h>
 # include <fcntl.h>
-# include "libft/libft.h"
+# include "libft/libft_src/libft.h"
+# include "libft/gnl_src/get_next_line.h"
 # include "mlx/mlx.h"
 
 # define IMG_W WIN_W
@@ -29,6 +30,20 @@
 # define EPSILON 1e-6
 # define LUMEN 3
 # define COMMENT '#'
+
+enum e_options
+{
+	A	=	0,
+	C	=	1,
+	L	=	2,
+	PL	=	0b100,
+	SP	=	0b1000,
+	CY	=	0b10000,
+	CN	=	0b100000,
+	CP	=	0b1000000,
+	BM	=	0b010000000000000000000000,
+	CH	=	0b100000000000000000000000
+};
 
 enum e_return_val
 {
@@ -78,7 +93,9 @@ enum e_two_idx
 	W		=		0,
 	H		=		1,
 	HORI	=		0,
-	VERT	=		1
+	VERT	=		1,
+	RADIUS	=		0,
+	HEIGHT	=		1
 };
 
 enum e_three_idx
@@ -89,18 +106,17 @@ enum e_three_idx
 	NORMAL	=	3
 };
 
-enum e_material_type
-{
-	A,
-	C,
-	L,
-	SP,
-	PL,
-	CY,
-	CN,
-	CAP
-};
-
+// enum e_material_type
+// {
+// 	A,
+// 	C,
+// 	L,
+// 	SP,
+// 	PL,
+// 	CY,
+// 	CN,
+// 	CP
+// };
 
 typedef int			t_object_type;
 
@@ -175,6 +191,16 @@ typedef struct s_cam
 // }	t_cylinder;
 
 // typedef t_cylinder	t_cone;
+// typedef struct s_object
+// {
+// 	t_object_type	type;
+// 	void			*element;
+// 	void			*next;
+// 	t_color			albedo;
+// 	t_image			*bump;
+// 	t_image			*tex;
+// 	int				checker;
+// }	t_object;
 
 typedef struct s_model   // radius 2 지움
 {
@@ -191,25 +217,14 @@ typedef t_model		t_cone;
 
 typedef struct	s_object
 {
-    struct s_object	*next;
+	struct s_object	*next;
 	t_image			*bump;
 	t_image			*tex;
 	t_model			*elem;
 	t_color			albedo;
 	t_object_type   type;
-	int				checker;
 }	t_object;
 
-typedef struct s_object
-{
-	t_object_type	type;
-	void			*element;
-	void			*next;
-	t_color			albedo;
-	t_image			*bump;
-	t_image			*tex;
-	int				checker;
-}	t_object;
 
 typedef struct s_hit_record
 {
@@ -249,10 +264,9 @@ typedef struct s_info
 	t_ray			ray;
 }	t_info;
 
-/***** vector func *****/
-t_point		get_cap_point(t_point center, double height, t_vector normal, double sign);
+/***** vector funcs *****/
 t_vector	vec_min(t_vector vec1, t_vector vec2);
-t_vector	vec_once_add_at_point(t_point o, t_vector a, t_vector b, t_vector c);
+t_vector	vec_once_add_point(t_point o, t_vector a, t_vector b, t_vector c);
 t_vector	vec_add(t_vector u, t_vector v);
 t_vector	vec_sub(t_vector u, t_vector v);
 t_vector	vec_multi(t_vector u, t_vector v);
@@ -266,81 +280,49 @@ double		vec_dot(t_vector u, t_vector v);
 double		vec_len(t_vector u);
 double		vec_len_sqr(t_vector u);
 
-/***** init func *****/
-t_light		*light_init(t_vector l_origin, t_vector l_color, double br);
-t_object	*object_init(t_object_type type, t_vector albedo, \
-						void *element, int checker);
-t_sphere	*sphere_init(t_point center, double radius);
-t_plane		*plane_init(t_point center, t_vector normal, double radius);
-t_cylinder	*cylinder_init(t_point center, t_vector normal, \
+/***** init funcs *****/
+t_sphere	*sp_init(t_point center, double radius);
+t_plane		*pl_init(t_point center, t_vector normal, double radius);
+t_cylinder	*cy_init(t_point center, t_vector normal, \
 							double radius, double height);
+t_cone		*cn_init(t_point center, t_vector normal, \
+						double radius, double height);
+t_object	*obj_init(t_object_type type, t_vector albedo, t_model *element);
+
+/***** put light funcs *****/
+void		put_a(t_info *info, char **argv, int cnt, int type);
+void		put_l(t_info *info, char **argv, int cnt, int type);
+
+/***** put obj funcs *****/
+void		put_pl(t_info *info, char **argv, int cnt, int type);
+void		put_sp(t_info *info, char **argv, int cnt, int type);
+void		put_cny(t_info *info, char **argv, int cnt, int type);
+// void		put_cn(t_info *info, char **argv, int cnt, int type);
+
+/***** obj utils funcs 1 *****/
+t_point		get_cap_point(t_point center, t_vector normal, \
+							double height, double sign);
+void		get_texture_addr(t_object *obj, t_mlx *mlx);
+void		get_bump_addr(t_object *obj, t_mlx *mlx);
+void		obj_add(t_object **list, t_object *new);
+
+/***** obj utils funcs 2 *****/
+void		init_conlinder(t_vector *vec, double *format, char **argv);
+void		bump_init(t_mlx *mlx, t_object *new, char *argv);
 t_cone		*cone_init(t_point center, t_vector normal, \
 						double radius, double height);
 
-// ---------utils.c---------//
+
+/*****  utils funcs  *****/
+void		split_free(char **split);
+void		ft_strerror(char *err);
 void		is_sign(char *str, int *idx, double *sign);
 double		ft_atod(char *str);
-void		check_unit(double *x, double *y, double *z, int flag);
 t_vector	ft_atovec(char *str, int flag);
-void		ft_strerror(char *err);
-void		split_free(char **split);
 
-// ---------object.c--------//
-void		record_init(t_hit_record *rec);
-int			hit_sphere(t_object *obj, t_ray ray, t_hit_record *rec);
-int			hit_obj(t_object *obj, t_ray ray, t_hit_record *rec);
-int			hit(t_object *obj, t_ray ray, t_hit_record *rec);
-t_vector	point_light_get(t_info *info, t_light *light);
-t_vector	phong_lighting(t_info *info);
-t_point		ray_at(t_ray ray, double t);
-int			hit_plane(t_object *obj, t_ray ray, t_hit_record *rec);
-int			in_shadow(t_object *objs, t_ray light_ray, double light_len);
-t_ray		ray_init(t_point orig, t_vector dir);
-
-void		set_face_normal(t_ray ray, t_hit_record *rec);
-t_vector	convert_color_to_normal(int color);
-
-// ---------put.c--------//
-void		obj_add(t_object **list, t_object *new);
-void		light_add(t_light **list, t_light *new);
-void		put_a(t_info *info, char **argv, int cnt);
-t_camera	*camera_init(t_point coor, t_vector normal, int fov);
-void		camera_add(t_camera **list, t_camera *new);
-void		put_c(t_info *info, char **argv, int cnt);
-void		put_l(t_info *info, char **argv, int cnt);
-void		put_sp(t_info *info, char **argv, int cnt);
-void		put_pl(t_info *info, char **argv, int cnt);
-t_point		get_cap_point(t_point center, double height, t_vector normal, \
-																double sign);
-void		put_cy(t_info *info, char **argv, int cnt);
-void		put_cn(t_info *info, char **argv, int cnt);
-void		get_bump_addr(t_object *bump, t_mlx *mlx);
-void		put_info(t_info *info, char **argv, int *form_check);
-
-// ---------minirt.c--------//
-void		info_init(t_info *info, char *file);
-t_vector	convert_color_to_normal(int color);
-int			convert_color(t_vector clr);
-void		my_mlx_pixel_put(t_image *img, int x, int y, t_color color);
-void		ray_primary(t_ray *ray, t_camera *cam, double u, double v);
-t_color		ray_color(t_info *info);
-t_ray		ray_init(t_point orig, t_vector dir);
-void		set_face_normal(t_ray ray, t_hit_record *rec);
-void		ft_draw(t_info *info, t_mlx *mlx);
-void		main_loop(t_info *info, t_mlx *mlx, int key);
-int			key_press(int keycode, void *param);
-
-// ---------tmp--------//
-void		print_obj(t_object *obj);
-void		print_cam(t_camera *cam);
-void		debugPrintVec(char *str, t_vector *vector);
-void		debugPrintDouble(char *str1, char *str2, double a, double b);
-int			my_open(const char *path, int oflag);
+/*****  my funcs  *****/
+char		**my_split(char *line, char c);
 void		*my_calloc(size_t count, size_t size);
-
-/*********  my func  ********/
-char	**my_split(char *line, char c);
-void	*my_calloc(size_t count, size_t size);
-int		my_open(const char *path, int oflag);
+int			my_open(const char *path, int oflag);
 
 #endif

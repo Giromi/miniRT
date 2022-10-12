@@ -431,7 +431,7 @@ int hit_obj(t_object *obj, t_ray ray, t_hit_record *rec)
         hit_result = hit_plane(obj, ray, rec);
     else if (obj->type == CY)
         hit_result = hit_cylinder(obj, ray, rec);
-	else if (obj->type == CAP)
+	else if (obj->type == CP)
         hit_result = hit_cap(obj, ray, rec);
 	else if (obj->type == CN)
         hit_result = hit_cone(obj, ray, rec);
