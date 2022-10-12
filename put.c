@@ -110,7 +110,7 @@ void	put_l(t_info *info, char **argv, int cnt)
 }
 
 
-int 	check_format(char *format)
+int 	check_format(char *format, int *form_check)
 {
 	if (!format)
 		return (-1);
@@ -122,25 +122,25 @@ int 	check_format(char *format)
 		return (CY);
 	else if (!ft_strncmp(format, "cn", 3) || !ft_strncmp(format, "cn-ch", 6))
 		return (CN);
-	else if (!ft_strncmp(format, "A", 2))
+	else if (!ft_strncmp(format, "A", 2) && ++form_check[A])
 		return (A);
-	else if (!ft_strncmp(format, "C", 2))
+	else if (!ft_strncmp(format, "C", 2) && ++form_check[C])
 		return (C);
-	else if (!ft_strncmp(format, "L", 2)) //맨대토리 따로 작성 L
+	else if (!ft_strncmp(format, "L", 2) && ++form_check[L]) //맨대토리 따로 작성 L
 		return (L);
 	else
-		ft_strerror("포맷 잘못받음");
+		ft_strerror("err: wrong format");
 	return (-1);
 }
 
-void	put_info(t_info *info, char **argv)
+void	put_info(t_info *info, char **argv, int *form_check)
 {
 	static void	(*run[7])(t_info *, char **, int) \
 					= {put_a, put_c, put_l, put_sp, put_pl, put_cy, put_cn};
 	int			type;
 	int			cnt;
 
-	type = check_format(argv[0]);
+	type = check_format(argv[0], form_check);
 	if (type == -1)
 		return ;
 	cnt = 0;

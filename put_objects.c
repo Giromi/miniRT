@@ -6,7 +6,7 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 21:23:01 by minsuki2          #+#    #+#             */
-/*   Updated: 2022/10/12 10:26:15 by sesim            ###   ########.fr       */
+/*   Updated: 2022/10/12 10:48:23 by sesim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	put_pl(t_info *info, char **argv, int cnt)
 		normal = ft_atovec(argv[2], UNIT);
 		color = ft_atovec(argv[3], RGB);
 		tmp = object_init(PL, plane_init(origin, normal, 0), vec_div_double(color, 255), checker);
-		tmp->bump = ft_calloc(1, sizeof(t_img));
+		tmp->bump = ft_calloc(1, sizeof(t_image));
 		if (cnt == 5)
 		{
 			tmp->bump->file_name = ft_strdup(argv[4]);
@@ -54,8 +54,8 @@ void	put_sp(t_info *info, char **argv, int cnt)
 		radius = ft_atod(argv[2]) / 2;
 		color = ft_atovec(argv[3], RGB);
 		tmp = object_init(SP, sphere_init(origin, radius), vec_div_double(color, 255), checker);
-		tmp->bump = ft_calloc(1, sizeof(t_img));
-		tmp->tex = ft_calloc(1, sizeof(t_img));
+		tmp->bump = ft_calloc(1, sizeof(t_image));
+		tmp->tex = ft_calloc(1, sizeof(t_image));
 		if (cnt == 5)
 		{
 			tmp->bump->file_name = ft_strdup(argv[4]);
@@ -88,8 +88,8 @@ void	put_cy(t_info *info, char **argv, int cnt)
 		format[1] = ft_atod(argv[4]);
 		color = ft_atovec(argv[5], RGB);
 		tmp = object_init(CY, cylinder_init(get_cap_point(center, format[1], normal, -1), format[0], format[1], normal), vec_div_double(color, 255), checker);
-		tmp->bump = ft_calloc(1, sizeof(t_img));
-		tmp->tex = ft_calloc(1, sizeof(t_img));
+		tmp->bump = ft_calloc(1, sizeof(t_image));
+		tmp->tex = ft_calloc(1, sizeof(t_image));
 		if (cnt == 7)
 		{
 			tmp->bump->file_name = ft_strdup(argv[6]);
@@ -131,8 +131,8 @@ void	put_cn(t_info *info, char **argv, int cnt)
 		format[1] = ft_atod(argv[4]);
 		color = ft_atovec(argv[5], RGB);
 		tmp = object_init(CN, cone_init(get_cap_point(center, format[1], normal, -1), format[0], format[1], normal), vec_div_double(color, 255), checker);
-		tmp->bump = ft_calloc(1, sizeof(t_img));
-		tmp->tex = ft_calloc(1, sizeof(t_img));
+		tmp->bump = ft_calloc(1, sizeof(t_image));
+		tmp->tex = ft_calloc(1, sizeof(t_image));
 		if (cnt == 7)
 		{
 			tmp->bump->file_name = ft_strdup(argv[6]);

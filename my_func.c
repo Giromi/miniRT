@@ -19,3 +19,13 @@ void	*my_calloc(size_t count, size_t size)
 		ft_strerror("err: cannot allocate");
 	return (res);
 }
+
+char	**my_split(char *line, char c)
+{
+	char	**split;
+
+	split = ft_split(line, c);
+	if (split == NULL)
+		ft_strerror("err: allocation failed");
+	return (split);
+}
