@@ -25,14 +25,6 @@ int	convert_color(t_vector clr)
 	return (res);
 }
 
-t_ray	ray_init(t_point orig, t_vector dir)
-{
-	t_ray init;
-
-	init.orig = orig;
-	init.dir = vec_unit(dir);
-	return (init);
-}
 
 void	set_face_normal(t_ray ray, t_hit_record *rec)
 {

@@ -6,7 +6,7 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/21 12:39:01 by sesim             #+#    #+#             */
-/*   Updated: 2022/07/19 08:06:17 by sesim            ###   ########.fr       */
+/*   Updated: 2022/10/12 20:17:14 by minsuki2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,13 +20,13 @@
 #  define BUFFER_SIZE 4
 # endif
 
-typedef struct s_list
+typedef struct s_line
 {
 	char			*line;
 	int				idx;
 	struct s_list	*next;
 	struct s_list	*prev;
-}	t_list;
+}	t_line;
 
 size_t	ft_strlen_g(char *s);
 char	*ft_strchr_g(char *s, int c);

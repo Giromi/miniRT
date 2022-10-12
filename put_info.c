@@ -6,8 +6,7 @@ void    light_add(t_light **list, t_light *new)
 
     if (list == NULL)
         return ;
-    if (*list == NULL)
-    {
+    if (*list == NULL) {
         *list = new;
         return ;
     }
@@ -41,7 +40,7 @@ void	put_l(t_info *info, char **argv, int cnt, int type)
 	origin = ft_atovec(argv[1], XYZ);
 	brightness = ft_atod(argv[2]);
 	color = vec_div_double(ft_atovec(argv[3], RGB), 255);
-	tmp = light_init(origin, color, brightness);	
+	tmp = light_init(origin, color, brightness);
 	light_add(&(info->light), tmp);
 }
 
@@ -61,17 +60,16 @@ static int 	_check_format(char *format, int *form_check)
 {
 	int		len;
 	int		bit;
-
-	if (!format)
+if (!format)
 		return (-1);
 	len = ft_strchr_idx(format, '-');
 	bit = 0;
 	if (!ft_strncmp(format, "A", 1) && ++form_check[A])
 		bit |= A;
-	else if (!ft_strncmp(format, "C", 1) && ++form_check[C])
-		bit |= C;
 	else if (!ft_strncmp(format, "L", 1) && ++form_check[L])
 		bit |= L;
+	else if (!ft_strncmp(format, "C", 1) && ++form_check[C])
+		bit |= C;
 	else if (!ft_strncmp(format, "pl", len))
 		bit |= PL;
 	else if (!ft_strncmp(format, "sp", len))
@@ -89,7 +87,7 @@ static int 	_check_format(char *format, int *form_check)
 void	put_info(t_info *info, char **argv, int *form_check)
 {
 	static void	(*run[7])(t_info *, char **, int, int) \
-					= {put_a, put_c, put_l, put_sp, put_pl, put_cy, put_cn};
+					= {put_a, put_l, put_c, put_sp, put_pl, put_cy, put_cn};
 	int			type;
 	int			cnt;
 	int			idx;

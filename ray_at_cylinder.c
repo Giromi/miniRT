@@ -1,4 +1,5 @@
 #include "minirt.h"
+
 void	get_cylinder_uv(t_hit_record *rec, t_point center, t_vector normal, double size, double r)
 {
 	double			theta;
@@ -43,26 +44,26 @@ int	ray_at_cylinder(t_object *obj, t_ray ray, t_hit_record *rec)
 	get_cy_abc(term, &ray, cy);
 	if (get_2d_root(term, root) == ERROR)
 		return (FALSE);
-	tmp.t = root;
-	tmp.p = ray_at(ray, root);
+	rec->t = root;
+	rec->p = ray_at(ray, root);
 	// rec->t = root;
 	// rec->p = ray_at(ray, root);
-	if ((vec_dot(vec_sub(tmp.p, cy->center), cy->normal) > cy->height) || (vec_dot(vec_sub(tmp.p, cy->center), cy->normal) < 0) || (root < rec->tmin || rec->tmax < root))
+	if ((vec_dot(vec_sub(rec->p, cy->center), cy->normal) > cy->height) || (vec_dot(vec_sub(rec->p, cy->center), cy->normal) < 0) || (root < rec->tmin || rec->tmax < root))
 	{
 		root = (-half_b + sqrtd) / a;
 		if (root < rec->tmin || rec->tmax < root)
 			return (FALSE);
-		tmp.t = root;
-		tmp.p = ray_at(ray, root);
+		rec->t = root;
+		rec->p = ray_at(ray, root);
 	}
     if (root < rec->tmin || rec->tmax < root)
 		return (FALSE);
-	cp = vec_sub(tmp.p, cy->center);
+	cp = vec_sub(rec->p, cy->center);
 	cq_val = vec_dot(cp, cy->normal);
 	cq = vec_multi_double(cy->normal, cq_val);
-	if ((vec_dot(vec_sub(tmp.p, cy->center), cy->normal) > cy->height) || (vec_dot(vec_sub(tmp.p, cy->center), cy->normal) < 0) || (root < rec->tmin || rec->tmax < root))
+	if ((vec_dot(vec_sub(rec->p, cy->center), cy->normal) > cy->height) || (vec_dot(vec_sub(rec->p, cy->center), cy->normal) < 0) || (root < rec->tmin || rec->tmax < root))
 		return (FALSE);
-	// if (0 > vec_dot(vec_sub(tmp.p, cy->center), cy->normal) || vec_dot(vec_sub(tmp.p, cy->center), cy->normal) > cy->height)
+	// if (0 > vec_dot(vec_sub(rec->p, cy->center), cy->normal) || vec_dot(vec_sub(rec->p, cy->center), cy->normal) > cy->height)
 	// 	return (FALSE);
 	rec->albedo = obj->albedo;
 	rec->normal = vec_unit(vec_sub(cp, cq));

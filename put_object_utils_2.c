@@ -6,7 +6,7 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 21:23:01 by minsuki2          #+#    #+#             */
-/*   Updated: 2022/10/12 16:37:52 by sesim            ###   ########.fr       */
+/*   Updated: 2022/10/12 20:27:02 by minsuki2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	init_conlinder(t_vector *vec, double *format, char **argv)
 	format[HEIGHT] = ft_atod(argv[4]);
 }
 
-void	bump_init(t_mlx *mlx, t_object *new, char *argv)
+void	bump_init(t_mlx *mlx, t_object *new, char **argv)
 {
 	if (new->type & BM)
 	{

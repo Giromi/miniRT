@@ -2,8 +2,7 @@
 
 void	get_cap_uv(t_hit_record *rec, t_point center, t_vector normal, double size, double r)
 {
-	double			theta;
-	t_vector			n = rec->normal;
+	double			theta; t_vector			n = rec->normal;
 	t_vector			e1;
 	t_vector			e2;
 	double			p_e1;
@@ -34,7 +33,7 @@ void	get_cap_uv(t_hit_record *rec, t_point center, t_vector normal, double size,
 	// debugPrintDouble("u", "v", rec->u, rec->v);
 }
 
-int	hit_cap(t_object *obj, t_ray ray, t_hit_record *rec)
+int	ray_at_cap(t_object *obj, t_ray ray, t_hit_record *rec)
 {
 	t_plane	*pl;
 	double	root;
