@@ -6,7 +6,7 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/21 11:53:34 by sesim             #+#    #+#             */
-/*   Updated: 2022/07/19 08:06:04 by sesim            ###   ########.fr       */
+/*   Updated: 2022/10/12 20:17:35 by minsuki2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,9 +52,9 @@ char	*get_line(char *bac)
 	return (line);
 }
 
-t_list	*get_node(t_list *head, int fd)
+t_line	*get_node(t_line *head, int fd)
 {
-	t_list	*node;
+	t_line	*node;
 
 	node = head->next;
 	while (node)
@@ -64,7 +64,7 @@ t_list	*get_node(t_list *head, int fd)
 		else
 			node = node->next;
 	}
-	node = malloc(sizeof(t_list));
+	node = malloc(sizeof(t_line));
 	if (node == 0)
 		return (0);
 	node->prev = head;
@@ -77,7 +77,7 @@ t_list	*get_node(t_list *head, int fd)
 	return (node);
 }
 
-void	del_node(t_list **node)
+void	del_node(t_line **node)
 {
 	free((*node)->line);
 	(*node)->line = 0;
@@ -90,8 +90,8 @@ void	del_node(t_list **node)
 
 char	*get_next_line(int fd)
 {
-	static t_list	head;
-	t_list			*bac;
+	static t_line	head;
+	t_line			*bac;
 	char			*res;
 
 	if (fd < 0 || BUFFER_SIZE <= 0)

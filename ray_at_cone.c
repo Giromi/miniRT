@@ -1,4 +1,5 @@
 #include "minirt.h"
+
 int	ray_at_cone(t_object *obj, t_ray ray, t_hit_record *rec)
 {
 	t_cylinder	*cy;

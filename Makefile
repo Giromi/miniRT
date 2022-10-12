@@ -18,8 +18,27 @@ LIBFT		=	libft.a
 LIBMLX_DIR 	=	mlx
 LIBMLX 		=	libmlx.dylib
 
-MANDA_SRCS 	=	minirt.c vector.c material.c utils.c object.c put.c remove.c \
-				my_func.c put_camera.c put_objects.c
+MANDA_SRCS 	=	minirt.c				\
+				my_func.c				\
+				vector.c				\
+				utils.c					\
+				remove.c				#\
+
+MANDA_SRCS	+=	put_camera.c			\
+				put_light.c				\
+				put_objects.c			\
+				put_object_utils_1.c	\
+				put_object_utils_2.c	#\
+
+MANDA_SRCS	+=	ray.c				\
+				where_is_ray.c		\
+				ray_at_plane.c		\
+				ray_at_sphere.c		\
+				ray_at_cylinder.c	\
+				ray_at_cone.c		#\
+
+
+
 BONUS_SRCS 	=	minirt.c vector.c
 
 OBJS_MANDA 	=	$(MANDA_SRCS:.c=.o)
