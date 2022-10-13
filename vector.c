@@ -41,7 +41,7 @@ t_vector	vec_sub(t_vector u, t_vector v)
     return (init);
 }
 
-t_vector	vec_multi(t_vector u, t_vector v)
+t_vector	vec_mul(t_vector u, t_vector v)
 {
     t_vector   init;
 
@@ -63,7 +63,7 @@ t_vector	vec_div(t_vector u, t_vector v)
     return (init);
 }
 
-t_vector	vec_multi_double(t_vector u, double n)
+t_vector	vec_mul_const(t_vector u, double n)
 {
     t_vector   init;
 
@@ -73,9 +73,11 @@ t_vector	vec_multi_double(t_vector u, double n)
     return (init);
 }
 
-t_vector	vec_div_double(t_vector u, double n)
+t_vector	vec_div_const(t_vector u, double n)
 {
-    return (vec_multi_double(u, (1 / n)));
+    if (fabs(n) < EPSILON)
+        ft_strerror("err: divide with zero");
+    return (vec_mul_const(u, (1 / n)));
 }
 
 double	vec_dot(t_vector u, t_vector v)
@@ -110,7 +112,7 @@ double	vec_len(t_vector u)
 
 t_vector	vec_unit(t_vector u)
 {
-	return (vec_div_double(u, vec_len(u)));
+	return (vec_div_const(u, vec_len(u)));
 }
 
 t_vector	vec_init(double x, double y, double z)

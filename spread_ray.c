@@ -1,33 +1,37 @@
 #include "minirt.h"
 
-static int _ray_at_obj(t_object *obj, t_ray ray, t_hit_record *rec)
+static int _ray_at_obj(t_object *obj, t_ray ray, t_moment *spot)
 {
-	int  hit_result;
+	const int	model_type = PL | SP | CY | CN | CP;
+	int			hit_result;
 
 	hit_result = FALSE;
-	if (obj->type & PL)
-		hit_result = ray_at_plane(obj, ray, rec);
+	if (!(obj->type & model_type))
+		return (hit_result);
+	else if (obj->type & PL)
+		hit_result = ray_at_plane(obj, ray, spot);
 	else if (obj->type & SP)
-        hit_result = ray_at_sphere(obj, ray, rec);
+        hit_result = ray_at_sphere(obj, ray, spot);
     else if (obj->type & CY)
-        hit_result = ray_at_cylinder(obj, ray, rec);
+        hit_result = ray_at_cylinder(obj, ray, spot);
 	else if (obj->type & CN)
-        hit_result = ray_at_cone(obj, ray, rec);
+        hit_result = ray_at_cone(obj, ray, spot);
 	else if (obj->type & CP)
-        hit_result = ray_at_cap(obj, ray, rec);
+        hit_result = ray_at_cap(obj, ray, spot);
+	spot->albedo = obj->albedo;
     return (hit_result);
 }
 
-int is_ray_hit(t_object *obj, t_ray ray, t_hit_record *rec)
+int is_ray_hit(t_object *obj, t_ray ray, t_moment *spot)
 {
 	int	hit_flag;
 
 	hit_flag = FALSE;
 	while(obj)
 	{
-		hit_flag = _ray_at_obj(obj, ray, rec);
+		hit_flag = _ray_at_obj(obj, ray, spot);
 		if (hit_flag)
-			rec->tmax = rec->t;
+			spot->tmax = spot->t;
 		obj = obj->next;
 	}
 	return (hit_flag);

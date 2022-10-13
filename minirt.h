@@ -6,7 +6,7 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 21:10:46 by minsuki2          #+#    #+#             */
-/*   Updated: 2022/10/13 10:49:49 by sesim            ###   ########.fr       */
+/*   Updated: 2022/10/13 14:07:55 by sesim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,22 +94,28 @@ enum e_two_idx
 	HORI	=		0,
 	VERT	=		1,
 	RADIUS	=		0,
-	HEIGHT	=		1
+	HEIGHT	=		1,
+	C_P		=		0,
+	C_Q		=		1,
+	C_H		=		1
 };
 
 enum e_three_idx
 {
-	X		=		0,
-	Y		=		1,
-	Z		=		2,
-	B		=		1,
-	V_N		=		0,
-	W_V		=		1,
-	W_N		=		2,
-	CENTER	=		0,
-	COLOR	=		1,
-	ALBEDO	=		2,
-	NORMAL	=		3
+	X			=		0,
+	Y			=		1,
+	Z			=		2,
+	B			=		1,
+	V_N			=		0,
+	V_W			=		1,
+	W_N			=		2,
+	CENTER		=		0,
+	COLOR		=		1,
+	ALBEDO		=		2,
+	NORMAL		=		3,
+	NUMERATOR	=		0,
+	DENOMINATOR	=		1,	
+	TARGET		=		2,	
 };
 
 // enum e_material_type
@@ -209,6 +215,14 @@ typedef struct s_cam
 // 	int				checker;
 // }	t_object;
 
+typedef struct s_func
+{
+	double	term[3];
+	double	root[2];
+	double	h_prime;
+	int		i;
+}	t_function;
+
 typedef struct s_model   // radius 2 지움
 {
 	t_point		center;
@@ -233,14 +247,13 @@ typedef struct	s_object
 	t_object_type   type;
 }	t_object;
 
-typedef struct s_hit_record
+typedef struct s_moment
 {
-	t_point		p;
 	t_vector	normal;
-	t_vector	normal2;
 	t_vector	albedo;
 	t_vector	e1;
 	t_vector	e2;
+	t_point		p;
 	double		tmin;
 	double		tmax;
 	double		t;
@@ -249,7 +262,7 @@ typedef struct s_hit_record
 	int			front_face;
 	int			checker;
 	int			type;
-}	t_hit_record;
+}	t_moment;
 
 typedef struct s_light
 {
@@ -261,7 +274,7 @@ typedef struct s_light
 
 typedef struct s_info
 {
-	t_hit_record	rec;
+	t_moment	spot;
 	t_mlx			mlx;
 	t_image			bump;
 	t_camera		*camera;
@@ -272,17 +285,17 @@ typedef struct s_info
 }	t_info;
 
 /***** vector funcs *****/
-t_vector	vec_min(t_vector vec1, t_vector vec2);
 t_vector	vec_once_add_point(t_point o, t_vector a, t_vector b, t_vector c);
+t_vector	vec_mul_const(t_vector u, double n);
+t_vector	vec_div_const(t_vector u, double n);
+t_vector	vec_cross(t_vector u, t_vector v);
+t_vector	vec_init(double x, double y, double z);
+t_vector	vec_unit(t_vector u);
+t_vector	vec_min(t_vector vec1, t_vector vec2);
 t_vector	vec_add(t_vector u, t_vector v);
 t_vector	vec_sub(t_vector u, t_vector v);
-t_vector	vec_multi(t_vector u, t_vector v);
+t_vector	vec_mul(t_vector u, t_vector v);
 t_vector	vec_div(t_vector u, t_vector v);
-t_vector	vec_multi_double(t_vector u, double n);
-t_vector	vec_div_double(t_vector u, double n);
-t_vector	vec_cross(t_vector u, t_vector v);
-t_vector	vec_unit(t_vector u);
-t_vector	vec_init(double x, double y, double z);
 double		vec_dot(t_vector u, t_vector v);
 double		vec_len(t_vector u);
 double		vec_len_pow(t_vector u);
@@ -330,31 +343,31 @@ t_cone		*cone_init(t_point center, t_vector normal, \
 void		 ft_draw(t_info *info, t_mlx *mlx);
 
 /***** draw utils funcs *****/
-t_vector		convert_color_to_normal(int	color);
-int				convert_color(t_vector clr);
+t_vector	convert_color_to_normal(int	color);
+int			convert_color(t_vector clr);
 
 
 /***** ray funcs *****/
-int 		is_ray_hit(t_object *obj, t_ray ray, t_hit_record *rec);
-int			ray_at_plane(t_object *obj, t_ray ray, t_hit_record *rec);
-int			ray_at_sphere(t_object *obj, t_ray ray, t_hit_record *rec);
-int			ray_at_cylinder(t_object *obj, t_ray ray, t_hit_record *rec);
-int			ray_at_cone(t_object *obj, t_ray ray, t_hit_record *rec);
+int 		is_ray_hit(t_object *obj, t_ray ray, t_moment *spot);
+int			ray_at_plane(t_object *obj, t_ray ray, t_moment *spot);
+int			ray_at_sphere(t_object *obj, t_ray ray, t_moment *spot);
+int			ray_at_cylinder(t_object *obj, t_ray ray, t_moment *spot);
+int			ray_at_cone(t_object *obj, t_ray ray, t_moment *spot);
+t_point 	ray_at(t_ray ray, double t);
 
-/***** ray at funcs *****/
-int	ray_at_plane(t_object *obj, t_ray ray, t_hit_record *rec);
-int	ray_at_sphere(t_object *obj, t_ray ray, t_hit_record *rec);
-int	ray_at_cylinder(t_object *obj, t_ray ray, t_hit_record *rec);
-int	ray_at_cone(t_object *obj, t_ray ray, t_hit_record *rec);
-int	ray_at_cap(t_object *obj, t_ray ray, t_hit_record *rec);
+/***** ray utils funcs *****/
+int			ray_at_cap(t_object *obj, t_ray ray, t_moment *spot);
 
 
-
+/***** ray utils func *****/
+void		get_bump_rgb(t_ray *ray, t_moment *spot, t_object *obj);
 
 /*****  math funcs  *****/
+t_vector	get_cone_side_normal(t_moment *spot, t_cone *cn, t_vector *coor);
 void		get_cy_abc(double *term, t_ray *ray, t_model *cy);
 void		get_cn_abc(double *term, t_ray *ray, t_model *cy);
-int			get_2d_root(double *term, double *root);
+int			get_2d_root(t_function	*func, t_ray *ray, t_model *elem, \
+						void (*get_abc)(double *, t_ray *, t_model *));
 
 /*****  utils funcs  *****/
 void		split_free(char **split);

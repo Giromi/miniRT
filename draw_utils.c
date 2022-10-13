@@ -9,8 +9,8 @@ t_vector	convert_color_to_normal(int	color)
 	res.z = color & 0xFF;
 	if ((res.x == 0 && res.y == 0 && res.z == 0))
 		ft_strerror("err: worng bump map");
-	res = vec_div_double(res, 255);
-	res = vec_sub(vec_multi_double(res, 2), vec_init(1, 1, 1));
+	res = vec_div_const(res, 255);
+	res = vec_sub(vec_mul_const(res, 2), vec_init(1, 1, 1));
 	return (res);
 }
 
@@ -26,11 +26,11 @@ int	convert_color(t_vector clr)
 }
 
 
-void	set_face_normal(t_ray ray, t_hit_record *rec)
+void	flip_normal_face(t_ray ray, t_moment *spot)
 {
-	rec->front_face = vec_dot(ray.dir, rec->normal) < 0;
-	if (rec->front_face == 0)
-		rec->normal = vec_multi_double(rec->normal, -1);
+	spot->front_face = vec_dot(ray.dir, spot->normal) < 0;
+	if (spot->front_face == 0)
+		spot->normal = vec_mul_const(spot->normal, -1);
 	//front_face를 현재 쓰는 곳이 없음 리팩토링할 때 판단하기 바람.
 	return ;
 }

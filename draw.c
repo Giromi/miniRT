@@ -16,29 +16,29 @@ static void	_spread_ray(t_ray *ray, t_camera *cam, double u, double v)
 	t_vector ray_vec[2];
 	
     ray->orig = cam->orig;
-    ray_vec[U] = vec_multi_double(cam->mlx_vec[U], u);
-	ray_vec[V] = vec_multi_double(cam->mlx_vec[V], v);
+    ray_vec[U] = vec_mul_const(cam->mlx_vec[U], u);
+	ray_vec[V] = vec_mul_const(cam->mlx_vec[V], v);
 	ray->dir = vec_once_add_point(cam->start_point, ray_vec[U], ray_vec[V], \
-											vec_multi_double(cam->orig, -1));
+											vec_mul_const(cam->orig, -1));
 	ray->dir = vec_unit(ray->dir);
 }
 
-static void	_record_init(t_hit_record *rec)
+static void	_record_init(t_moment *spot)
 {
-	ft_memset(rec, 0, sizeof(t_hit_record));
-    rec->tmin = EPSILON;
-    rec->tmax = MAX_VIEW;
+	ft_memset(spot, 0, sizeof(t_moment));
+    spot->tmin = EPSILON;
+    spot->tmax = MAX_VIEW;
 }
 
 static t_color	_cur_point_color(t_info *info)
 {
     const double	t = 0.5 * (info->ray.dir.y + 1.0);
 
-	_record_init(&(info->rec));
-	if (is_ray_hit(info->obj, info->ray, &(info->rec)))
+	_record_init(&(info->spot));
+	if (is_ray_hit(info->obj, info->ray, &(info->spot)))
 		return (phong_lighting(info));
 	else
-		return (vec_add(vec_multi_double(vec_init(255, 255, 255), 1.0 - t), vec_multi_double(vec_init(128, 178, 255), t)));
+		return (vec_add(vec_mul_const(vec_init(255, 255, 255), 1.0 - t), vec_mul_const(vec_init(128, 178, 255), t)));
 }
 
 void ft_draw(t_info *info, t_mlx *mlx)

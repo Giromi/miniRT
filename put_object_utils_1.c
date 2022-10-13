@@ -6,7 +6,7 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 21:23:01 by minsuki2          #+#    #+#             */
-/*   Updated: 2022/10/13 10:10:12 by sesim            ###   ########.fr       */
+/*   Updated: 2022/10/13 13:13:13 by sesim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ t_point	get_cap_point(t_point center, t_vector normal, double height, double sig
 {
 	t_vector	ccprime;
 
-	ccprime = vec_multi_double(vec_multi_double(normal, sign), height / 2);
+	ccprime = vec_mul_const(vec_mul_const(normal, sign), height / 2);
 	return (vec_add(center, ccprime));
 }
 
@@ -59,7 +59,7 @@ void	get_bump_addr(t_object *obj, t_mlx *mlx)
 
 void    obj_add(t_object **list, t_object *new)
 {
-    t_object    *cur;
+    t_object    *spot;
 
     if (list == NULL)
         return ;
@@ -68,8 +68,8 @@ void    obj_add(t_object **list, t_object *new)
         *list = new;
         return ;
     }
-    cur = *list;
-    while (cur->next)
-        cur = cur->next;
-    cur->next = new;
+    spot = *list;
+    while (spot->next)
+        spot = spot->next;
+    spot->next = new;
 }

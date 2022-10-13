@@ -1,83 +1,105 @@
 #include "minirt.h"
 
-void	get_cylinder_uv(t_hit_record *rec, t_point center, t_vector normal, double size, double r)
+void	get_cylinder_uv(t_moment *spot, t_point center, t_vector normal, double size, double r)
 {
 	double			theta;
-	t_vector			e1;
-	t_vector			e2;
+	t_vector		e1;
+	t_vector		e2;
 	double			p_e1;
 	double			p_e2;
 
 	(void)r;
-	if ((rec->p.x == 0 && rec->p.y == 0 && rec->p.z == 1))
+	if ((spot->p.x == 0 && spot->p.y == 0 && spot->p.z == 1))
 		e1 = vec_unit(vec_cross(vec_init(0, 1, 0), normal));
-	else if ((rec->p.x == 0 && rec->p.y == 0 && rec->p.z == -1))
+	else if ((spot->p.x == 0 && spot->p.y == 0 && spot->p.z == -1))
 		e1 = vec_unit(vec_cross(vec_init(0, -1, 0), normal));
 	else
 		e1 = vec_unit(vec_cross(vec_init(0, 0, 1), normal));
 	e2 = vec_unit(vec_cross(normal, e1));
-	p_e1 = vec_dot(vec_sub(rec->p, center), e1);
-	p_e2 = vec_dot(vec_sub(rec->p, center), e2);
+	p_e1 = vec_dot(vec_sub(spot->p, center), e1);
+	p_e2 = vec_dot(vec_sub(spot->p, center), e2);
 	theta = atan2(p_e2, p_e1);
-	rec->e1 = e1;
-	rec->e2 = e2;
-	rec->u = (theta / (M_PI));
-	// rec->v = fmod(vec_dot(vec_sub(rec->p, center), normal) / (r * M_PI), 1);
-	rec->v = fmod(vec_dot(vec_sub(rec->p, center), normal) / (r * M_PI), 1);
-	if (rec->u < 0)
-		rec->u += 1;
-	// debugPrintVec("rec", &rec->p);
-	// debugPrintDouble("u", "v", rec->u, rec->v);
-	rec->v = 1 - rec->v;
-	rec->u = fmod(rec->u, size) / size;
-	rec->v = fmod(rec->v, size) / size;
+	spot->e1 = e1;
+	spot->e2 = e2;
+	spot->u = (theta / (M_PI));
+	// spot->v = fmod(vec_dot(vec_sub(spot->p, center), normal) / (r * M_PI), 1);
+	spot->v = fmod(vec_dot(vec_sub(spot->p, center), normal) / (r * M_PI), 1);
+	if (spot->u < 0)
+		spot->u += 1;
+	// debugPrintVec("spot", &spot->p);
+	// debugPrintDouble("u", "v", spot->u, spot->v);
+	spot->v = 1 - spot->v;
+	spot->u = fmod(spot->u, size) / size;
+	spot->v = fmod(spot->v, size) / size;
 }
 
-int	ray_at_cylinder(t_object *obj, t_ray ray, t_hit_record *rec)
+int	ray_at_cylinder(t_object *obj, t_ray ray, t_moment *spot)
 {
 	const t_cylinder	*cy = obj->elem;
-	t_hit_record		tmp;
 	t_vector			coor[2];
-	double				term[3];
-	double				root[2];
+	t_function			func;
 
-	get_cy_abc(term, &ray, cy);
-	if (get_2d_root(term, root) == ERROR)
+	if (get_2d_root(&func, &ray, cy, get_cy_abc) == ERROR)
 		return (FALSE);
-	rec->t = root;
-	rec->p = ray_at(ray, root);
-	// rec->t = root;
-	// rec->p = ray_at(ray, root);
-	if ((vec_dot(vec_sub(rec->p, cy->center), cy->normal) > cy->height) || (vec_dot(vec_sub(rec->p, cy->center), cy->normal) < 0) || (root < rec->tmin || rec->tmax < root))
+	func.i = -1;
+	while (++func.i < 2)
 	{
-		root = (-half_b + sqrtd) / a;
-		if (root < rec->tmin || rec->tmax < root)
+		spot->t = func.root[func.i];
+		spot->p = ray_at(ray, spot->t);
+		coor[C_P] = vec_sub(spot->p, cy->center);
+		func.h_prime = (vec_dot(coor[C_P], cy->normal);
+		if ((0 <= func.h_prime && func.h_prime <= cy->height) && \
+			(spot->tmin <= spot->t && spot->t <= spot->tmax))
+			break ;
+		if (func.i == 1)
 			return (FALSE);
-		rec->t = root;
-		rec->p = ray_at(ray, root);
 	}
-    if (root < rec->tmin || rec->tmax < root)
-		return (FALSE);
-	cp = vec_sub(rec->p, cy->center);
-	cq_val = vec_dot(cp, cy->normal);
-	cq = vec_multi_double(cy->normal, cq_val);
-	if ((vec_dot(vec_sub(rec->p, cy->center), cy->normal) > cy->height) || (vec_dot(vec_sub(rec->p, cy->center), cy->normal) < 0) || (root < rec->tmin || rec->tmax < root))
-		return (FALSE);
-	// if (0 > vec_dot(vec_sub(rec->p, cy->center), cy->normal) || vec_dot(vec_sub(rec->p, cy->center), cy->normal) > cy->height)
-	// 	return (FALSE);
-	rec->albedo = obj->albedo;
-	rec->normal = vec_unit(vec_sub(cp, cq));
-	rec->t = root;
-	rec->p = ray_at(ray, root);
-	set_face_normal(ray, rec); // rec의 법선벡터와 광선의 방향벡터를 비교해서 앞면인지 뒷면인지 t_bool 값으로 저장.
-	get_cylinder_uv(rec, cy->center, cy->normal, 1, cy->radius);
-	if (obj->bump->file_name)
-	{
-		if (obj->tex->img_ptr)
-			rec->albedo = tex_rgb(obj, rec);
-		rec->normal = bump_normal(obj, rec);
-	}
-	set_face_normal(ray, rec); // rec의 법선벡터와 광선의 방향벡터를 비교해서 앞면인지 뒷면인지 t_bool 값으로 저장.
-    return (TRUE);
+ 	coor[C_Q] = vec_mul_const(cy->normal, func.h_prime);
+	spot->normal = vec_unit(vec_sub(coor[C_P], coor[C_Q]));
+	get_cylinder_uv(spot, cy->center, cy->normal, 1, cy->radius);
+	get_bump_rgb(&ray, spot, obj);
+	flip_normal_face(ray, spot);
+	return (TRUE);
 }
+
+// int	ray_at_cylinder(t_object *obj, t_ray ray, t_moment *spot)
+// {
+// 	const t_cylinder	*cy = obj->elem;
+// 	t_vector			coor[2];
+// 	t_function			func;
+// 	double				func.h_prime;
+
+// 	get_cy_abc(func.term, &ray, cy);
+// 	if (get_2d_root(func.term, func.root) == ERROR)
+// 		return (FALSE);
+// 	spot->t = func.root[0];
+// 	spot->p = ray_at(ray, func.root[0]);
+// 	coor[0] = vec_sub(spot->p, cy->center);
+// 	func.h_prime = (vec_dot(coor[0], cy->normal);
+// 	if ((func.h_prime > cy->height) || cq_le < 0) || (spot->t < spot->tmin || spot->tmax < spot->t))
+// 	{
+// 		spot->t = func.root[1];
+// 		spot->p = ray_at(ray, func.root[1]);
+// 		coor[0] = vec_sub(spot->p, cy->center);
+// 		func.h_prime = (vec_dot(coor[0], cy->normal);
+// 		if ((func.h_prime > cy->height || func.h_prime < 0) || (spot->t < spot->tmin || spot->tmax < spot->t))
+// 			return (FALSE);
+// 	}
+//     // if (spot->t < spot->tmin || spot->tmax < spot->t)	// 나중에 잘 되는지 확인 후 삭제
+// 	// 	return (FALSE);
+// 	coor[1] = vec_mul_const(cy->normal, func.h_prime);
+// 	if ((func.h_prime > cy->height || func.h_prime < 0) || (spot->t < spot->tmin || spot->tmax < spot->t))
+// 		return (FALSE);
+// 	spot->albedo = obj->albedo;
+// 	spot->normal = vec_unit(vec_sub(coor[0], coor[1]));
+// 	get_cylinder_uv(spot, cy->center, cy->normal, 1, cy->radius);
+// 	if (obj->bump->file_name)
+// 	{
+// 		if (obj->tex->img_ptr)
+// 			spot->albedo = tex_rgb(obj, spot);
+// 		spot->normal = bump_normal(obj, spot);
+// 	}
+// 	flip_normal_face(ray, spot);
+// 	    return (TRUE);
+// }
 

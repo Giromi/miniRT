@@ -2,7 +2,7 @@
 
 static void	_light_add(t_light **list, t_light *new)
 {
-	t_light	*cur;
+	t_light	*spot;
 
 	if (list == NULL)
 	return ;
@@ -11,10 +11,10 @@ static void	_light_add(t_light **list, t_light *new)
 		*list = new;
         return ;
     }
-    cur = *list;
-    while (cur->next)
-        cur = cur->next;
-    cur->next = new;
+    spot = *list;
+    while (spot->next)
+        spot = spot->next;
+    spot->next = new;
 }
 
 static t_light	*_light_init(t_vector l_origin, t_vector l_color, double br)
@@ -36,8 +36,8 @@ void	put_a(t_info *info, char **argv, int cnt, int type)
 	if (cnt != 3 || type != A)
 		ft_strerror("err: wrong 'ambient' element arguments");
 	brightness = ft_atod(argv[1]);
-	color = vec_div_double(ft_atovec(argv[2], RGB), 255);
-	info->ambient = vec_multi_double(color, brightness);
+	color = vec_div_const(ft_atovec(argv[2], RGB), 255);
+	info->ambient = vec_mul_const(color, brightness);
 }
 
 void	put_l(t_info *info, char **argv, int cnt, int type)
@@ -51,7 +51,7 @@ void	put_l(t_info *info, char **argv, int cnt, int type)
 		ft_strerror("err: wrong 'light' element arguments");
 	origin = ft_atovec(argv[1], XYZ);
 	brightness = ft_atod(argv[2]);
-	color = vec_div_double(ft_atovec(argv[3], RGB), 255);
+	color = vec_div_const(ft_atovec(argv[3], RGB), 255);
 	tmp = _light_init(origin, color, brightness);	
 	_light_add(&(info->light), tmp);
 }

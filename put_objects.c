@@ -6,7 +6,7 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 21:23:01 by minsuki2          #+#    #+#             */
-/*   Updated: 2022/10/12 20:29:55 by minsuki2         ###   ########.fr       */
+/*   Updated: 2022/10/13 13:13:35 by sesim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	put_pl(t_info *info, char **argv, int cnt, int type)
 		vec[CENTER] = ft_atovec(argv[1], XYZ);
 		vec[NORMAL] = ft_atovec(argv[2], UNIT);
 		vec[COLOR] = ft_atovec(argv[3], RGB);
-		vec[ALBEDO] = vec_div_double(vec[COLOR], 255);
+		vec[ALBEDO] = vec_div_const(vec[COLOR], 255);
 		pl = pl_init(vec[CENTER], vec[NORMAL], 0);
 		new = obj_init(type, vec[ALBEDO], pl);
 		if (type & BM)
@@ -51,7 +51,7 @@ void	put_sp(t_info *info, char **argv, int cnt, int type)
 	{
 		vec[CENTER] = ft_atovec(argv[1], XYZ);
 		vec[COLOR] = ft_atovec(argv[3], RGB);
-		vec[ALBEDO] = vec_div_double(vec[COLOR], 255);
+		vec[ALBEDO] = vec_div_const(vec[COLOR], 255);
 		radius = ft_atod(argv[2]) / 2;
 		sp = sp_init(vec[CENTER], radius);
 		new = obj_init(type, vec[ALBEDO], sp);
@@ -125,11 +125,11 @@ void	put_cny(t_info *info, char **argv, int cnt, int type)
 // 		format[0] = ft_atod(argv[3]) / 2;
 // 		format[1] = ft_atod(argv[4]);
 // 		color = ft_atovec(argv[5], RGB);
-// 		new = obj_init(CN, cn_init(get_cap_point(center, format[1], normal, -1), format[0], format[1], normal), vec_div_double(color, 255), checker);
+// 		new = obj_init(CN, cn_init(get_cap_point(center, format[1], normal, -1), format[0], format[1], normal), vec_div_const(color, 255), checker);
 // 		bump_init(&info->mlx, new, argv);
 // 		obj_add(&(info->obj), new);
 // 		new_obj = new;
-// 		new = obj_init(CP,pl_init(get_cap_point(center, format[1], normal, -1), normal, format[0]), vec_div_double(color, 255), checker);
+// 		new = obj_init(CP,pl_init(get_cap_point(center, format[1], normal, -1), normal, format[0]), vec_div_const(color, 255), checker);
 // 		if (cnt == 7)
 // 		{
 // 			new->bump = new_obj->bump;
