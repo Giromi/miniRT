@@ -1,11 +1,11 @@
 #include "minirt.h"
 
-void	get_cap_uv(t_moment *spot, t_point center, t_vector normal, double size, double r)
+static void	_get_cap_uv(t_moment *spot, t_model *pl, double size)
 {
-	double			theta;
 	t_vector		n = spot->normal;
-	double			p_[2];
 	t_vector		basis_vec;
+	double			theta;
+	double			p_[2];
 
 	if ((n.x == 0 && n.y == 0 && n.z == 1))
 		basis_vec = vec_init(0, 1, 0);
@@ -15,17 +15,17 @@ void	get_cap_uv(t_moment *spot, t_point center, t_vector normal, double size, do
 		basis_vec = vec_init(0, 0, 1);
 	spot->e1 = vec_unit(vec_cross(basis_vec, n));
 	spot->e2 = vec_unit(vec_cross(n, spot->e1));
-	p_[E_ONE] = vec_dot(vec_sub(spot->p, center), spot->e1);
-	p_[E_TWO] = vec_dot(vec_sub(spot->p, center), spot->e2);
+	p_[E_ONE] = vec_dot(vec_sub(spot->p, pl->center), spot->e1);
+	p_[E_TWO] = vec_dot(vec_sub(spot->p, pl->center), spot->e2);
 	theta = atan2(p_[E_TWO], p_[E_ONE]);
 	spot->u = (theta / (M_PI));
 	spot->u += spot->u < 0;
-	spot->v =  vec_len(vec_sub(spot->p, center)) / r;
+	spot->v =  vec_len(vec_sub(spot->p, pl->center)) / pl->radius;
 	spot->u = fmod(spot->u, size) / size;
 	spot->v = fmod(spot->v, size) / size;
 }
 
-void	get_plane_uv(t_moment *spot, t_point center, double size)
+static void	_get_plane_uv(t_moment *spot, t_point center, double size)
 {
 	const t_vector		p = vec_sub(spot->p, center);
 	const t_vector		n = spot->normal;
@@ -65,7 +65,10 @@ int	ray_at_plane(t_object *obj, t_ray ray, t_moment *spot)
 	if (obj->type & CP && (vec_len_pow(vec[C_P]) > pl->radius * pl->radius))
 		return (FALSE);
 	spot->normal = pl->normal;
-	get_plane_uv(spot, pl->center, 10);
+	if (obj->type & PL)
+		_get_plane_uv(spot, pl->center, 10);
+	else
+		_get_cap_uv(spot, pl, 10);
 	get_bump_rgb(&ray, spot, obj);
 	flip_normal_face(ray, spot);
 	return (TRUE);
