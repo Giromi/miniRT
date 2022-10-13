@@ -14,7 +14,7 @@ static int _ray_at_obj(t_object *obj, t_ray ray, t_hit_record *rec)
 	else if (obj->type & CN)
         hit_result = ray_at_cone(obj, ray, rec);
 	else if (obj->type & CP)
-        hit_result = hit_cap(obj, ray, rec);
+        hit_result = ray_at_cap(obj, ray, rec);
     return (hit_result);
 }
 

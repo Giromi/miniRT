@@ -116,7 +116,7 @@ t_vector	vec_unit(t_vector u)
 t_vector	vec_init(double x, double y, double z)
 {
 	t_vector init;
-	
+
 	init.x = x;
 	init.y = y;
 	init.z = z;

@@ -6,7 +6,7 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 21:10:46 by minsuki2          #+#    #+#             */
-/*   Updated: 2022/10/13 10:20:15 by sesim            ###   ########.fr       */
+/*   Updated: 2022/10/13 10:49:49 by sesim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,8 @@
 enum e_options
 {
 	A	=	0,
-	C	=	1,
-	L	=	2,
+	L	=	1,
+	C	=	2,
 	PL	=	0b100,
 	SP	=	0b1000,
 	CY	=	0b10000,
@@ -102,9 +102,7 @@ enum e_three_idx
 	X		=		0,
 	Y		=		1,
 	Z		=		2,
-	A		=		0,
 	B		=		1,
-	C		=		2,
 	V_N		=		0,
 	W_V		=		1,
 	W_N		=		2,
@@ -298,9 +296,16 @@ t_cone		*cn_init(t_point center, t_vector normal, \
 						double radius, double height);
 t_object	*obj_init(t_object_type type, t_vector albedo, t_model *element);
 
+/***** put info funcs *****/
+void		put_info(t_info *info, char **argv, int *form_check);
+
 /***** put light funcs *****/
 void		put_a(t_info *info, char **argv, int cnt, int type);
 void		put_l(t_info *info, char **argv, int cnt, int type);
+
+/***** put camera funcs *****/
+void		put_c(t_info *info, char **argv, int cnt, int type);
+
 
 /***** put obj funcs *****/
 void		put_pl(t_info *info, char **argv, int cnt, int type);
@@ -317,7 +322,7 @@ void		obj_add(t_object **list, t_object *new);
 
 /***** obj utils funcs 2 *****/
 void		init_conlinder(t_vector *vec, double *format, char **argv);
-void		bump_init(t_mlx *mlx, t_object *new, char *argv);
+void		bump_init(t_mlx *mlx, t_object *new, char **argv);
 t_cone		*cone_init(t_point center, t_vector normal, \
 						double radius, double height);
 
@@ -335,6 +340,14 @@ int			ray_at_plane(t_object *obj, t_ray ray, t_hit_record *rec);
 int			ray_at_sphere(t_object *obj, t_ray ray, t_hit_record *rec);
 int			ray_at_cylinder(t_object *obj, t_ray ray, t_hit_record *rec);
 int			ray_at_cone(t_object *obj, t_ray ray, t_hit_record *rec);
+
+/***** ray at funcs *****/
+int	ray_at_plane(t_object *obj, t_ray ray, t_hit_record *rec);
+int	ray_at_sphere(t_object *obj, t_ray ray, t_hit_record *rec);
+int	ray_at_cylinder(t_object *obj, t_ray ray, t_hit_record *rec);
+int	ray_at_cone(t_object *obj, t_ray ray, t_hit_record *rec);
+int	ray_at_cap(t_object *obj, t_ray ray, t_hit_record *rec);
+
 
 
 

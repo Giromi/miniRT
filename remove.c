@@ -49,11 +49,10 @@ void	print_obj(t_object *obj) // 지워야함
 		if (curr->type == SP)
 		{
 			printf("-------type SP------\n");
-			printf("x : %lf ", ((t_sphere *)curr->element)->center.x);
-			printf("y : %lf ", ((t_sphere *)curr->element)->center.y);
-			printf("z : %lf \n", ((t_sphere *)curr->element)->center.z);
-			printf("radius : %lf \n", ((t_sphere *)curr->element)->radius);
-			printf("radius2 : %lf \n", ((t_sphere *)curr->element)->radius2);
+			printf("x : %lf ", ((t_sphere *)curr->elem)->center.x);
+			printf("y : %lf ", ((t_sphere *)curr->elem)->center.y);
+			printf("z : %lf \n", ((t_sphere *)curr->elem)->center.z);
+			printf("radius : %lf \n", ((t_sphere *)curr->elem)->radius);
 			printf("color  R : %lf ", curr->albedo.x);
 			printf("color  G : %lf ", curr->albedo.y);
 			printf("color  B : %lf \n", curr->albedo.z);
@@ -61,12 +60,12 @@ void	print_obj(t_object *obj) // 지워야함
 		else if (curr->type == PL)
 		{
 			printf("-------type PL------\n");
-			printf("x : %lf ", ((t_plane *)curr->element)->center.x);
-			printf("y : %lf ", ((t_plane *)curr->element)->center.y);
-			printf("z : %lf \n", ((t_plane *)curr->element)->center.z);
-			printf("normal x : %lf ", ((t_plane *)curr->element)->normal.x);
-			printf("normal y : %lf ", ((t_plane *)curr->element)->normal.y);
-			printf("normal z : %lf \n", ((t_plane *)curr->element)->normal.z);
+			printf("x : %lf ", ((t_plane *)curr->elem)->center.x);
+			printf("y : %lf ", ((t_plane *)curr->elem)->center.y);
+			printf("z : %lf \n", ((t_plane *)curr->elem)->center.z);
+			printf("normal x : %lf ", ((t_plane *)curr->elem)->normal.x);
+			printf("normal y : %lf ", ((t_plane *)curr->elem)->normal.y);
+			printf("normal z : %lf \n", ((t_plane *)curr->elem)->normal.z);
 			printf("color  R : %lf ", curr->albedo.x);
 			printf("color  G : %lf ", curr->albedo.y);
 			printf("color  B : %lf \n", curr->albedo.z);
@@ -74,12 +73,12 @@ void	print_obj(t_object *obj) // 지워야함
 		else if (curr->type == CP)
 		{
 			printf("-------type CP------\n");
-			printf("x : %lf ", ((t_plane *)curr->element)->center.x);
-			printf("y : %lf ", ((t_plane *)curr->element)->center.y);
-			printf("z : %lf \n", ((t_plane *)curr->element)->center.z);
-			printf("normal x : %lf ", ((t_plane *)curr->element)->normal.x);
-			printf("normal y : %lf ", ((t_plane *)curr->element)->normal.y);
-			printf("normal z : %lf \n", ((t_plane *)curr->element)->normal.z);
+			printf("x : %lf ", ((t_plane *)curr->elem)->center.x);
+			printf("y : %lf ", ((t_plane *)curr->elem)->center.y);
+			printf("z : %lf \n", ((t_plane *)curr->elem)->center.z);
+			printf("normal x : %lf ", ((t_plane *)curr->elem)->normal.x);
+			printf("normal y : %lf ", ((t_plane *)curr->elem)->normal.y);
+			printf("normal z : %lf \n", ((t_plane *)curr->elem)->normal.z);
 			printf("color  R : %lf ", curr->albedo.x);
 			printf("color  G : %lf ", curr->albedo.y);
 			printf("color  B : %lf \n", curr->albedo.z);
@@ -88,15 +87,14 @@ void	print_obj(t_object *obj) // 지워야함
 		else if (curr->type == CY)
 		{
 			printf("-------type CY------\n");
-			printf("x : %lf ", ((t_cylinder *)curr->element)->center.x);
-			printf("y : %lf ", ((t_cylinder *)curr->element)->center.y);
-			printf("z : %lf \n", ((t_cylinder *)curr->element)->center.z);
-			printf("normal x : %lf ", ((t_cylinder *)curr->element)->normal.x);
-			printf("normal y : %lf ", ((t_cylinder *)curr->element)->normal.y);
-			printf("normal z : %lf \n", ((t_cylinder *)curr->element)->normal.z);
-			printf("radius : %lf \n", ((t_cylinder *)curr->element)->radius);
-			printf("radius2 : %lf \n", ((t_cylinder *)curr->element)->radius2);
-			printf("height : %lf \n", ((t_cylinder *)curr->element)->height);
+			printf("x : %lf ", ((t_cylinder *)curr->elem)->center.x);
+			printf("y : %lf ", ((t_cylinder *)curr->elem)->center.y);
+			printf("z : %lf \n", ((t_cylinder *)curr->elem)->center.z);
+			printf("normal x : %lf ", ((t_cylinder *)curr->elem)->normal.x);
+			printf("normal y : %lf ", ((t_cylinder *)curr->elem)->normal.y);
+			printf("normal z : %lf \n", ((t_cylinder *)curr->elem)->normal.z);
+			printf("radius : %lf \n", ((t_cylinder *)curr->elem)->radius);
+			printf("height : %lf \n", ((t_cylinder *)curr->elem)->height);
 			printf("color  R : %lf ", curr->albedo.x);
 			printf("color  G : %lf ", curr->albedo.y);
 			printf("color  B : %lf \n", curr->albedo.z);

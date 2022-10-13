@@ -1,6 +1,19 @@
 #include "minirt.h"
 
+<<<<<<< HEAD
 t_vector convert_int_to_rgb(int color)
+=======
+t_ray	ray_init(t_point orig, t_vector dir)
+{
+	t_ray init;
+
+	init.orig = orig;
+	init.dir = vec_unit(dir);
+	return (init);
+}
+
+t_vector	convert_int_to_rgb(int	color)
+>>>>>>> 06bef7fc0e97a502a9c95895049ceca6fdf38000
 {
 	t_vector res;
 
@@ -59,11 +72,19 @@ int in_shadow(t_object *objs, t_ray light_ray, double light_len)
 {
 	t_hit_record rec;
 
+<<<<<<< HEAD
 	rec.tmin = 0;
 	rec.tmax = light_len;
 	if (hit(objs, light_ray, &rec))
 		return (TRUE);
 	return (FALSE);
+=======
+    rec.tmin = 0;
+    rec.tmax = light_len;
+    if (is_ray_hit(objs, light_ray, &rec))
+        return (TRUE);
+    return (FALSE);
+>>>>>>> 06bef7fc0e97a502a9c95895049ceca6fdf38000
 }
 
 t_vector reflect(t_vector v, t_vector n)

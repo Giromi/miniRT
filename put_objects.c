@@ -6,7 +6,7 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 21:23:01 by minsuki2          #+#    #+#             */
-/*   Updated: 2022/10/12 16:37:38 by sesim            ###   ########.fr       */
+/*   Updated: 2022/10/12 20:29:55 by minsuki2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,13 +89,15 @@ void	put_cny(t_info *info, char **argv, int cnt, int type)
 	t_model		*side_pl;
 	t_vector	vec[4];
 	double		format[2];
+	t_point		vertex;
 
 	if (cnt < 6 || cnt > 7)
 		ft_strerror("err: wrong number of arguments in 'CY'");
 	else
 	{
 		init_conlinder(vec, format, argv);
-		side_pl = cy_init(get_cap_point(vec[CENTER], vec[NORMAL], format[HEIGHT], -1));
+		vertex = get_cap_point(vec[CENTER], vec[NORMAL], format[HEIGHT], -1);
+		side_pl = cy_init(vertex, vec[NORMAL], format[RADIUS], format[HEIGHT]);
 		new = obj_init(type, vec[ALBEDO], side_pl);
 		bump_init(&info->mlx, new, argv);
 		obj_add(&(info->obj), new);
