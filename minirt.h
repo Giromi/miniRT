@@ -6,7 +6,7 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 21:10:46 by minsuki2          #+#    #+#             */
-/*   Updated: 2022/10/13 14:07:55 by sesim            ###   ########.fr       */
+/*   Updated: 2022/10/13 16:19:10 by sesim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,10 @@ enum e_two_idx
 	HEIGHT	=		1,
 	C_P		=		0,
 	C_Q		=		1,
-	C_H		=		1
+	C_H		=		1,
+	O_C		=		1,
+	E_ONE		=		0,
+	E_TWO		=		1
 };
 
 enum e_three_idx
@@ -353,17 +356,19 @@ int			ray_at_plane(t_object *obj, t_ray ray, t_moment *spot);
 int			ray_at_sphere(t_object *obj, t_ray ray, t_moment *spot);
 int			ray_at_cylinder(t_object *obj, t_ray ray, t_moment *spot);
 int			ray_at_cone(t_object *obj, t_ray ray, t_moment *spot);
+int			ray_at_cap(t_object *obj, t_ray ray, t_moment *spot);
 t_point 	ray_at(t_ray ray, double t);
 
-/***** ray utils funcs *****/
-int			ray_at_cap(t_object *obj, t_ray ray, t_moment *spot);
-
-
-/***** ray utils func *****/
+/***** ray utils funcs 1 *****/
 void		get_bump_rgb(t_ray *ray, t_moment *spot, t_object *obj);
+int			is_t_in_range(t_moment *spot);
+int			is_h_in_range(double h, double h_prime);
+
+/***** ray utils func 2 *****/
+// ray 1, 2 함수  정리
 
 /*****  math funcs  *****/
-t_vector	get_cone_side_normal(t_moment *spot, t_cone *cn, t_vector *coor);
+void		get_sp_abc(double *term, t_ray *ray, t_model *sp);
 void		get_cy_abc(double *term, t_ray *ray, t_model *cy);
 void		get_cn_abc(double *term, t_ray *ray, t_model *cy);
 int			get_2d_root(t_function	*func, t_ray *ray, t_model *elem, \

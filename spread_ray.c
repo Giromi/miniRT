@@ -8,7 +8,7 @@ static int _ray_at_obj(t_object *obj, t_ray ray, t_moment *spot)
 	hit_result = FALSE;
 	if (!(obj->type & model_type))
 		return (hit_result);
-	else if (obj->type & PL)
+	else if (obj->type & (PL | CP))
 		hit_result = ray_at_plane(obj, ray, spot);
 	else if (obj->type & SP)
         hit_result = ray_at_sphere(obj, ray, spot);
@@ -16,8 +16,6 @@ static int _ray_at_obj(t_object *obj, t_ray ray, t_moment *spot)
         hit_result = ray_at_cylinder(obj, ray, spot);
 	else if (obj->type & CN)
         hit_result = ray_at_cone(obj, ray, spot);
-	else if (obj->type & CP)
-        hit_result = ray_at_cap(obj, ray, spot);
 	spot->albedo = obj->albedo;
     return (hit_result);
 }

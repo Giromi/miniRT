@@ -1,14 +1,5 @@
 #include "minirt.h"
 
-void	get_bump_rgb(t_ray *ray, t_moment *spot, t_object *obj)
-{
-	if (!(obj->type & BM))
-		return ;
-	if (obj->tex->img_ptr)
-		spot->albedo = tex_rgb(obj, spot);
-	spot->normal = bump_normal(obj, spot);
-}
-
 t_vector convert_int_to_rgb(int color)
 {
 	t_vector res;

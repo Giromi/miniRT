@@ -1,5 +1,14 @@
 #include "minirt.h"
 
+static t_vector	_get_cy_side_normal(t_model *cy, t_vector *coor, double h_prime)
+{
+	t_vector	res;
+
+	coor[C_Q] = vec_mul_const(cy->normal, h_prime);
+	res = vec_sub(coor[C_P], coor[C_Q]);
+	return (vec_unit(res));
+}
+
 void	get_cylinder_uv(t_moment *spot, t_point center, t_vector normal, double size, double r)
 {
 	double			theta;
@@ -45,61 +54,19 @@ int	ray_at_cylinder(t_object *obj, t_ray ray, t_moment *spot)
 	while (++func.i < 2)
 	{
 		spot->t = func.root[func.i];
+		if (!is_t_in_range(spot))
+			continue ;
 		spot->p = ray_at(ray, spot->t);
 		coor[C_P] = vec_sub(spot->p, cy->center);
-		func.h_prime = (vec_dot(coor[C_P], cy->normal);
-		if ((0 <= func.h_prime && func.h_prime <= cy->height) && \
-			(spot->tmin <= spot->t && spot->t <= spot->tmax))
+		func.h_prime = (vec_dot(coor[C_P], cy->normal));
+		if (is_h_in_range(cy->height, func.h_prime))
 			break ;
 		if (func.i == 1)
 			return (FALSE);
 	}
- 	coor[C_Q] = vec_mul_const(cy->normal, func.h_prime);
-	spot->normal = vec_unit(vec_sub(coor[C_P], coor[C_Q]));
+	spot->normal = _get_cy_side_normal(cy, coor, func.h_prime);
 	get_cylinder_uv(spot, cy->center, cy->normal, 1, cy->radius);
 	get_bump_rgb(&ray, spot, obj);
 	flip_normal_face(ray, spot);
 	return (TRUE);
 }
-
-// int	ray_at_cylinder(t_object *obj, t_ray ray, t_moment *spot)
-// {
-// 	const t_cylinder	*cy = obj->elem;
-// 	t_vector			coor[2];
-// 	t_function			func;
-// 	double				func.h_prime;
-
-// 	get_cy_abc(func.term, &ray, cy);
-// 	if (get_2d_root(func.term, func.root) == ERROR)
-// 		return (FALSE);
-// 	spot->t = func.root[0];
-// 	spot->p = ray_at(ray, func.root[0]);
-// 	coor[0] = vec_sub(spot->p, cy->center);
-// 	func.h_prime = (vec_dot(coor[0], cy->normal);
-// 	if ((func.h_prime > cy->height) || cq_le < 0) || (spot->t < spot->tmin || spot->tmax < spot->t))
-// 	{
-// 		spot->t = func.root[1];
-// 		spot->p = ray_at(ray, func.root[1]);
-// 		coor[0] = vec_sub(spot->p, cy->center);
-// 		func.h_prime = (vec_dot(coor[0], cy->normal);
-// 		if ((func.h_prime > cy->height || func.h_prime < 0) || (spot->t < spot->tmin || spot->tmax < spot->t))
-// 			return (FALSE);
-// 	}
-//     // if (spot->t < spot->tmin || spot->tmax < spot->t)	// 나중에 잘 되는지 확인 후 삭제
-// 	// 	return (FALSE);
-// 	coor[1] = vec_mul_const(cy->normal, func.h_prime);
-// 	if ((func.h_prime > cy->height || func.h_prime < 0) || (spot->t < spot->tmin || spot->tmax < spot->t))
-// 		return (FALSE);
-// 	spot->albedo = obj->albedo;
-// 	spot->normal = vec_unit(vec_sub(coor[0], coor[1]));
-// 	get_cylinder_uv(spot, cy->center, cy->normal, 1, cy->radius);
-// 	if (obj->bump->file_name)
-// 	{
-// 		if (obj->tex->img_ptr)
-// 			spot->albedo = tex_rgb(obj, spot);
-// 		spot->normal = bump_normal(obj, spot);
-// 	}
-// 	flip_normal_face(ray, spot);
-// 	    return (TRUE);
-// }
-

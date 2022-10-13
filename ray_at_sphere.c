@@ -1,12 +1,12 @@
 #include "minirt.h"
 
-void	get_sphere_uv(t_moment *spot, t_point center, double size)
+void get_sphere_uv(t_moment *spot, t_point center, double size)
 {
-	double			phi;
-	double			theta;
-	const t_vector		n = spot->normal;
-	t_vector			e1;
-	t_vector			e2;
+	double phi;
+	double theta;
+	const t_vector n = spot->normal;
+	t_vector e1;
+	t_vector e2;
 
 	if ((n.x == 0 && n.y == 1 && n.z == 0))
 		e1 = vec_unit(vec_cross(vec_init(0, 0, -1), n));
@@ -27,43 +27,24 @@ void	get_sphere_uv(t_moment *spot, t_point center, double size)
 	spot->v = fmod(spot->v, size) / size;
 }
 
-int	ray_at_sphere(t_object *obj, t_ray ray, t_moment *spot)
+int ray_at_sphere(t_object *obj, t_ray ray, t_moment *spot)
 {
-	t_sphere	*sp;
-	t_vector		oc;
-	double		a;
-	double		c;
-	double		dis;
-	double		half_b;
-	double		sqrtd;
-	double		root;
+	const t_sphere	*sp = obj->elem;
+	t_function		func;
+	t_vector		cp;
 
-	sp = (t_sphere *)obj->element;
-	oc = vec_sub(ray.orig, ((t_sphere*)obj->element)->center);
-	a = vec_len_sqr(ray.dir);
-	half_b = vec_dot(oc, ray.dir);
-	c = vec_len_sqr(oc) - ((t_sphere*)obj->element)->radius2;
-	dis = half_b * half_b - a * c;
-	if (dis < 0)
+	if (get_2d_root(&func, &ray, sp, get_sp_abc) == ERROR)
 		return (FALSE);
-	sqrtd = sqrt(dis);
-	root = (-half_b - sqrtd) / a;
-	if (root < spot->tmin || spot->tmax < root)
-		root = (-half_b + sqrtd) / a;
-    if (root < spot->tmin || spot->tmax < root)
+	func.i = -1;
+	spot->t = func.root[0];
+	spot->t = func.root[!is_t_in_range(spot)];
+	if (spot->t < spot->tmin || spot->tmax < spot->t)
 		return (FALSE);
-	spot->albedo = obj->albedo;
-	spot->t = root;
-	spot->p = ray_at(ray, root);
-	spot->normal = vec_div_const(vec_sub(spot->p, ((t_sphere*)obj->element)->center), ((t_sphere*)obj->element)->radius);
-	get_sphere_uv(spot, sp->center, 1); //조정 바람
-	if (obj->bump->file_name)
-	{
-		// spot->albedo = tex_rgb(obj, spot);
-		if (obj->tex->img_ptr)
-			spot->albedo = tex_rgb(obj, spot);
-		spot->normal = bump_normal(obj, spot);
-	}
+	spot->p = ray_at(ray, spot->t);
+	cp = vec_sub(spot->p, sp->center);
+	spot->normal = vec_div_const(cp, sp->radius);
+	get_sphere_uv(spot, sp->center, 1);
+	get_bump_rgb(&ray, spot, obj);
 	flip_normal_face(ray, spot);
 	return (TRUE);
 }

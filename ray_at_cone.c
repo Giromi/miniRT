@@ -1,5 +1,22 @@
 #include "minirt.h"
 
+static t_vector	_get_cn_side_normal(t_moment *spot, t_cone *cn, t_vector *coor)
+{
+	t_vector	res;
+	t_vector	ac_vec;
+	double		val[3];
+
+	coor[C_H] = vec_mul_const(cn->normal, cn->height);
+	val[NUMERATOR] = vec_len_sqr(vec_sub(coor[C_P], coor[C_H]));
+	if (fabs(val[NUMERATOR]) < EPSILON)
+		return (vec_init(0, 0, 0));
+	val[DENOMINATOR] = cn->height - vec_dot(coor[C_P], cn->normal);
+	val[TARGET] = cn->height - (val[NUMERATOR] / val[DENOMINATOR]);
+	ac_vec = vec_mul_const(cn->normal, val[TARGET]);
+	res = vec_sub(coor[C_P], ac_vec);
+	return (vec_unit(res));
+}
+
 // int	ray_at_cone(t_object *obj, t_ray ray, t_moment *spot)
 // {
 // 	t_cylinder	*cn;
@@ -64,22 +81,6 @@
 //     return (FALSE);
 // }
 
-static int	_is_t_in_range(t_moment *spot)
-{
-	return (spot->tmin <= spot->t && spot->t <= spot->tmax);
-}
-
-static int	_is_h_in_range(double h, double h_prime)
-{
-	return (0 <= h_prime && h_prime <= h);
-}
-
-int	is_ray_in_obj(t_moment *spot, double h, double h_prime, int type)
-{
-	return (((type & SP) || _is_h_in_range(h, h_prime)) \
-						&& _is_t_in_range(spot));
-}
-
 int	ray_at_cone(t_object *obj, t_ray ray, t_moment *spot)
 {
 	const t_cone	*cn = obj->elem;
@@ -100,7 +101,7 @@ int	ray_at_cone(t_object *obj, t_ray ray, t_moment *spot)
 		if (func.i == 1)
 			return (FALSE);
 	}
-	spot->normal = get_cone_side_normal(spot, cn, coor);
+	spot->normal = _get_cn_side_normal(spot, cn, coor);
 	if (spot->normal.x == 0 && spot->normal.y == 0 && spot->normal.z == 0)
 		return (FALSE);
 	get_cylinder_uv(spot, cn->center, cn->normal, 1, cn->radius);

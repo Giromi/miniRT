@@ -1,20 +1,14 @@
 #include "minirt.h"
 
-t_vector	get_cone_side_normal(t_moment *spot, t_cone *cn, t_vector *coor)
+void	get_sp_abc(double *term, t_ray *ray, t_model *sp)
 {
-	t_vector	res;
-	t_vector	ac_vec;
-	double		val[3];
+	t_vector		w;
+	const double	r_pow_2 = sp->radius * sp->radius;
 
-	coor[C_H] = vec_mul_const(cn->normal, cn->height);
-	val[NUMERATOR] = vec_len_sqr(vec_sub(coor[C_P], coor[C_H]));
-	if (fabs(val[NUMERATOR]) < EPSILON)
-		return (0);
-	val[DENOMINATOR] = cn->height - vec_dot(coor[C_P], cn->normal);
-	val[TARGET] = cn->height - (val[NUMERATOR] / val[DENOMINATOR]);
-	ac_vec = vec_mul_const(cn->normal, val[TARGET]);
-	res = vec_sub(coor[C_P], ac_vec);
-	return (vec_unit(res));
+	w = vec_sub(ray->orig, sp->center);
+	term[A] = vec_len_sqr(ray->dir);
+	term[B] = vec_dot(ray->dir, w);
+	term[C] = vec_len_sqr(w) - r_pow_2;
 }
 
 void	get_cy_abc(double *term, t_ray *ray, t_model *cy)
