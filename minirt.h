@@ -6,7 +6,7 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 21:10:46 by minsuki2          #+#    #+#             */
-/*   Updated: 2022/10/12 18:31:55 by sesim            ###   ########.fr       */
+/*   Updated: 2022/10/13 10:20:15 by sesim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,21 +140,21 @@ typedef t_vector	t_point;
 
 typedef struct s_img
 {
-	void			*img_ptr;
-	char			*file_name;
-	char			*addr;
-	int				bits_per_pixel;
-	int				line_length;
-	int				endian;
-	int				width;
-	int				height;
+	void	*img_ptr;
+	char	*file_name;
+	char	*addr;
+	int		bits_per_pixel;
+	int		line_length;
+	int		endian;
+	int		width;
+	int		height;
 }	t_image;
 
 typedef struct s_mlx
 {
-	void		*ptr;
-	void		*win;
-	t_image		img;
+	t_image	img;
+	void	*ptr;
+	void	*win;
 }	t_mlx;
 
 typedef struct s_ray
@@ -165,6 +165,7 @@ typedef struct s_ray
 
 typedef struct s_cam
 {
+	// struct s_cam	*prev;
 	struct s_cam	*next;
 	t_vector		mlx_vec[2];
 	t_vector		normal;
@@ -225,6 +226,7 @@ typedef t_model		t_cone;
 
 typedef struct	s_object
 {
+	// struct s_object	*prev;
 	struct s_object	*next;
 	t_image			*bump;
 	t_image			*tex;
@@ -232,7 +234,6 @@ typedef struct	s_object
 	t_color			albedo;
 	t_object_type   type;
 }	t_object;
-
 
 typedef struct s_hit_record
 {
@@ -329,7 +330,11 @@ int				convert_color(t_vector clr);
 
 
 /***** ray funcs *****/
-int is_ray_hit(t_object *obj, t_ray ray, t_hit_record *rec);
+int 		is_ray_hit(t_object *obj, t_ray ray, t_hit_record *rec);
+int			ray_at_plane(t_object *obj, t_ray ray, t_hit_record *rec);
+int			ray_at_sphere(t_object *obj, t_ray ray, t_hit_record *rec);
+int			ray_at_cylinder(t_object *obj, t_ray ray, t_hit_record *rec);
+int			ray_at_cone(t_object *obj, t_ray ray, t_hit_record *rec);
 
 
 

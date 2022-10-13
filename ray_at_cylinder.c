@@ -1,4 +1,5 @@
 #include "minirt.h"
+
 void	get_cylinder_uv(t_hit_record *rec, t_point center, t_vector normal, double size, double r)
 {
 	double			theta;

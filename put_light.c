@@ -8,7 +8,7 @@ static void	_light_add(t_light **list, t_light *new)
 	return ;
 	if (*list == NULL)
 	{
-	*list = new;
+		*list = new;
         return ;
     }
     cur = *list;
