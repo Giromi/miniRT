@@ -6,7 +6,7 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/21 12:39:01 by sesim             #+#    #+#             */
-/*   Updated: 2022/10/12 20:17:14 by minsuki2         ###   ########.fr       */
+/*   Updated: 2022/10/14 00:13:28 by minsuki2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,8 @@ typedef struct s_line
 {
 	char			*line;
 	int				idx;
-	struct s_list	*next;
-	struct s_list	*prev;
+	struct s_line	*next;
+	struct s_line	*prev;
 }	t_line;
 
 size_t	ft_strlen_g(char *s);
@@ -36,6 +36,6 @@ char	*new_line(char *bac);
 char	*read_line(int fd, char *bac);
 char	*get_line(char *bac);
 char	*get_next_line(int fd);
-char	*lst_new(t_list *head, int fd);
+char	*lst_new(t_line *head, int fd);
 
 #endif

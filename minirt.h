@@ -6,7 +6,7 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 21:10:46 by minsuki2          #+#    #+#             */
-/*   Updated: 2022/10/13 16:19:10 by sesim            ###   ########.fr       */
+/*   Updated: 2022/10/15 21:26:12 by minsuki2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -385,5 +385,8 @@ t_vector	ft_atovec(char *str, int flag);
 char		**my_split(char *line, char c);
 void		*my_calloc(size_t count, size_t size);
 int			my_open(const char *path, int oflag);
+
+/*****  remove funcs  *****/
+void debugPrintVec(char *str, t_vector *vector);
 
 #endif
