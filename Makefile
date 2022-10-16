@@ -35,7 +35,7 @@ MANDA_SRCS	+=	ray.c				\
 				ray_at_plane.c		\
 				ray_at_sphere.c		\
 				ray_at_cylinder.c	\
-				ray_at_cone.c		#\
+				ray_at_conlinder.c		#\
 
 
 

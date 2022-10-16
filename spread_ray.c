@@ -15,7 +15,7 @@ static int _ray_at_obj(t_object *obj, t_ray ray, t_moment *spot)
     else if (obj->type & CY)
         hit_result = ray_at_cylinder(obj, ray, spot);
 	else if (obj->type & CN)
-        hit_result = ray_at_cone(obj, ray, spot);
+        hit_result = ray_at_conlinder(obj, ray, spot);
 	spot->albedo = obj->albedo;
     return (hit_result);
 }

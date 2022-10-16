@@ -87,14 +87,14 @@ void	print_obj(t_object *obj) // 지워야함
 		else if (curr->type == CY)
 		{
 			printf("-------type CY------\n");
-			printf("x : %lf ", ((t_cylinder *)curr->elem)->center.x);
-			printf("y : %lf ", ((t_cylinder *)curr->elem)->center.y);
-			printf("z : %lf \n", ((t_cylinder *)curr->elem)->center.z);
-			printf("normal x : %lf ", ((t_cylinder *)curr->elem)->normal.x);
-			printf("normal y : %lf ", ((t_cylinder *)curr->elem)->normal.y);
-			printf("normal z : %lf \n", ((t_cylinder *)curr->elem)->normal.z);
-			printf("radius : %lf \n", ((t_cylinder *)curr->elem)->radius);
-			printf("height : %lf \n", ((t_cylinder *)curr->elem)->height);
+			printf("x : %lf ", ((t_conlinder *)curr->elem)->center.x);
+			printf("y : %lf ", ((t_conlinder *)curr->elem)->center.y);
+			printf("z : %lf \n", ((t_conlinder *)curr->elem)->center.z);
+			printf("normal x : %lf ", ((t_conlinder *)curr->elem)->normal.x);
+			printf("normal y : %lf ", ((t_conlinder *)curr->elem)->normal.y);
+			printf("normal z : %lf \n", ((t_conlinder *)curr->elem)->normal.z);
+			printf("radius : %lf \n", ((t_conlinder *)curr->elem)->radius);
+			printf("height : %lf \n", ((t_conlinder *)curr->elem)->height);
 			printf("color  R : %lf ", curr->albedo.x);
 			printf("color  G : %lf ", curr->albedo.y);
 			printf("color  B : %lf \n", curr->albedo.z);

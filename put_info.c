@@ -64,11 +64,11 @@ if (!format)
 		return (-1);
 	len = ft_strchr_idx(format, '-');
 	bit = 0;
-	if (!ft_strncmp(format, "A", 1) && ++form_check[A])
+	if (!ft_strncmp(format, "A", 2) && ++form_check[A])
 		bit |= A;
-	else if (!ft_strncmp(format, "L", 1) && ++form_check[L])
+	else if (!ft_strncmp(format, "L", 2) && ++form_check[L])
 		bit |= L;
-	else if (!ft_strncmp(format, "C", 1) && ++form_check[C])
+	else if (!ft_strncmp(format, "C", 2) && ++form_check[C])
 		bit |= C;
 	else if (!ft_strncmp(format, "pl", len))
 		bit |= PL;
@@ -87,14 +87,19 @@ if (!format)
 void	put_info(t_info *info, char **argv, int *form_check)
 {
 	static void	(*run[7])(t_info *, char **, int, int) \
-					= {put_a, put_l, put_c, put_sp, put_pl, put_cy, put_cn};
+					= {put_a, put_l, put_c, put_sp, put_pl, put_cny};
 	int			type;
 	int			cnt;
 	int			idx;
 
 	type = _check_format(argv[0], form_check);
-	idx = log(type & 0xFF) / log(2);
+	if (type > 3)
+		idx = log(type & 0xFF) / log(2);
+	else
+		idx = type;
 	cnt = -1;
+	if (type & CN)
+		--idx;
 	while (argv[++cnt])
 		;
 	run[idx](info, argv, cnt, type);

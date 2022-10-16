@@ -6,7 +6,7 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 21:10:46 by minsuki2          #+#    #+#             */
-/*   Updated: 2022/10/13 16:19:10 by sesim            ###   ########.fr       */
+/*   Updated: 2022/10/16 14:38:00 by sesim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -204,9 +204,9 @@ typedef struct s_cam
 // 	double		radius2;
 // 	double		height;
 // 	t_vector	normal;
-// }	t_cylinder;
+// }	t_conlinder;
 
-// typedef t_cylinder	t_cone;
+// typedef t_conlinder	t_conlinder;
 // typedef struct s_object
 // {
 // 	t_object_type	type;
@@ -236,8 +236,7 @@ typedef struct s_model   // radius 2 지움
 
 typedef t_model		t_plane;
 typedef t_model		t_sphere;
-typedef t_model		t_cylinder;
-typedef t_model		t_cone;
+typedef t_model		t_conlinder;
 
 typedef struct	s_object
 {
@@ -306,10 +305,8 @@ double		vec_len_pow(t_vector u);
 /***** init funcs *****/
 t_sphere	*sp_init(t_point center, double radius);
 t_plane		*pl_init(t_point center, t_vector normal, double radius);
-t_cylinder	*cy_init(t_point center, t_vector normal, \
+t_conlinder	*cny_init(t_point center, t_vector normal, \
 							double radius, double height);
-t_cone		*cn_init(t_point center, t_vector normal, \
-						double radius, double height);
 t_object	*obj_init(t_object_type type, t_vector albedo, t_model *element);
 
 /***** put info funcs *****/
@@ -339,7 +336,7 @@ void		obj_add(t_object **list, t_object *new);
 /***** obj utils funcs 2 *****/
 void		init_conlinder(t_vector *vec, double *format, char **argv);
 void		bump_init(t_mlx *mlx, t_object *new, char **argv);
-t_cone		*cone_init(t_point center, t_vector normal, \
+t_conlinder		*cone_init(t_point center, t_vector normal, \
 						double radius, double height);
 
 /***** draw funcs *****/
@@ -355,7 +352,7 @@ int 		is_ray_hit(t_object *obj, t_ray ray, t_moment *spot);
 int			ray_at_plane(t_object *obj, t_ray ray, t_moment *spot);
 int			ray_at_sphere(t_object *obj, t_ray ray, t_moment *spot);
 int			ray_at_cylinder(t_object *obj, t_ray ray, t_moment *spot);
-int			ray_at_cone(t_object *obj, t_ray ray, t_moment *spot);
+int			ray_at_conlinder(t_object *obj, t_ray ray, t_moment *spot);
 int			ray_at_cap(t_object *obj, t_ray ray, t_moment *spot);
 t_point 	ray_at(t_ray ray, double t);
 

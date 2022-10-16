@@ -2,9 +2,9 @@
 
 
 
-// int	ray_at_cone(t_object *obj, t_ray ray, t_moment *spot)
+// int	ray_at_conlinder(t_object *obj, t_ray ray, t_moment *spot)
 // {
-// 	t_cylinder	*cn;
+// 	t_conlinder	*cn;
 // 	double		a;
 // 	double		half_b;
 // 	double		c;
@@ -14,7 +14,7 @@
 // 	double	m;
 // 	t_vector	w;
 
-// 	cn = (t_cylinder *)obj->element;
+// 	cn = (t_conlinder *)obj->element;
 // 	w = vec_sub(ray.orig, cn->center);
 // 	m = cn->radius2 / (cn->height * cn->height);
 // 	double	v_n_pow = (vec_dot(ray.dir, cn->normal)) * (vec_dot(ray.dir, cn->normal));

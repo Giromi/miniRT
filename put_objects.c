@@ -6,7 +6,7 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 21:23:01 by minsuki2          #+#    #+#             */
-/*   Updated: 2022/10/13 13:13:35 by sesim            ###   ########.fr       */
+/*   Updated: 2022/10/16 14:38:14 by sesim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ void	put_cny(t_info *info, char **argv, int cnt, int type)
 	{
 		init_conlinder(vec, format, argv);
 		vertex = get_cap_point(vec[CENTER], vec[NORMAL], format[HEIGHT], -1);
-		side_pl = cy_init(vertex, vec[NORMAL], format[RADIUS], format[HEIGHT]);
+		side_pl = cny_init(vertex, vec[NORMAL], format[RADIUS], format[HEIGHT]);
 		new = obj_init(type, vec[ALBEDO], side_pl);
 		bump_init(&info->mlx, new, argv);
 		obj_add(&(info->obj), new);

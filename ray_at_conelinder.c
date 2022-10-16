@@ -9,7 +9,7 @@ static t_vector	_get_cy_side_normal(t_model *cy, t_vector *coor, double h_prime)
 	return (vec_unit(res));
 }
 
-static t_vector	_get_cn_side_normal(t_moment *spot, t_cone *cn, t_vector *coor)
+static t_vector	_get_cn_side_normal(t_moment *spot, t_conlinder *cn, t_vector *coor)
 {
 	t_vector	res;
 	t_vector	ac_vec;
@@ -26,7 +26,7 @@ static t_vector	_get_cn_side_normal(t_moment *spot, t_cone *cn, t_vector *coor)
 	return (vec_unit(res));
 }
 
-void	get_conelinder_uv(t_moment *spot, t_model *cny, double size)
+void	get_conlinder_uv(t_moment *spot, t_model *cny, double size)
 {
 	t_vector		n = spot->normal;
 	t_vector		basis_vec;
@@ -54,9 +54,9 @@ void	get_conelinder_uv(t_moment *spot, t_model *cny, double size)
 	spot->v = fmod(spot->v, size) / size;
 }
 
-int	ray_at_cone(t_object *obj, t_ray ray, t_moment *spot)
+int	ray_at_conlinder(t_object *obj, t_ray ray, t_moment *spot)
 {
-	const t_cone	*cn = obj->elem;
+	const t_conlinder	*cn = obj->elem;
 	t_vector		coor[2];
 	t_function		func;
 
@@ -85,7 +85,7 @@ int	ray_at_cone(t_object *obj, t_ray ray, t_moment *spot)
 
 int	ray_at_cylinder(t_object *obj, t_ray ray, t_moment *spot)
 {
-	const t_cylinder	*cy = obj->elem;
+	const t_conlinder	*cy = obj->elem;
 	t_vector			coor[2];
 	t_function			func;
 
@@ -106,7 +106,7 @@ int	ray_at_cylinder(t_object *obj, t_ray ray, t_moment *spot)
 			return (FALSE);
 	}
 	spot->normal = _get_cy_side_normal(cy, coor, func.h_prime);
-	get_cylinder_uv(spot, cy->center, cy->normal, 1, cy->radius);
+	get_conlinder_uv(spot, cy->center, cy->normal, 1, cy->radius);
 	get_bump_rgb(&ray, spot, obj);
 	flip_normal_face(ray, spot);
 	return (TRUE);
