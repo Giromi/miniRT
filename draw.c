@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   draw.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/10/16 17:58:45 by sesim             #+#    #+#             */
+/*   Updated: 2022/10/16 18:03:05 by sesim            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minirt.h"
 
 static void	_my_mlx_pixel_put(t_image *img, int x, int y, t_color color)
@@ -5,7 +17,7 @@ static void	_my_mlx_pixel_put(t_image *img, int x, int y, t_color color)
 	char	*dst;
 	int		coor[2];
 
-	coor[X] = x * (img->bits_per_pixel / 8); // 사이즈 알아오는걸로
+	coor[X] = x * (img->bits_per_pixel / 8);
 	coor[Y] = y * img->line_length;
 	dst = img->addr + coor[X] + coor[Y];
 	*(unsigned int *)dst = convert_color(color);
@@ -13,10 +25,10 @@ static void	_my_mlx_pixel_put(t_image *img, int x, int y, t_color color)
 
 static void	_spread_ray(t_ray *ray, t_camera *cam, double u, double v)
 {
-	t_vector ray_vec[2];
-	
-    ray->orig = cam->orig;
-    ray_vec[U] = vec_mul_const(cam->mlx_vec[U], u);
+	t_vector	ray_vec[2];
+
+	ray->orig = cam->orig;
+	ray_vec[U] = vec_mul_const(cam->mlx_vec[U], u);
 	ray_vec[V] = vec_mul_const(cam->mlx_vec[V], v);
 	ray->dir = vec_once_add_point(cam->start_point, ray_vec[U], ray_vec[V], \
 											vec_mul_const(cam->orig, -1));
@@ -26,22 +38,28 @@ static void	_spread_ray(t_ray *ray, t_camera *cam, double u, double v)
 static void	_record_init(t_moment *spot)
 {
 	ft_memset(spot, 0, sizeof(t_moment));
-    spot->tmin = EPSILON;
-    spot->tmax = MAX_VIEW;
+	spot->tmin = EPSILON;
+	spot->tmax = MAX_VIEW;
 }
 
 static t_color	_cur_point_color(t_info *info)
 {
-    const double	t = 0.5 * (info->ray.dir.y + 1.0);
+	double		t;
+	t_vector	background[2];
 
 	_record_init(&(info->spot));
 	if (is_ray_hit(info->obj, info->ray, &(info->spot)))
 		return (phong_lighting(info));
 	else
-		return (vec_add(vec_mul_const(vec_init(255, 255, 255), 1.0 - t), vec_mul_const(vec_init(128, 178, 255), t)));
+	{
+		t = 0.5 * (info->ray.dir.y + 1.0);
+		background[UP] = vec_mul_const(vec_init(255, 255, 255), 1.0 - t);
+		background[DOWN] = vec_mul_const(vec_init(128, 178, 255), t);
+		return (vec_add(background[0], background[1]));
+	}
 }
 
-void ft_draw(t_info *info, t_mlx *mlx)
+void	ft_draw(t_info *info, t_mlx *mlx)
 {
 	int			idx[2];
 	double		vdx[2];

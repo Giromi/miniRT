@@ -42,7 +42,7 @@
 // 	}
 //     if (root < spot->tmin || spot->tmax < root)
 // 		return (FALSE);
-// 	double	nom = vec_len_sqr(vec_sub(vec_sub(spot->p, cn->center), vec_mul_const(cn->normal, cn->height)));
+// 	double	nom = vec_len_pow(vec_sub(vec_sub(spot->p, cn->center), vec_mul_const(cn->normal, cn->height)));
 // 	double	denom = cn->height - vec_dot(vec_sub(spot->p, cn->center), cn->normal);
 // 	double	a_c = cn->height - (nom / denom);
 // 	spot->normal = vec_unit(vec_sub(spot->p, vec_add(cn->center, vec_mul_const(cn->normal, a_c))));

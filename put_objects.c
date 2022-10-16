@@ -6,7 +6,7 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 21:23:01 by minsuki2          #+#    #+#             */
-/*   Updated: 2022/10/16 14:38:14 by sesim            ###   ########.fr       */
+/*   Updated: 2022/10/16 19:06:44 by sesim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,12 +28,7 @@ void	put_pl(t_info *info, char **argv, int cnt, int type)
 		vec[ALBEDO] = vec_div_const(vec[COLOR], 255);
 		pl = pl_init(vec[CENTER], vec[NORMAL], 0);
 		new = obj_init(type, vec[ALBEDO], pl);
-		if (type & BM)
-		{
-			new->bump = my_calloc(1, sizeof(t_image));
-			new->bump->file_name = ft_strdup(argv[4]);
-			get_bump_addr(new, &info->mlx);
-		}
+		bump_init(&info->mlx, new, argv);
 		obj_add(&(info->obj), new);
 	}
 }
@@ -60,22 +55,30 @@ void	put_sp(t_info *info, char **argv, int cnt, int type)
 	}
 }
 
+static t_point	_get_cap_point(t_point center, t_vector normal, \
+								double height, double sign)
+{
+	t_vector	ccprime;
+
+	ccprime = vec_mul_const(vec_mul_const(normal, sign), height / 2);
+	return (vec_add(center, ccprime));
+}
+
 static void	put_cap(t_info *info, t_object *obj, t_vector *vec, double *format)
 {
 	t_object	*new;
 	t_plane		*pl;
-	t_point		vertex;
 	const int	type = CP | (obj->type & (BM | CH));
-	int			cnt;
 
-	cnt = 1;
+	pl = pl_init(vec[4], vec[NORMAL], format[RADIUS]);
+	new = obj_init(type, vec[ALBEDO], pl);
+	if (obj->type & BM)
+		new->bump = obj->bump;
+	obj_add(&(info->obj), new);
 	if (obj->type & CY)
-		cnt = 2;
-	while (cnt--)
 	{
-		vertex = get_cap_point(vec[CENTER], vec[NORMAL], format[HEIGHT], \
-								(1 + ((cnt == 1) * -2)));
-		pl = pl_init(vertex, vec[NORMAL], format[RADIUS]);
+		vec[4] = _get_cap_point(vec[CENTER], vec[NORMAL], format[HEIGHT], 1);
+		pl = pl_init(vec[4], vec[NORMAL], format[RADIUS]);
 		new = obj_init(type, vec[ALBEDO], pl);
 		if (obj->type & BM)
 			new->bump = obj->bump;
@@ -87,23 +90,50 @@ void	put_cny(t_info *info, char **argv, int cnt, int type)
 {
 	t_object	*new;
 	t_model		*side_pl;
-	t_vector	vec[4];
+	t_vector	vec[5];
 	double		format[2];
-	t_point		vertex;
 
 	if (cnt < 6 || cnt > 7)
-		ft_strerror("err: wrong number of arguments in 'CY'");
+	{
+		if (type & CY)
+			ft_strerror("err: wrong number of arguments in 'CY'");
+		else
+			ft_strerror("err: wrong number of arguments in 'CN'");
+	}
 	else
 	{
 		init_conlinder(vec, format, argv);
-		vertex = get_cap_point(vec[CENTER], vec[NORMAL], format[HEIGHT], -1);
-		side_pl = cny_init(vertex, vec[NORMAL], format[RADIUS], format[HEIGHT]);
+		vec[4] = _get_cap_point(vec[CENTER], vec[NORMAL], format[HEIGHT], -1);
+		side_pl = cny_init(vec[4], vec[NORMAL], format[RADIUS], format[HEIGHT]);
 		new = obj_init(type, vec[ALBEDO], side_pl);
 		bump_init(&info->mlx, new, argv);
 		obj_add(&(info->obj), new);
 		put_cap(info, new, vec, format);
 	}
 }
+
+// static void	put_cap(t_info *info, t_object *obj, t_vector *vec, double *format)
+// {
+// 	t_object	*new;
+// 	t_plane		*pl;
+// 	t_point		vertex;
+// 	const int	type = CP | (obj->type & (BM | CH));
+// 	int			cnt;
+
+// 	cnt = 1;
+// 	if (obj->type & CY)
+// 		cnt = 2;
+// 	while (cnt--)
+// 	{
+// 		vertex = _get_cap_point(vec[CENTER], vec[NORMAL], format[HEIGHT], \
+// 								(1 + ((cnt == 1) * -2)));
+// 		pl = pl_init(vertex, vec[NORMAL], format[RADIUS]);
+// 		new = obj_init(type, vec[ALBEDO], pl);
+// 		if (obj->type & BM)
+// 			new->bump = obj->bump;
+// 		obj_add(&(info->obj), new);
+// 	}
+// }
 
 // void	put_cn(t_info *info, char **argv, int cnt, int type)
 // {

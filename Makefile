@@ -14,29 +14,41 @@ NAME		=	miniRT
 RM 			=	rm -vf
 CFLAGS 		=	-Wall -Wextra -Werror -g3 -fsanitize=address
 LIBFT_DIR 	=	libft
+LIBFT_INC 	=	libft/libft_src
 LIBFT		=	libft.a
 LIBMLX_DIR 	=	mlx
 LIBMLX 		=	libmlx.dylib
 
-MANDA_SRCS 	=	minirt.c				\
-				my_func.c				\
-				vector.c				\
-				utils.c					\
-				remove.c				#\
+MANDA_SRCS 	=	minirt.c			\
+				init_func.c
 
-MANDA_SRCS	+=	put_camera.c			\
-				put_light.c				\
-				put_objects.c			\
-				put_object_utils_1.c	\
-				put_object_utils_2.c	#\
+MANDA_SRCS	+=	put_info.c			\
+				put_camera.c		\
+				put_light.c			\
+				put_objects.c		\
+				put_object_utils.c
 
 MANDA_SRCS	+=	ray.c				\
-				where_is_ray.c		\
+				light.c				\
+				spread_ray.c		\
 				ray_at_plane.c		\
 				ray_at_sphere.c		\
-				ray_at_cylinder.c	\
-				ray_at_conlinder.c		#\
+				ray_at_conlinder.c	\
+				ray_utils.c			\
+				get_diffuse_specular.c
 
+
+MANDA_SRCS	+=	ft_atod.c			\
+				ft_atovec.c			\
+				draw.c				\
+				draw_utils.c		\
+				math.c				\
+				print_utils.c		\
+				free_utils.c		\
+				my_func.c			\
+				vector1.c			\
+				vector2.c			\
+				vector3.c
 
 
 BONUS_SRCS 	=	minirt.c vector.c
@@ -54,7 +66,7 @@ all: | $(LIBFT_DIR)/$(LIBFT) $(LIBMLX) $(NAME)
 
 $(NAME): $(OBJS)
 	@echo "[$@] linking ..."
-	$(CC) $(CFLAGS) -o $@ $(OBJS) -L. -lmlx -L$(LIBFT_DIR)/ -lft -framework openGL -framework AppKit
+	$(CC) $(CFLAGS) -o $@ $(OBJS) -L. -lmlx -L$(LIBFT_DIR)/ -lft -I$(LIBFT_INC) -framework openGL -framework AppKit
 
 $(LIBMLX):
 	@make -C $(LIBMLX_DIR)
@@ -68,21 +80,21 @@ $(LIBFT_DIR)/$(LIBFT):
 
 %.o : %.c
 	@echo [$<] compiling ...
-	@$(CC) $(CFLAGS) -I$(LIBFT_DIR) -I$(LIBMLX_DIR) -c $< -o $@
+	@$(CC) $(CFLAGS) -I$(LIBFT_INC)/ -I$(LIBMLX_DIR)/ -c $< -o $@
 
 bonus:
 	make BONUS_FLAG=1 all
 
 clean:
 	@echo ">>>>>>clean deleted list<<<<<<<"
-	@make clean -C $(LIBFT_DIR)
+	@make clean -C $(LIBFT_DIR)/
 	@make clean -C $(LIBMLX_DIR)
 	@$(RM) $(OBJS) $(OBJS_BONUS)
 # make clean -C $(MLX_DIR)
 
 fclean: clean
 	@echo ">>>>>>fclean deleted list<<<<<<<"
-	# @$(RM) $(LIBFT_DIR)/$(LIBFT)
+	@$(RM) $(LIBFT_DIR)/$(LIBFT)
 	# @$(RM) $(LIBMLX)
 	@$(RM) $(NAME)
 

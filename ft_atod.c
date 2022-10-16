@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_atod.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/10/16 17:53:47 by sesim             #+#    #+#             */
+/*   Updated: 2022/10/16 19:40:11 by sesim            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minirt.h"
 
 static void	_is_sign(char *str, int *idx, int *sign)
@@ -29,7 +41,7 @@ static	double	_make_num_front_point(char *str, int *idx, int sign)
 	return (res);
 }
 
-static	double	_make_num_behind_point(char *str, int *idx, int sign)
+static	double	_make_num_behind_point(char *str, int *idx)
 {
 	int		flag;
 	double	res;
@@ -65,7 +77,7 @@ double	ft_atod(char *str)
 	if (!ft_isdigit(str[idx]))
 		ft_strerror("err: bad arguemnts");
 	res = _make_num_front_point(str, &idx, sign);
-	res += _make_num_behind_point(str, &idx, sign);
+	res += _make_num_behind_point(str, &idx);
 	if ((sign == 1 && res > 2147483647) || (sign == -1 && res > 2147483648))
 		ft_strerror("err: exceed size at behind point");
 	return (sign * res);

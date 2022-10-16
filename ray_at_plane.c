@@ -1,8 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ray_at_plane.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/10/16 18:21:38 by sesim             #+#    #+#             */
+/*   Updated: 2022/10/16 19:39:05 by sesim            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minirt.h"
 
 static void	_get_cap_uv(t_moment *spot, t_model *pl, double size)
 {
-	t_vector		n = spot->normal;
+	const t_vector	n = spot->normal;
 	t_vector		basis_vec;
 	double			theta;
 	double			p_[2];
@@ -20,7 +32,7 @@ static void	_get_cap_uv(t_moment *spot, t_model *pl, double size)
 	theta = atan2(p_[E_TWO], p_[E_ONE]);
 	spot->u = (theta / (M_PI));
 	spot->u += spot->u < 0;
-	spot->v =  vec_len(vec_sub(spot->p, pl->center)) / pl->radius;
+	spot->v = vec_len(vec_sub(spot->p, pl->center)) / pl->radius;
 	spot->u = fmod(spot->u, size) / size;
 	spot->v = fmod(spot->v, size) / size;
 }
@@ -48,9 +60,9 @@ static void	_get_plane_uv(t_moment *spot, t_point center, double size)
 
 int	ray_at_plane(t_object *obj, t_ray ray, t_moment *spot)
 {
-	const t_plane	*pl = obj->elem;
+	t_plane	*const	pl = obj->elem;
 	t_vector		vec[2];
-	double			val[2];
+	double			val[3];
 
 	val[DENOMINATOR] = vec_dot(ray.dir, pl->normal);
 	if (fabs(val[DENOMINATOR]) < EPSILON)
@@ -69,7 +81,7 @@ int	ray_at_plane(t_object *obj, t_ray ray, t_moment *spot)
 		_get_plane_uv(spot, pl->center, 10);
 	else
 		_get_cap_uv(spot, pl, 10);
-	get_bump_rgb(&ray, spot, obj);
+	get_bump_rgb(spot, obj);
 	flip_normal_face(ray, spot);
 	return (TRUE);
 }

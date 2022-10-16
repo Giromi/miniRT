@@ -6,11 +6,11 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/12 13:55:48 by sesim             #+#    #+#             */
-/*   Updated: 2022/10/12 13:59:59 by sesim            ###   ########.fr       */
+/*   Updated: 2022/10/16 18:52:43 by sesim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int ft_strchr_idx(const char *s, char c)
+int	ft_strchr_idx(const char *s, char c)
 {
 	int	i;
 

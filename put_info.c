@@ -1,50 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   put_info.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/10/16 18:11:47 by sesim             #+#    #+#             */
+/*   Updated: 2022/10/16 19:50:44 by sesim            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minirt.h"
 
-void    light_add(t_light **list, t_light *new)
-{
-    t_light    *spot;
-
-    if (list == NULL)
-        return ;
-    if (*list == NULL) {
-        *list = new;
-        return ;
-    }
-    spot = *list;
-    while (spot->next)
-        spot = spot->next;
-    spot->next = new;
-}
-
-void	put_a(t_info *info, char **argv, int cnt, int type)
-{
-	double	brightness;
-	t_color	color;
-
-	if (cnt != 3 || type != A)
-		ft_strerror("err: wrong 'ambient' element arguments");
-	brightness = ft_atod(argv[1]);
-	color = vec_div_const(ft_atovec(argv[2], RGB), 255);
-	info->ambient = vec_mul_const(color, brightness);
-}
-
-void	put_l(t_info *info, char **argv, int cnt, int type)
-{
-	t_light		*tmp;
-	t_vector	origin;
-	t_color		color;
-	double		brightness;
-
-	if (cnt != 4 || type != L)
-		ft_strerror("err: wrong 'light' element arguments");
-	origin = ft_atovec(argv[1], XYZ);
-	brightness = ft_atod(argv[2]);
-	color = vec_div_const(ft_atovec(argv[3], RGB), 255);
-	tmp = light_init(origin, color, brightness);
-	light_add(&(info->light), tmp);
-}
-
-static int 	_check_option(char *format)
+static int	_check_options(char *format)
 {
 	if (*format++ != '\0')
 	{
@@ -54,13 +22,15 @@ static int 	_check_option(char *format)
 			return (BM);
 	}
 	ft_strerror("err: unknown option");
+	return (ERROR);
 }
 
-static int 	_check_format(char *format, int *form_check)
+static int	_check_format(char *format, int *form_check)
 {
-	int		len;
-	int		bit;
-if (!format)
+	int	len;
+	int	bit;
+
+	if (!format)
 		return (-1);
 	len = ft_strchr_idx(format, '-');
 	bit = 0;
@@ -80,14 +50,14 @@ if (!format)
 		bit |= CN;
 	else
 		ft_strerror("err: wrong format");
-	bit |= check_options(format + len);
+	bit |= _check_options(format + len);
 	return (bit);
 }
 
 void	put_info(t_info *info, char **argv, int *form_check)
 {
-	static void	(*run[7])(t_info *, char **, int, int) \
-					= {put_a, put_l, put_c, put_sp, put_pl, put_cny};
+	static void	(*run[7])(t_info *, char **, int, int) = \
+				{put_a, put_l, put_c, put_sp, put_pl, put_cny};
 	int			type;
 	int			cnt;
 	int			idx;

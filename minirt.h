@@ -6,7 +6,7 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 21:10:46 by minsuki2          #+#    #+#             */
-/*   Updated: 2022/10/16 14:38:00 by sesim            ###   ########.fr       */
+/*   Updated: 2022/10/16 19:45:39 by sesim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,9 @@
 # define MAX_VIEW 1e6
 # define LUMEN 3
 # define COMMENT '#'
+
+# define KS 0.1
+# define KSN 64
 
 enum e_options
 {
@@ -91,6 +94,8 @@ enum e_two_idx
 	V		=		1,
 	W		=		0,
 	H		=		1,
+	UP		=		0,
+	DOWN	=		1,
 	HORI	=		0,
 	VERT	=		1,
 	RADIUS	=		0,
@@ -99,8 +104,16 @@ enum e_two_idx
 	C_Q		=		1,
 	C_H		=		1,
 	O_C		=		1,
-	E_ONE		=		0,
-	E_TWO		=		1
+	E_ONE	=		0,
+	E_TWO	=		1,
+	LIGHT	=		0,
+	OBJECT	=		1,
+	RAY		=		0,
+	DIR		=		1,
+	LEN		=		0,
+	KD		=		1,
+	GAP		=		0,
+	OFFSET	=		1
 };
 
 enum e_three_idx
@@ -119,19 +132,10 @@ enum e_three_idx
 	NUMERATOR	=		0,
 	DENOMINATOR	=		1,	
 	TARGET		=		2,	
+	COMPUTE		=		0,
+	DIFFUSE		=		2,
+	SPECULAR	=		3
 };
-
-// enum e_material_type
-// {
-// 	A,
-// 	C,
-// 	L,
-// 	SP,
-// 	PL,
-// 	CY,
-// 	CN,
-// 	CP
-// };
 
 typedef int			t_object_type;
 
@@ -183,41 +187,6 @@ typedef struct s_cam
 	int				fov;
 }	t_camera;
 
-// typedef struct s_sphere
-// {
-// 	t_point	center;
-// 	double	radius;
-// 	double	radius2;
-// }	t_sphere;
-
-// typedef struct s_plane
-// {
-// 	t_point		center;
-// 	t_vector	normal;
-// 	double		radius;
-// }	t_plane;
-
-// typedef struct s_cylinder
-// {
-// 	t_point		center;
-// 	double		radius;
-// 	double		radius2;
-// 	double		height;
-// 	t_vector	normal;
-// }	t_conlinder;
-
-// typedef t_conlinder	t_conlinder;
-// typedef struct s_object
-// {
-// 	t_object_type	type;
-// 	void			*element;
-// 	void			*next;
-// 	t_color			albedo;
-// 	t_image			*bump;
-// 	t_image			*tex;
-// 	int				checker;
-// }	t_object;
-
 typedef struct s_func
 {
 	double	term[3];
@@ -226,7 +195,7 @@ typedef struct s_func
 	int		i;
 }	t_function;
 
-typedef struct s_model   // radius 2 지움
+typedef struct s_model
 {
 	t_point		center;
 	t_vector	normal;
@@ -238,7 +207,7 @@ typedef t_model		t_plane;
 typedef t_model		t_sphere;
 typedef t_model		t_conlinder;
 
-typedef struct	s_object
+typedef struct s_object
 {
 	// struct s_object	*prev;
 	struct s_object	*next;
@@ -246,12 +215,12 @@ typedef struct	s_object
 	t_image			*tex;
 	t_model			*elem;
 	t_color			albedo;
-	t_object_type   type;
+	t_object_type	type;
 }	t_object;
 
 typedef struct s_moment
 {
-	t_vector	normal;
+	t_vector	normal;	// 빛의 방향으로 변경
 	t_vector	albedo;
 	t_vector	e1;
 	t_vector	e2;
@@ -261,7 +230,6 @@ typedef struct s_moment
 	double		t;
 	double		u;
 	double		v;
-	int			front_face;
 	int			checker;
 	int			type;
 }	t_moment;
@@ -276,7 +244,7 @@ typedef struct s_light
 
 typedef struct s_info
 {
-	t_moment	spot;
+	t_moment		spot;
 	t_mlx			mlx;
 	t_image			bump;
 	t_camera		*camera;
@@ -309,26 +277,16 @@ t_conlinder	*cny_init(t_point center, t_vector normal, \
 							double radius, double height);
 t_object	*obj_init(t_object_type type, t_vector albedo, t_model *element);
 
-/***** put info funcs *****/
+/***** put funcs *****/
 void		put_info(t_info *info, char **argv, int *form_check);
-
-/***** put light funcs *****/
 void		put_a(t_info *info, char **argv, int cnt, int type);
 void		put_l(t_info *info, char **argv, int cnt, int type);
-
-/***** put camera funcs *****/
 void		put_c(t_info *info, char **argv, int cnt, int type);
-
-
-/***** put obj funcs *****/
 void		put_pl(t_info *info, char **argv, int cnt, int type);
 void		put_sp(t_info *info, char **argv, int cnt, int type);
 void		put_cny(t_info *info, char **argv, int cnt, int type);
-// void		put_cn(t_info *info, char **argv, int cnt, int type);
 
 /***** obj utils funcs 1 *****/
-t_point		get_cap_point(t_point center, t_vector normal, \
-							double height, double sign);
 void		get_texture_addr(t_object *obj, t_mlx *mlx);
 void		get_bump_addr(t_object *obj, t_mlx *mlx);
 void		obj_add(t_object **list, t_object *new);
@@ -336,33 +294,35 @@ void		obj_add(t_object **list, t_object *new);
 /***** obj utils funcs 2 *****/
 void		init_conlinder(t_vector *vec, double *format, char **argv);
 void		bump_init(t_mlx *mlx, t_object *new, char **argv);
-t_conlinder		*cone_init(t_point center, t_vector normal, \
+t_conlinder	*cone_init(t_point center, t_vector normal, \
 						double radius, double height);
 
 /***** draw funcs *****/
-void		 ft_draw(t_info *info, t_mlx *mlx);
+void		ft_draw(t_info *info, t_mlx *mlx);
+void		flip_normal_face(t_ray ray, t_moment *spot);
 
 /***** draw utils funcs *****/
-t_vector	convert_color_to_normal(int	color);
+t_vector	convert_color_to_normal(int color);
 int			convert_color(t_vector clr);
 
-
 /***** ray funcs *****/
-int 		is_ray_hit(t_object *obj, t_ray ray, t_moment *spot);
+int			is_ray_hit(t_object *obj, t_ray ray, t_moment *spot);
 int			ray_at_plane(t_object *obj, t_ray ray, t_moment *spot);
 int			ray_at_sphere(t_object *obj, t_ray ray, t_moment *spot);
 int			ray_at_cylinder(t_object *obj, t_ray ray, t_moment *spot);
-int			ray_at_conlinder(t_object *obj, t_ray ray, t_moment *spot);
+int			ray_at_cone(t_object *obj, t_ray ray, t_moment *spot);
 int			ray_at_cap(t_object *obj, t_ray ray, t_moment *spot);
-t_point 	ray_at(t_ray ray, double t);
+t_point		ray_at(t_ray ray, double t);
 
 /***** ray utils funcs 1 *****/
-void		get_bump_rgb(t_ray *ray, t_moment *spot, t_object *obj);
+void		get_bump_rgb(t_moment *spot, t_object *obj);
 int			is_t_in_range(t_moment *spot);
 int			is_h_in_range(double h, double h_prime);
 
-/***** ray utils func 2 *****/
-// ray 1, 2 함수  정리
+/***** light funcs *****/
+t_vector	phong_lighting(t_info *info);
+int			get_diffuse(t_info *info, t_light *cur_light, t_vector *light);
+void		get_specular(t_info *info, t_light *cur_light, t_vector *light);
 
 /*****  math funcs  *****/
 void		get_sp_abc(double *term, t_ray *ray, t_model *sp);

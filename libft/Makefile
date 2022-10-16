@@ -6,12 +6,12 @@
 #    By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/09 11:16:18 by sesim             #+#    #+#              #
-#    Updated: 2022/10/12 13:59:58 by sesim            ###   ########.fr        #
+#    Updated: 2022/10/16 19:52:25 by sesim            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -g
 AR = ar rcs
 RM = rm -f
 NAME = libft.a
@@ -31,6 +31,7 @@ SRCS = $(LIBFT_DIR)ft_atoi.c \
 	   $(LIBFT_DIR)ft_isascii.c \
 	   $(LIBFT_DIR)ft_isdigit.c \
 	   $(LIBFT_DIR)ft_isprint.c \
+	   $(LIBFT_DIR)ft_isspace.c \
 	   $(LIBFT_DIR)ft_itoa.c \
 	   $(LIBFT_DIR)ft_memcpy.c \
 	   $(LIBFT_DIR)ft_memchr.c \

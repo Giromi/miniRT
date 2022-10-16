@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   math.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/10/16 18:07:17 by sesim             #+#    #+#             */
+/*   Updated: 2022/10/16 19:40:27 by sesim            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minirt.h"
 
 void	get_sp_abc(double *term, t_ray *ray, t_model *sp)
@@ -6,9 +18,9 @@ void	get_sp_abc(double *term, t_ray *ray, t_model *sp)
 	const double	r_pow_2 = sp->radius * sp->radius;
 
 	w = vec_sub(ray->orig, sp->center);
-	term[A] = vec_len_sqr(ray->dir);
+	term[A] = vec_len_pow(ray->dir);
 	term[B] = vec_dot(ray->dir, w);
-	term[C] = vec_len_sqr(w) - r_pow_2;
+	term[C] = vec_len_pow(w) - r_pow_2;
 }
 
 void	get_cy_abc(double *term, t_ray *ray, t_model *cy)
@@ -27,7 +39,7 @@ void	get_cy_abc(double *term, t_ray *ray, t_model *cy)
 	dot_multiple[W_N] = dot_val[W_N] * dot_val[W_N];
 	term[A] = vec_len_pow(ray->dir) - dot_multiple[V_N];
 	term[B] = dot_val[V_W] - dot_multiple[V_W];
-	term[C] = vec_len_sqr(w) - dot_multiple[W_N] - r_pow_2;
+	term[C] = vec_len_pow(w) - dot_multiple[W_N] - r_pow_2;
 }
 
 void	get_cn_abc(double *term, t_ray *ray, t_model *cn)
@@ -49,7 +61,7 @@ void	get_cn_abc(double *term, t_ray *ray, t_model *cn)
 	term[A] = vec_len_pow(ray->dir) - ((m + 1) * dot_multiple[V_N]);
 	term[B] = dot_val[V_W] - ((m + 1) * dot_multiple[V_W]) + \
 								(m * cn->height * dot_val[V_N]);
-	term[C] = vec_len_sqr(w) - ((m + 1) * dot_multiple[W_N]) + \
+	term[C] = vec_len_pow(w) - ((m + 1) * dot_multiple[W_N]) + \
 							(2 * m * cn->height * dot_val[W_N] - pow_2[RADIUS]);
 }
 
@@ -66,4 +78,5 @@ int	get_2d_root(t_function	*func, t_ray *ray, t_model *elem, \
 	sqrt_judge = sqrt(judge);
 	func->root[0] = (-func->term[B] - sqrt_judge) / func->term[A];
 	func->root[1] = (-func->term[B] + sqrt_judge) / func->term[A];
+	return (TRUE);
 }

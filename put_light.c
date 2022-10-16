@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   put_light.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/10/16 18:15:05 by sesim             #+#    #+#             */
+/*   Updated: 2022/10/16 18:16:11 by sesim            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minirt.h"
 
 static void	_light_add(t_light **list, t_light *new)
@@ -5,21 +17,21 @@ static void	_light_add(t_light **list, t_light *new)
 	t_light	*spot;
 
 	if (list == NULL)
-	return ;
+		return ;
 	if (*list == NULL)
 	{
 		*list = new;
-        return ;
-    }
-    spot = *list;
-    while (spot->next)
-        spot = spot->next;
-    spot->next = new;
+		return ;
+	}
+	spot = *list;
+	while (spot->next)
+		spot = spot->next;
+	spot->next = new;
 }
 
 static t_light	*_light_init(t_vector l_origin, t_vector l_color, double br)
 {
-	t_light *light;
+	t_light	*light;
 
 	light = my_calloc(1, sizeof(t_light));
 	light->origin = l_origin;
@@ -30,8 +42,8 @@ static t_light	*_light_init(t_vector l_origin, t_vector l_color, double br)
 
 void	put_a(t_info *info, char **argv, int cnt, int type)
 {
-	double	brightness;
 	t_color	color;
+	double	brightness;
 
 	if (cnt != 3 || type != A)
 		ft_strerror("err: wrong 'ambient' element arguments");
@@ -52,6 +64,6 @@ void	put_l(t_info *info, char **argv, int cnt, int type)
 	origin = ft_atovec(argv[1], XYZ);
 	brightness = ft_atod(argv[2]);
 	color = vec_div_const(ft_atovec(argv[3], RGB), 255);
-	tmp = _light_init(origin, color, brightness);	
+	tmp = _light_init(origin, color, brightness);
 	_light_add(&(info->light), tmp);
 }
