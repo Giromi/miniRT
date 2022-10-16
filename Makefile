@@ -66,7 +66,7 @@ all: | $(LIBFT_DIR)/$(LIBFT) $(LIBMLX) $(NAME)
 
 $(NAME): $(OBJS)
 	@echo "[$@] linking ..."
-	$(CC) $(CFLAGS) -o $@ $(OBJS) -L. -lmlx -L$(LIBFT_DIR)/ -lft -I$(LIBFT_INC) -framework openGL -framework AppKit
+	$(CC) $(CFLAGS) -o $@ $(MANDA_SRCS) -L. -lmlx -L$(LIBFT_DIR)/ -lft -I$(LIBFT_INC) -framework openGL -framework AppKit
 
 $(LIBMLX):
 	@make -C $(LIBMLX_DIR)

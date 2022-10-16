@@ -6,7 +6,7 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 21:23:01 by minsuki2          #+#    #+#             */
-/*   Updated: 2022/10/16 19:06:44 by sesim            ###   ########.fr       */
+/*   Updated: 2022/10/16 20:29:31 by sesim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	put_pl(t_info *info, char **argv, int cnt, int type)
 	t_plane		*pl;
 	t_vector	vec[4];
 
-	if (cnt < 4 || cnt > 5)
+	if (cnt < 4 || cnt > 6)
 		ft_strerror("err: wrong number of arguments in 'PL'");
 	else
 	{
@@ -97,7 +97,7 @@ void	put_cny(t_info *info, char **argv, int cnt, int type)
 	{
 		if (type & CY)
 			ft_strerror("err: wrong number of arguments in 'CY'");
-		else
+		else if (type & CN)
 			ft_strerror("err: wrong number of arguments in 'CN'");
 	}
 	else

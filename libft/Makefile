@@ -6,7 +6,7 @@
 #    By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/09 11:16:18 by sesim             #+#    #+#              #
-#    Updated: 2022/10/16 19:52:25 by sesim            ###   ########.fr        #
+#    Updated: 2022/10/16 20:10:46 by sesim            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -70,6 +70,7 @@ SRCS = $(LIBFT_DIR)ft_atoi.c \
 	   $(LIBFT_DIR)ft_lstmap.c \
 	   $(GNL_DIR)get_file.c \
 	   $(GNL_DIR)get_next_line.c \
+	   $(GNL_DIR)get_one_line.c \
 	   $(GNL_DIR)get_next_line_utils.c \
 	   $(PRINTF_DIR)ft_printf.c \
 	   $(PRINTF_DIR)hex_form.c \

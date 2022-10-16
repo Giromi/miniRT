@@ -6,7 +6,7 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/16 18:30:32 by sesim             #+#    #+#             */
-/*   Updated: 2022/10/16 18:38:58 by sesim            ###   ########.fr       */
+/*   Updated: 2022/10/16 20:32:43 by sesim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ t_vector	vec_mul_const(t_vector u, double n)
 
 t_vector	vec_div_const(t_vector u, double n)
 {
-	if (fabs(n) < EPSILON)
-		ft_strerror("err: divide with zero");
+	// if (fabs(n) < EPSILON)
+	// 	ft_strerror("err: divide with zero");
 	return (vec_mul_const(u, (1 / n)));
 }

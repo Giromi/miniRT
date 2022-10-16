@@ -6,7 +6,7 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/21 12:39:01 by sesim             #+#    #+#             */
-/*   Updated: 2022/10/16 19:49:41 by sesim            ###   ########.fr       */
+/*   Updated: 2022/10/16 20:10:29 by sesim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ char	*new_line(char *bac);
 char	*read_line(int fd, char *bac);
 char	*get_line(char *bac);
 char	*get_next_line(int fd);
+char	*get_one_line(int fd);
 char	*lst_new(t_line *head, int fd);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/12 21:38:54 by minsuki2          #+#    #+#             */
-/*   Updated: 2022/10/16 18:07:29 by sesim            ###   ########.fr       */
+/*   Updated: 2022/10/16 20:28:38 by sesim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,19 +21,19 @@ void	info_init(t_info *info, char *file)
 
 	fd = my_open(file, O_RDONLY);
 	ft_bzero(form_check, sizeof(form_check));
-	line = get_next_line(fd);
+	line = get_one_line(fd);
 	if (line == NULL)
 		ft_strerror("err: empty file");
 	while (line)
 	{
-		if (line[0] != COMMENT)
+		if (line[0] && line[0] != COMMENT)
 		{
 			split = my_split(line, ' ');
 			put_info(info, split, form_check);
 			split_free(split);
 		}
 		free(line);
-		line = get_next_line(fd);
+		line = get_one_line(fd);
 	}
 	if (form_check[A] != 1 || form_check[L] < 1 || form_check[C] < 1)
 		ft_strerror("err: wrong format");

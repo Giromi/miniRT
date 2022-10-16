@@ -6,7 +6,7 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/16 18:11:47 by sesim             #+#    #+#             */
-/*   Updated: 2022/10/16 19:50:44 by sesim            ###   ########.fr       */
+/*   Updated: 2022/10/16 20:21:33 by sesim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,7 @@ static int	_check_options(char *format)
 		else if (!ft_strncmp(format, "bm", 3))
 			return (BM);
 	}
-	ft_strerror("err: unknown option");
-	return (ERROR);
+	return (FALSE);
 }
 
 static int	_check_format(char *format, int *form_check)
@@ -57,19 +56,19 @@ static int	_check_format(char *format, int *form_check)
 void	put_info(t_info *info, char **argv, int *form_check)
 {
 	static void	(*run[7])(t_info *, char **, int, int) = \
-				{put_a, put_l, put_c, put_sp, put_pl, put_cny};
+				{put_a, put_l, put_c, put_pl, put_sp, put_cny};
 	int			type;
 	int			cnt;
 	int			idx;
 
 	type = _check_format(argv[0], form_check);
 	if (type > 3)
-		idx = log(type & 0xFF) / log(2);
+		idx = log(type & 0xFF) / log(2) + 1;
 	else
 		idx = type;
 	cnt = -1;
 	if (type & CN)
-		--idx;
+		idx = 5;
 	while (argv[++cnt])
 		;
 	run[idx](info, argv, cnt, type);
