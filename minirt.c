@@ -6,11 +6,23 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/12 21:38:54 by minsuki2          #+#    #+#             */
-/*   Updated: 2022/10/17 17:33:07 by sesim            ###   ########.fr       */
+/*   Updated: 2022/10/17 19:01:22 by minsuki2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
+
+static void	_info_error(int *form_check)
+{
+	if (form_check[A] < 1)
+		ft_strerror("err: no ambeint format");
+	if (form_check[A] > 1)
+		ft_strerror("err: one more than ambeint format");
+	if (form_check[L] < 1)
+		ft_strerror("err: no light format");
+	if (form_check[C] < 1)
+		ft_strerror("err: no camera format");
+}
 
 void	info_init(t_info *info, char *file)
 {
@@ -35,8 +47,7 @@ void	info_init(t_info *info, char *file)
 		free(line);
 		line = get_one_line(fd);
 	}
-	if (form_check[A] != 1 || form_check[L] < 1 || form_check[C] < 1)
-		ft_strerror("err: wrong format");
+	_info_error(form_check);
 }
 
 void	main_loop(t_info *info, t_mlx *mlx, int key)
