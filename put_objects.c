@@ -6,7 +6,7 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 21:23:01 by minsuki2          #+#    #+#             */
-/*   Updated: 2022/10/16 20:29:31 by sesim            ###   ########.fr       */
+/*   Updated: 2022/10/17 15:06:10 by sesim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	put_pl(t_info *info, char **argv, int cnt, int type)
 		vec[ALBEDO] = vec_div_const(vec[COLOR], 255);
 		pl = pl_init(vec[CENTER], vec[NORMAL], 0);
 		new = obj_init(type, vec[ALBEDO], pl);
-		bump_init(&info->mlx, new, argv);
+		bump_init(&info->mlx, new, argv, cnt);
 		obj_add(&(info->obj), new);
 	}
 }
@@ -50,7 +50,7 @@ void	put_sp(t_info *info, char **argv, int cnt, int type)
 		radius = ft_atod(argv[2]) / 2;
 		sp = sp_init(vec[CENTER], radius);
 		new = obj_init(type, vec[ALBEDO], sp);
-		bump_init(&info->mlx, new, argv);
+		bump_init(&info->mlx, new, argv, cnt);
 		obj_add(&(info->obj), new);
 	}
 }
@@ -106,7 +106,7 @@ void	put_cny(t_info *info, char **argv, int cnt, int type)
 		vec[4] = _get_cap_point(vec[CENTER], vec[NORMAL], format[HEIGHT], -1);
 		side_pl = cny_init(vec[4], vec[NORMAL], format[RADIUS], format[HEIGHT]);
 		new = obj_init(type, vec[ALBEDO], side_pl);
-		bump_init(&info->mlx, new, argv);
+		bump_init(&info->mlx, new, argv, cnt);
 		obj_add(&(info->obj), new);
 		put_cap(info, new, vec, format);
 	}

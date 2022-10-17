@@ -6,7 +6,7 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/16 18:22:25 by sesim             #+#    #+#             */
-/*   Updated: 2022/10/16 19:39:19 by sesim            ###   ########.fr       */
+/*   Updated: 2022/10/17 16:04:21 by sesim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,6 @@ int	ray_at_sphere(t_object *obj, t_ray ray, t_moment *spot)
 
 	if (get_2d_root(&func, &ray, sp, get_sp_abc) == ERROR)
 		return (FALSE);
-	func.i = -1;
 	spot->t = func.root[0];
 	spot->t = func.root[!is_t_in_range(spot)];
 	if (spot->t < spot->tmin || spot->tmax < spot->t)

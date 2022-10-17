@@ -6,7 +6,7 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/16 18:21:38 by sesim             #+#    #+#             */
-/*   Updated: 2022/10/17 13:47:59 by sesim            ###   ########.fr       */
+/*   Updated: 2022/10/17 16:04:36 by sesim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static void	_get_cap_uv(t_moment *spot, t_model *pl, double size)
 {
-	const t_vector	n = spot->normal;
+	const t_vector	n = pl->normal;
 	t_vector		basis_vec;
 	double			theta;
 	double			p_[2];

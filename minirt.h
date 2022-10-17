@@ -6,7 +6,7 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 21:10:46 by minsuki2          #+#    #+#             */
-/*   Updated: 2022/10/16 19:45:39 by sesim            ###   ########.fr       */
+/*   Updated: 2022/10/17 15:56:03 by sesim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -192,7 +192,6 @@ typedef struct s_func
 	double	term[3];
 	double	root[2];
 	double	h_prime;
-	int		i;
 }	t_function;
 
 typedef struct s_model
@@ -293,7 +292,7 @@ void		obj_add(t_object **list, t_object *new);
 
 /***** obj utils funcs 2 *****/
 void		init_conlinder(t_vector *vec, double *format, char **argv);
-void		bump_init(t_mlx *mlx, t_object *new, char **argv);
+void		bump_init(t_mlx *mlx, t_object *new, char **argv, int cnt);
 t_conlinder	*cone_init(t_point center, t_vector normal, \
 						double radius, double height);
 
@@ -309,8 +308,8 @@ int			convert_color(t_vector clr);
 int			is_ray_hit(t_object *obj, t_ray ray, t_moment *spot);
 int			ray_at_plane(t_object *obj, t_ray ray, t_moment *spot);
 int			ray_at_sphere(t_object *obj, t_ray ray, t_moment *spot);
-int			ray_at_cylinder(t_object *obj, t_ray ray, t_moment *spot);
-int			ray_at_cone(t_object *obj, t_ray ray, t_moment *spot);
+int			ray_at_conlinder(t_object *obj, t_ray ray, t_moment *spot, \
+					void (*get_abc)(double *term, t_ray *ray, t_model *cy));
 int			ray_at_cap(t_object *obj, t_ray ray, t_moment *spot);
 t_point		ray_at(t_ray ray, double t);
 
@@ -343,4 +342,7 @@ char		**my_split(char *line, char c);
 void		*my_calloc(size_t count, size_t size);
 int			my_open(const char *path, int oflag);
 
+//remove
+void debugPrintDouble(char *str1, char *str2, double a, double b);
+void debugPrintVec(char *str, t_vector *vector);
 #endif

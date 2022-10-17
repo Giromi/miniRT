@@ -6,7 +6,7 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 21:23:01 by minsuki2          #+#    #+#             */
-/*   Updated: 2022/10/16 18:18:37 by sesim            ###   ########.fr       */
+/*   Updated: 2022/10/17 15:06:34 by sesim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,13 +39,13 @@ static void	_get_bump_addr(t_object *obj, t_mlx *mlx)
 										&(obj->bump->endian));
 }
 
-void	bump_init(t_mlx *mlx, t_object *new, char **argv)
+void	bump_init(t_mlx *mlx, t_object *new, char **argv, int cnt)
 {
 	if (new->type & BM)
 	{
 		new->bump = my_calloc(1, sizeof(t_image));
 		new->tex = my_calloc(1, sizeof(t_image));
-		new->bump->file_name = ft_strdup(argv[4]);
+		new->bump->file_name = ft_strdup(argv[cnt - 1]);
 		_get_bump_addr(new, mlx);
 		_get_texture_addr(new, mlx);
 	}

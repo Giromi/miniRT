@@ -26,6 +26,7 @@ MANDA_SRCS	+=	put_info.c			\
 				put_camera.c		\
 				put_light.c			\
 				put_objects.c		\
+				remove.c			\
 				put_object_utils.c
 
 MANDA_SRCS	+=	ray.c				\
