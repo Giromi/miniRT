@@ -6,7 +6,7 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 21:10:46 by minsuki2          #+#    #+#             */
-/*   Updated: 2022/10/17 15:56:03 by sesim            ###   ########.fr       */
+/*   Updated: 2022/10/17 16:08:45 by sesim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -342,7 +342,4 @@ char		**my_split(char *line, char c);
 void		*my_calloc(size_t count, size_t size);
 int			my_open(const char *path, int oflag);
 
-//remove
-void debugPrintDouble(char *str1, char *str2, double a, double b);
-void debugPrintVec(char *str, t_vector *vector);
 #endif

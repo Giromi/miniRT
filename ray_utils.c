@@ -6,7 +6,7 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/16 18:23:09 by sesim             #+#    #+#             */
-/*   Updated: 2022/10/17 15:57:39 by sesim            ###   ########.fr       */
+/*   Updated: 2022/10/17 16:09:32 by sesim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,6 @@ static t_vector	_bump_normal(t_object *obj, t_moment *spot)
 	int			x;
 	int			y;
 
-	// printf("bump name : %s\n", obj->bump->file_name);
 	x = (int)(spot->u * (double)(obj->bump->width - 1));
 	y = (int)(spot->v * (double)(obj->bump->height - 1));
 	vec[NORMAL] = _convert_color_to_normal(*(unsigned int *)(obj->bump->addr + \
@@ -66,10 +65,6 @@ static t_vector	_bump_normal(t_object *obj, t_moment *spot)
 	vec[X] = vec_mul_const(spot->e1, vec[NORMAL].x);
 	vec[Y] = vec_mul_const(spot->e2, vec[NORMAL].y);
 	vec[Z] = vec_mul_const(spot->normal, vec[NORMAL].z);
-	printf("\n");
-	debugPrintVec("e1", &spot->e1);
-	debugPrintVec("e2", &spot->e2);
-	debugPrintVec("vec[NORMAL]", &vec[NORMAL]);
 	vec[NORMAL] = vec_add(vec_add(vec[X], vec[Y]), vec[Z]);
 	return (vec_unit(vec[NORMAL]));
 }

@@ -6,7 +6,7 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/16 18:19:51 by sesim             #+#    #+#             */
-/*   Updated: 2022/10/17 16:03:15 by sesim            ###   ########.fr       */
+/*   Updated: 2022/10/17 16:09:30 by sesim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,6 @@ static void	_get_cy_side_normal(t_moment *spot, t_model *cy, \
 	coor[C_Q] = vec_mul_const(cy->normal, h_prime);
 	spot->normal = vec_sub(coor[C_P], coor[C_Q]);
 	spot->normal = vec_unit(spot->normal);
-	debugPrintVec("old normal", &spot->normal);
 	_get_conlinder_uv(spot, cy, 1);
 }
 
@@ -95,7 +94,6 @@ int	ray_at_conlinder(t_object *obj, t_ray ray, t_moment *spot, \
 		_get_cn_side_normal(spot, cny, coor);
 	get_bump_rgb(spot, obj);
 	flip_normal_face(ray, spot);
-	debugPrintVec("new normal", &spot->normal);
 	return (TRUE);
 }
 
