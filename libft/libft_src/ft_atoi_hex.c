@@ -6,7 +6,7 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/28 11:29:10 by sesim             #+#    #+#             */
-/*   Updated: 2022/07/10 00:02:42 by sesim            ###   ########.fr       */
+/*   Updated: 2022/10/17 10:39:06 by sesim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@ int	ft_base_cmp(char c)
 {
 	static char	*u_base = "0123456789ABCDEF";
 	static char	*l_base = "0123456789abcdef";
-	int	i;
-	int	base;
+	int			base;
+	int			i;
 
 	i = 0;
 	base = ft_tolower(c);

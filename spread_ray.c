@@ -6,7 +6,7 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/16 17:49:42 by sesim             #+#    #+#             */
-/*   Updated: 2022/10/16 20:34:58 by sesim            ###   ########.fr       */
+/*   Updated: 2022/10/17 13:29:08 by sesim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,5 +44,6 @@ int	is_ray_hit(t_object *obj, t_ray ray, t_moment *spot)
 			spot->tmax = spot->t;
 		obj = obj->next;
 	}
+	printf("hit flag : %d\n", hit_flag);
 	return (hit_flag);
 }

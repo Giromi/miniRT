@@ -6,7 +6,7 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/16 17:58:45 by sesim             #+#    #+#             */
-/*   Updated: 2022/10/16 18:03:05 by sesim            ###   ########.fr       */
+/*   Updated: 2022/10/17 13:24:04 by sesim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,10 @@ static t_color	_cur_point_color(t_info *info)
 
 	_record_init(&(info->spot));
 	if (is_ray_hit(info->obj, info->ray, &(info->spot)))
+	{
+		printf("ray hit\n");
 		return (phong_lighting(info));
+	}
 	else
 	{
 		t = 0.5 * (info->ray.dir.y + 1.0);
