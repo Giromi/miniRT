@@ -6,7 +6,7 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/16 18:23:09 by sesim             #+#    #+#             */
-/*   Updated: 2022/10/17 16:09:32 by sesim            ###   ########.fr       */
+/*   Updated: 2022/10/17 17:28:46 by sesim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,7 @@ static t_vector	_tex_rgb(t_object *obj, t_moment *spot)
 	tmp = _convert_int_to_rgb(*(unsigned int *)(obj->tex->addr + \
 								x * obj->tex->bits_per_pixel / 8 + \
 								y * obj->tex->line_length));
-	tmp = vec_div_const(tmp, 255);
-	return (tmp);
+	return (vec_div_const(tmp, 255));
 }
 
 static t_vector	_bump_normal(t_object *obj, t_moment *spot)
@@ -71,9 +70,10 @@ static t_vector	_bump_normal(t_object *obj, t_moment *spot)
 
 void	get_bump_rgb(t_moment *spot, t_object *obj)
 {
+	spot->albedo = obj->albedo;
 	if (!(obj->type & BM))
 		return ;
-	if (obj->tex->img_ptr)
+	if (obj->tex && obj->tex->img_ptr)
 		spot->albedo = _tex_rgb(obj, spot);
 	spot->normal = _bump_normal(obj, spot);
 }

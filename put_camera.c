@@ -6,7 +6,7 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 21:25:13 by minsuki2          #+#    #+#             */
-/*   Updated: 2022/10/16 18:11:30 by sesim            ###   ########.fr       */
+/*   Updated: 2022/10/17 16:34:31 by sesim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ void	put_c(t_info *info, char **argv, int cnt, int type)
 		ft_strerror("err: wrong 'camera' element arguments");
 	coor = ft_atovec(argv[1], XYZ);
 	normal = ft_atovec(argv[2], UNIT);
-	fov = ft_atoi(argv[3]); //잘못들어오면 exit해야함
+	fov = ft_atoi_exit(argv[3]);
 	if (fov < 0 || fov > 180)
 		ft_strerror("err: wrong camera angle");
 	tmp = camera_init(coor, normal, fov);

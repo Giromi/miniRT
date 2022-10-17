@@ -6,7 +6,7 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/16 17:58:45 by sesim             #+#    #+#             */
-/*   Updated: 2022/10/17 13:57:36 by sesim            ###   ########.fr       */
+/*   Updated: 2022/10/17 17:20:55 by sesim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,8 @@ static void	_record_init(t_moment *spot)
 
 static t_color	_cur_point_color(t_info *info)
 {
-	double		t;
 	t_vector	background[2];
+	double		t;
 
 	_record_init(&(info->spot));
 	if (is_ray_hit(info->obj, info->ray, &(info->spot)))

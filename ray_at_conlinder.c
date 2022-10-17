@@ -6,7 +6,7 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/16 18:19:51 by sesim             #+#    #+#             */
-/*   Updated: 2022/10/17 16:09:30 by sesim            ###   ########.fr       */
+/*   Updated: 2022/10/17 16:11:40 by sesim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ int	ray_at_conlinder(t_object *obj, t_ray ray, t_moment *spot, \
 	func.h_prime = (vec_dot(coor[C_P], cny->normal));
 	if (!is_h_in_range(cny->height, func.h_prime))
 		return (FALSE);
-	if (obj->type & CY) 
+	if (obj->type & CY)
 		_get_cy_side_normal(spot, cny, coor, func.h_prime);
 	else if (obj->type & CN)
 		_get_cn_side_normal(spot, cny, coor);
@@ -96,59 +96,3 @@ int	ray_at_conlinder(t_object *obj, t_ray ray, t_moment *spot, \
 	flip_normal_face(ray, spot);
 	return (TRUE);
 }
-
-// int	ray_at_cone(t_object *obj, t_ray ray, t_moment *spot)
-// {
-// 	t_conlinder *const	cn = obj->elem;
-// 	t_vector			coor[2];
-// 	t_function			func;
-
-// 	if (get_2d_root(&func, &ray, cn, get_cn_abc) == ERROR)
-// 		return (FALSE);
-// 	func.i = -1;
-// 	while (++func.i < 2)
-// 	{
-// 		spot->t = func.root[func.i];
-// 		if (!is_t_in_range(spot))
-// 			continue ;
-// 		spot->p = ray_at(ray, spot->t);
-// 		coor[C_P] = vec_sub(spot->p, cn->center);
-// 		func.h_prime = (vec_dot(coor[C_P], cn->normal));
-// 		if (is_h_in_range(cn->height, func.h_prime))
-// 			break ;
-// 		if (func.i == 1)
-// 			return (FALSE);
-// 	}
-// 	if (_get_cn_side_normal(spot, cn, coor) == ERROR)
-// 		return (FALSE);
-// 	get_bump_rgb(spot, obj);
-// 	flip_normal_face(ray, spot);
-// 	return (TRUE);
-// }
-
-// int	ray_at_cylinder(t_object *obj, t_ray ray, t_moment *spot)
-// {
-// 	t_conlinder *const	cy = obj->elem;
-// 	t_vector			coor[2];
-// 	t_function			func;
-
-// 	if (get_2d_root(&func, &ray, cy, get_cy_abc) == ERROR)
-// 		return (FALSE);
-// 	while (++func.i < 2)
-// 	{
-// 		spot->t = func.root[func.i];
-// 		if (!is_t_in_range(spot) && func.i == 0)
-// 			continue ;
-// 		spot->p = ray_at(ray, spot->t);
-// 		coor[C_P] = vec_sub(spot->p, cy->center);
-// 		func.h_prime = (vec_dot(coor[C_P], cy->normal));
-// 		if (is_h_in_range(cy->height, func.h_prime))
-// 			break ;
-// 		if (func.i == 1)
-// 			return (FALSE);
-// 	}
-// 	_get_cy_side_normal(spot, cy, coor, func.h_prime);
-// 	get_bump_rgb(spot, obj);
-// 	flip_normal_face(ray, spot);
-// 	return (TRUE);
-// }

@@ -40,6 +40,7 @@ MANDA_SRCS	+=	ray.c				\
 
 
 MANDA_SRCS	+=	ft_atod.c			\
+				ft_atoi_exit.c		\
 				ft_atovec.c			\
 				draw.c				\
 				draw_utils.c		\

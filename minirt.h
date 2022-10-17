@@ -6,7 +6,7 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 21:10:46 by minsuki2          #+#    #+#             */
-/*   Updated: 2022/10/17 16:08:45 by sesim            ###   ########.fr       */
+/*   Updated: 2022/10/17 16:24:25 by sesim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -335,6 +335,7 @@ void		split_free(char **split);
 void		ft_strerror(char *err);
 void		is_sign(char *str, int *idx, double *sign);
 double		ft_atod(char *str);
+int			ft_atoi_exit(const char *str);
 t_vector	ft_atovec(char *str, int flag);
 
 /*****  my funcs  *****/

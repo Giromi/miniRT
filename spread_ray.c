@@ -6,7 +6,7 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/16 17:49:42 by sesim             #+#    #+#             */
-/*   Updated: 2022/10/17 15:14:14 by sesim            ###   ########.fr       */
+/*   Updated: 2022/10/17 17:27:13 by sesim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,7 @@
 
 static int	_ray_at_obj(t_object *obj, t_ray ray, t_moment *spot)
 {
-	// const int	model_type = PL | SP | CY | CN | CP;
-	int			hit_result;
+	int	hit_result;
 
 	hit_result = FALSE;
 	if (obj->type & (PL | CP))
@@ -28,7 +27,6 @@ static int	_ray_at_obj(t_object *obj, t_ray ray, t_moment *spot)
 		hit_result = ray_at_conlinder(obj, ray, spot, get_cn_abc);
 	if (hit_result == FALSE)
 		return (hit_result);
-	spot->albedo = obj->albedo;
 	return (hit_result);
 }
 

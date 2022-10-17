@@ -6,7 +6,7 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/16 18:30:30 by sesim             #+#    #+#             */
-/*   Updated: 2022/10/16 18:36:24 by sesim            ###   ########.fr       */
+/*   Updated: 2022/10/17 16:13:13 by sesim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ t_vector	vec_div(t_vector u, t_vector v)
 	t_vector	init;
 
 	if (v.x == 0 || v.y == 0 || v.z == 0)
-		ft_strerror("0 넣지마");
+		ft_strerror("err: Divide with zero");
 	init.x = u.x / v.x;
 	init.y = u.y / v.y;
 	init.z = u.z / v.z;

@@ -6,7 +6,7 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/16 18:21:38 by sesim             #+#    #+#             */
-/*   Updated: 2022/10/17 16:04:36 by sesim            ###   ########.fr       */
+/*   Updated: 2022/10/17 17:43:57 by sesim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,9 +60,9 @@ static void	_get_plane_uv(t_moment *spot, t_point center, double size)
 
 int	ray_at_plane(t_object *obj, t_ray ray, t_moment *spot)
 {
-	t_plane	*const	pl = obj->elem;
+	t_plane *const	pl = obj->elem;
 	t_vector		vec[2];
-	double			val[3];
+	double			val[2];
 
 	val[DENOMINATOR] = vec_dot(ray.dir, pl->normal);
 	if (fabs(val[DENOMINATOR]) < EPSILON)
@@ -72,7 +72,7 @@ int	ray_at_plane(t_object *obj, t_ray ray, t_moment *spot)
 	spot->t = val[NUMERATOR] / val[DENOMINATOR];
 	if (!is_t_in_range(spot))
 		return (FALSE);
-	spot->p = ray_at(ray, val[TARGET]);
+	spot->p = ray_at(ray, spot->t);
 	vec[C_P] = vec_sub(spot->p, pl->center);
 	if (obj->type & CP && (vec_len_pow(vec[C_P]) > pl->radius * pl->radius))
 		return (FALSE);
