@@ -6,7 +6,7 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/12 21:38:54 by minsuki2          #+#    #+#             */
-/*   Updated: 2022/10/18 14:13:11 by sesim            ###   ########.fr       */
+/*   Updated: 2022/10/18 15:03:32 by minsuki2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include "my_func.h"
 #include "get_next_line.h"
 #include "minirt.h"
+
 
 static void	_info_error(int *form_check)
 {

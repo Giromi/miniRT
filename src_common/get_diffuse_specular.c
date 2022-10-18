@@ -6,7 +6,7 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/16 18:05:13 by sesim             #+#    #+#             */
-/*   Updated: 2022/10/18 11:46:31 by sesim            ###   ########.fr       */
+/*   Updated: 2022/10/18 19:54:54 by minsuki2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,10 @@ int	get_diffuse(t_info *info, t_light *cur_light, t_vector *light)
 	t_vector	vec[2];
 	double		val[2];
 
+	light[DIR] = vec_sub(cur_light->origin, info->spot.p);
+	// debugPrintVec("light->origin", &cur_light->origin);			// 문제 없음
+	// debugPrintVec("info->spot.p", &info->spot.p);				// !!!!문제
+	// debugPrintVec("light[DIR]", &light[DIR]);
 	vec[GAP] = vec_mul_const(info->spot.normal, EPSILON);
 	vec[OFFSET] = vec_add(info->spot.p, vec[GAP]);
 	ray = _ray_init(vec[OFFSET], light[DIR]);
@@ -53,6 +57,7 @@ int	get_diffuse(t_info *info, t_light *cur_light, t_vector *light)
 	light[DIR] = vec_unit(light[DIR]);
 	val[KD] = fmax(vec_dot(info->spot.normal, light[DIR]), 0.0);
 	light[DIFFUSE] = vec_mul_const(cur_light->light_color, val[KD]);
+	// debugPrintVec("DIFFUSE", &light[DIFFUSE]);
 	return (TRUE);
 }
 

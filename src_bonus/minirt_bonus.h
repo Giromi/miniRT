@@ -6,7 +6,7 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 21:10:46 by minsuki2          #+#    #+#             */
-/*   Updated: 2022/10/18 12:38:21 by sesim            ###   ########.fr       */
+/*   Updated: 2022/10/18 18:17:36 by minsuki2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -178,6 +178,7 @@ typedef struct s_func
 	double	term[3];
 	double	root[2];
 	double	h_prime;
+	int		idx;
 }	t_function;
 
 typedef struct s_model

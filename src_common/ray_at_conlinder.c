@@ -6,7 +6,7 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/16 18:19:51 by sesim             #+#    #+#             */
-/*   Updated: 2022/10/18 11:46:31 by sesim            ###   ########.fr       */
+/*   Updated: 2022/10/18 20:33:36 by minsuki2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,18 +77,14 @@ int	ray_at_conlinder(t_object *obj, t_ray ray, t_moment *spot, \
 
 	if (get_2d_root(&func, &ray, cny, get_abc) == ERROR)
 		return (FALSE);
-	spot->t = func.root[0];
-	if (!is_t_in_range(spot))
-	{
-		spot->t = func.root[1];
-		if (!is_t_in_range(spot))
+	func.idx = 0;
+	if (!is_t_in_range(spot, func.root[func.idx]) \
+			|| !is_h_in_range(cny, &ray, coor, &func))
+		if (!is_t_in_range(spot, func.root[++func.idx]) \
+			|| !is_h_in_range(cny, &ray, coor, &func))
 			return (FALSE);
-	}
-	spot->p = ray_at(ray, spot->t);
-	coor[C_P] = vec_sub(spot->p, cny->center);
-	func.h_prime = (vec_dot(coor[C_P], cny->normal));
-	if (!is_h_in_range(cny->height, func.h_prime))
-		return (FALSE);
+	spot->t = func.root[func.idx];
+	spot->p = func.hit_p;
 	if (obj->type & CY)
 		_get_cy_side_normal(spot, cny, coor, func.h_prime);
 	else if (obj->type & CN)

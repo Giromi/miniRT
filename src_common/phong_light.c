@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   light.c                                            :+:      :+:    :+:   */
+/*   phong_light.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/16 18:07:00 by sesim             #+#    #+#             */
-/*   Updated: 2022/10/18 11:46:31 by sesim            ###   ########.fr       */
+/*   Updated: 2022/10/18 20:16:56 by minsuki2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ static t_vector	_sigma_brightness(t_info *info, t_light *cur_light)
 	t_vector	light[4];
 	double		brightness;
 
-	light[DIR] = vec_sub(cur_light->origin, info->spot.p);
 	if (get_diffuse(info, cur_light, light) == ERROR)
 		return (vec_init(0, 0, 0));
 	get_specular(info, cur_light, light);

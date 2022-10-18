@@ -6,7 +6,7 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/16 17:58:45 by sesim             #+#    #+#             */
-/*   Updated: 2022/10/18 12:19:09 by sesim            ###   ########.fr       */
+/*   Updated: 2022/10/18 20:45:19 by minsuki2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static void	_my_mlx_pixel_put(t_image *img, int x, int y, t_color color)
 	*(unsigned int *)dst = convert_color(color);
 }
 
-static void	_spread_ray(t_ray *ray, t_camera *cam, double u, double v)
+static void	_set_ray_vec(t_ray *ray, t_camera *cam, double u, double v)
 {
 	t_vector	ray_vec[2];
 
@@ -35,6 +35,8 @@ static void	_spread_ray(t_ray *ray, t_camera *cam, double u, double v)
 	ray->dir = vec_once_add_point(cam->start_point, ray_vec[U], ray_vec[V], \
 											vec_mul_const(cam->orig, -1));
 	ray->dir = vec_unit(ray->dir);
+	// debugPrintVec("dir", &ray->dir);			//문제 없음
+
 }
 
 static void	_record_init(t_moment *spot)
@@ -75,7 +77,7 @@ void	ft_draw(t_info *info, t_mlx *mlx)
 		{
 			vdx[U] = (double)idx[X] / (WIN_W - 1);
 			vdx[V] = (double)idx[Y] / (WIN_H - 1);
-			_spread_ray(&info->ray, info->camera, vdx[U], vdx[V]);
+			_set_ray_vec(&info->ray, info->camera, vdx[U], vdx[V]);
 			color = _cur_point_color(info);
 			_my_mlx_pixel_put(&mlx->img, idx[X], (WIN_H - 1 - idx[Y]), color);
 			idx[X]++;

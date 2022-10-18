@@ -6,7 +6,7 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/16 18:21:38 by sesim             #+#    #+#             */
-/*   Updated: 2022/10/18 11:46:31 by sesim            ###   ########.fr       */
+/*   Updated: 2022/10/18 20:37:07 by minsuki2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,30 +59,84 @@ static void	_get_plane_uv(t_moment *spot, t_point center, double size)
 	spot->v = 1 - spot->v;
 }
 
-int	ray_at_plane(t_object *obj, t_ray ray, t_moment *spot)
+int	ray_at_cap(t_object *obj, t_ray ray, t_moment *spot)
 {
-	t_plane *const	pl = obj->elem;
+	t_plane *const	cp = obj->elem;
+	t_point			hit_p;
 	t_vector		vec[2];
-	double			val[2];
+	double			val[3];
 
-	val[DENOMINATOR] = vec_dot(ray.dir, pl->normal);
+	val[DENOMINATOR] = vec_dot(ray.dir, cp->normal);
 	if (fabs(val[DENOMINATOR]) < EPSILON)
 		return (FALSE);
-	vec[O_C] = vec_sub(pl->center, ray.orig);
-	val[NUMERATOR] = vec_dot(vec[O_C], pl->normal);
-	spot->t = val[NUMERATOR] / val[DENOMINATOR];
-	if (!is_t_in_range(spot))
+	vec[O_C] = vec_sub(cp->center, ray.orig);
+	val[NUMERATOR] = vec_dot(vec[O_C], cp->normal);
+	val[TARGET] = val[NUMERATOR] / val[DENOMINATOR];
+	if (!is_t_in_range(spot, val[TARGET]))
 		return (FALSE);
-	spot->p = ray_at(ray, spot->t);
-	vec[C_P] = vec_sub(spot->p, pl->center);
-	if (obj->type & CP && (vec_len_pow(vec[C_P]) > pl->radius * pl->radius))
+	hit_p = get_hit_point(ray, val[TARGET]);
+	vec[C_P] = vec_sub(hit_p, cp->center);
+	if (obj->type & CP && (vec_len_pow(vec[C_P]) > cp->radius * cp->radius))
 		return (FALSE);
-	spot->normal = pl->normal;
-	if (obj->type & PL)
-		_get_plane_uv(spot, pl->center, 10);
-	else
-		_get_cap_uv(spot, pl, 10);
+	spot->t = val[TARGET];
+	spot->p = hit_p;
+	spot->normal = cp->normal;
+	_get_cap_uv(spot, cp, 10);
 	get_bump_rgb(spot, obj);
 	flip_normal_face(ray, spot);
 	return (TRUE);
 }
+
+int	ray_at_plane(t_object *obj, t_ray ray, t_moment *spot)
+{
+	t_plane *const	pl = obj->elem;
+	t_vector		o_c;
+	double			val[3];
+
+	val[DENOMINATOR] = vec_dot(ray.dir, pl->normal);
+	if (fabs(val[DENOMINATOR]) < EPSILON)
+		return (FALSE);
+	o_c = vec_sub(pl->center, ray.orig);
+	val[NUMERATOR] = vec_dot(o_c, pl->normal);
+	val[TARGET] = val[NUMERATOR] / val[DENOMINATOR];
+	if (!is_t_in_range(spot, val[TARGET]))
+		return (FALSE);
+	spot->t = val[TARGET];
+	spot->p = get_hit_point(ray, val[TARGET]);
+	spot->normal = pl->normal;
+	_get_plane_uv(spot, pl->center, 10);
+	get_bump_rgb(spot, obj);
+	flip_normal_face(ray, spot);
+	return (TRUE);
+}
+
+// int	ray_at_plane(t_object *obj, t_ray ray, t_moment *spot) // backup
+// {
+//     t_plane *const	pl = obj->elem;
+//     t_point			hit_p;
+//     t_vector		vec[2];
+//     double			val[3];
+//
+//     val[DENOMINATOR] = vec_dot(ray.dir, pl->normal);
+//     if (fabs(val[DENOMINATOR]) < EPSILON)
+//         return (FALSE);
+//     vec[O_C] = vec_sub(pl->center, ray.orig);
+//     val[NUMERATOR] = vec_dot(vec[O_C], pl->normal);
+//     val[TARGET] = val[NUMERATOR] / val[DENOMINATOR];
+//     if (!is_t_in_range(spot, val[TARGET]))
+//         return (FALSE);
+//     hit_p = ray_at(ray, val[TARGET]);
+//     vec[C_P] = vec_sub(hit_p, pl->center);
+//     if (obj->type & CP && (vec_len_pow(vec[C_P]) > pl->radius * pl->radius))
+//         return (FALSE);
+//     spot->t = val[TARGET];
+//     spot->p = hit_p;
+//     spot->normal = pl->normal;
+//     if (obj->type & PL)
+//         _get_plane_uv(spot, pl->center, 10);
+//     else
+//         _get_cap_uv(spot, pl, 10);
+//     get_bump_rgb(spot, obj);
+//     flip_normal_face(ray, spot);
+//     return (TRUE);
+// }

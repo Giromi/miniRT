@@ -6,7 +6,7 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/16 18:07:17 by sesim             #+#    #+#             */
-/*   Updated: 2022/10/18 11:46:31 by sesim            ###   ########.fr       */
+/*   Updated: 2022/10/18 18:25:11 by minsuki2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	get_cy_abc(double *term, t_ray *ray, t_model *cy)
 
 	w = vec_sub(ray->orig, cy->center);
 	dot_val[V_N] = vec_dot(ray->dir, cy->normal);
-	dot_val[V_W] = vec_dot(w, ray->dir);
+	dot_val[V_W] = vec_dot(ray->dir, w);
 	dot_val[W_N] = vec_dot(w, cy->normal);
 	dot_multiple[V_N] = dot_val[V_N] * dot_val[V_N];
 	dot_multiple[V_W] = dot_val[V_N] * dot_val[W_N];
@@ -81,3 +81,4 @@ int	get_2d_root(t_function	*func, t_ray *ray, t_model *elem, \
 	func->root[1] = (-func->term[B] + sqrt_judge) / func->term[A];
 	return (TRUE);
 }
+	// printf("abc : %lf, %lf, %lf\n", func->term[A], func->term[B], func->term[C]);

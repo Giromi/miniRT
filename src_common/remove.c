@@ -2,6 +2,27 @@
 #include "my_func.h"
 #include "minirt.h"
 
+void	print_light(t_light *light)
+{
+	t_light	*curr;
+
+	curr = light;
+	printf("==========print_light start==========\n");
+	while (curr)
+	{
+		printf("-------LIGHT------\n");
+		printf("orign x : %lf ", (curr->origin.x));
+		printf("orign y : %lf ", (curr->origin.y));
+		printf("orign z : %lf \n", (curr->origin.z));
+		printf("light color x : %lf ", (curr->light_color.x));
+		printf("light color y : %lf ", (curr->light_color.y));
+		printf("light color z : %lf \n", (curr->light_color.z));
+		printf("brightness : %lf ", light->brightness);
+		curr = curr->next;
+	}
+	printf("==========print_light end==========\n");
+}
+
 void debugPrintVec(char *str, t_vector *vector)
 {
 	printf("%s : x = %lf ",  str, vector->x);

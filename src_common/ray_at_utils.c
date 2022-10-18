@@ -1,29 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ray.c                                              :+:      :+:    :+:   */
+/*   ray_at_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/16 18:29:23 by sesim             #+#    #+#             */
-/*   Updated: 2022/10/18 11:52:45 by sesim            ###   ########.fr       */
+/*   Updated: 2022/10/18 20:36:35 by minsuki2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vector.h"
 #include "minirt.h"
 
-int	is_t_in_range(t_moment *spot)
+int	is_t_in_range(t_moment *spot, double root)
 {
-	return (spot->tmin <= spot->t && spot->t <= spot->tmax);
+	return (spot->tmin <= root && root <= spot->tmax);
 }
 
-int	is_h_in_range(double h, double h_prime)
+int	is_h_in_range(t_model *cny, t_ray *ray, t_vector *coor, t_function *func)
 {
-	return (0 <= h_prime && h_prime <= h);
+	func->hit_p = get_hit_point(*ray, func->root[func->idx]);
+	coor[C_P] = vec_sub(func->hit_p, cny->center);
+	func->h_prime = vec_dot(coor[C_P], cny->normal);
+	return (0 <= func->h_prime && func->h_prime <= cny->height);
 }
 
-t_point	ray_at(t_ray ray, double t)
+t_point	get_hit_point(t_ray ray, double t)
 {
 	t_point	at;
 

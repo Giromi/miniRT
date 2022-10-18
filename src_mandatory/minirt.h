@@ -6,7 +6,7 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 21:10:46 by minsuki2          #+#    #+#             */
-/*   Updated: 2022/10/18 12:49:44 by sesim            ###   ########.fr       */
+/*   Updated: 2022/10/18 20:36:10 by minsuki2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,8 +125,8 @@ enum e_three_idx
 	ALBEDO		=		2,
 	NORMAL		=		3,
 	NUMERATOR	=		0,
-	DENOMINATOR	=		1,	
-	TARGET		=		2,	
+	DENOMINATOR	=		1,
+	TARGET		=		2,
 	COMPUTE		=		0,
 	DIFFUSE		=		2,
 	SPECULAR	=		3
@@ -177,6 +177,8 @@ typedef struct s_func
 	double	term[3];
 	double	root[2];
 	double	h_prime;
+	int		idx;
+	t_point	hit_p;
 }	t_function;
 
 typedef struct s_model
@@ -276,16 +278,18 @@ int			convert_color(t_vector clr);
 /***** ray funcs *****/
 int			is_ray_hit(t_object *obj, t_ray ray, t_moment *spot);
 int			ray_at_plane(t_object *obj, t_ray ray, t_moment *spot);
+int			ray_at_cap(t_object *obj, t_ray ray, t_moment *spot);
 int			ray_at_sphere(t_object *obj, t_ray ray, t_moment *spot);
 int			ray_at_conlinder(t_object *obj, t_ray ray, t_moment *spot, \
 					void (*get_abc)(double *term, t_ray *ray, t_model *cy));
 int			ray_at_cap(t_object *obj, t_ray ray, t_moment *spot);
-t_point		ray_at(t_ray ray, double t);
+t_point		get_hit_point(t_ray ray, double t);
 
 /***** ray utils funcs 1 *****/
 void		get_bump_rgb(t_moment *spot, t_object *obj);
-int			is_t_in_range(t_moment *spot);
-int			is_h_in_range(double h, double h_prime);
+int			is_t_in_range(t_moment *spot, double root);
+int			is_h_in_range(t_model *cny, t_ray *ray, t_vector *coor, \
+															t_function *func);
 
 /***** light funcs *****/
 t_vector	phong_lighting(t_info *info);
@@ -304,5 +308,10 @@ void		is_sign(char *str, int *idx, double *sign);
 double		ft_atod(char *str);
 int			ft_atoi_exit(const char *str);
 t_vector	ft_atovec(char *str, int flag);
+
+
+
+void		print_light(t_light *light); // 지워야함
+void		debugPrintVec(char *str, t_vector *vector);
 
 #endif
