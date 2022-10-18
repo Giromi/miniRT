@@ -6,7 +6,7 @@
 #    By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/18 11:05:23 by sesim             #+#    #+#              #
-#    Updated: 2022/10/18 20:58:55 by minsuki2         ###   ########.fr        #
+#    Updated: 2022/10/18 21:00:34 by minsuki2         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -134,8 +134,8 @@ clean:
 
 fclean: clean
 	@echo ">>>>>>fclean deleted list<<<<<<<"
-	# @$(RM) $(LIBFT_DIR)$(LIBFT)
-	# @$(RM) $(LIBMLX)
+	@$(RM) $(LIBFT_DIR)$(LIBFT)
+	@$(RM) $(LIBMLX)
 	@$(RM) $(NAME)
 
 re:
