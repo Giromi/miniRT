@@ -7,6 +7,10 @@
         "unordered_map": "c",
         "utility": "c",
         "cmath": "c",
-        "stdio.h": "c"
+        "stdio.h": "c",
+        "fcntl.h": "c",
+        "libft.h": "c",
+        "vector.h": "c",
+        "my_func.h": "c"
     }
 }
