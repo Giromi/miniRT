@@ -6,7 +6,7 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 21:25:13 by minsuki2          #+#    #+#             */
-/*   Updated: 2022/10/18 12:17:07 by sesim            ###   ########.fr       */
+/*   Updated: 2022/10/19 15:02:31 by sesim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,9 @@
 void	get_mlx_vector(t_vector *mlx_vec, t_vector cam_normal,
 					double *viewport)
 {
-	t_vector	basis_vec;
 	t_vector	unit_mlx_vec[2];
+	t_vector	cross_val[2];
+	t_vector	basis_vec;
 
 	if ((cam_normal.x == 0 && cam_normal.y == 1 && cam_normal.z == 0))
 		basis_vec = vec_init(0, 0, 1);
@@ -26,10 +27,12 @@ void	get_mlx_vector(t_vector *mlx_vec, t_vector cam_normal,
 		basis_vec = vec_init(0, 0, -1);
 	else
 		basis_vec = vec_init(0, 1, 0);
-	unit_mlx_vec[HORI] = vec_unit(vec_cross(cam_normal, basis_vec));
-	unit_mlx_vec[VERT] = vec_unit(vec_cross(unit_mlx_vec[HORI], cam_normal));
-	mlx_vec[HORI] = vec_mul_const(unit_mlx_vec[HORI], viewport[HORI]);
-	mlx_vec[VERT] = vec_mul_const(unit_mlx_vec[VERT], viewport[VERT]);
+	cross_val[ONE] = vec_cross(&cam_normal, &basis_vec);
+	unit_mlx_vec[HORI] = vec_unit(&cross_val[ONE]);
+	cross_val[TWO] = vec_cross(&unit_mlx_vec[HORI], &cam_normal);
+	unit_mlx_vec[VERT] = vec_unit(&cross_val[TWO]);
+	mlx_vec[HORI] = vec_mul_const(&unit_mlx_vec[HORI], viewport[HORI]);
+	mlx_vec[VERT] = vec_mul_const(&unit_mlx_vec[VERT], viewport[VERT]);
 }
 
 t_camera	*camera_init(t_point coor, t_vector normal, int fov)
@@ -43,11 +46,11 @@ t_camera	*camera_init(t_point coor, t_vector normal, int fov)
 	init->viewport[W] = tan((double)fov / 2 * M_PI / 180) * 2;
 	init->viewport[H] = init->viewport[W] * WIN_H / WIN_W;
 	get_mlx_vector(init->mlx_vec, init->normal, init->viewport);
-	minus_half_mlx_vec[HORI] = vec_div_const(init->mlx_vec[HORI], -2);
-	minus_half_mlx_vec[VERT] = vec_div_const(init->mlx_vec[VERT], -2);
+	minus_half_mlx_vec[HORI] = vec_div_const(&init->mlx_vec[HORI], -2);
+	minus_half_mlx_vec[VERT] = vec_div_const(&init->mlx_vec[VERT], -2);
 	init->start_point = vec_once_add_point(init->orig, \
-											minus_half_mlx_vec[HORI], \
-											minus_half_mlx_vec[VERT], normal);
+											&minus_half_mlx_vec[HORI], \
+											&minus_half_mlx_vec[VERT], &normal);
 	return (init);
 }
 

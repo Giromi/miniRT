@@ -1,107 +1,92 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ray_at_plane.c                                     :+:      :+:    :+:   */
+/*   ray_at_cap_plane.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/16 18:21:38 by sesim             #+#    #+#             */
-/*   Updated: 2022/10/18 20:37:07 by minsuki2         ###   ########.fr       */
+/*   Updated: 2022/10/19 16:48:40 by sesim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vector.h"
 #include "minirt.h"
 
-static void	_get_cap_uv(t_moment *spot, t_model *pl, double size)
+static void	_get_cap_uv(t_moment *spot, t_model *cp, double size)
 {
-	const t_vector	n = pl->normal;
-	t_vector		basis_vec;
-	double			theta;
-	double			p_[2];
+	t_vector	c_p;
+	double		theta;
+	double		p_[2];
 
-	if ((n.x == 0 && n.y == 0 && n.z == 1))
-		basis_vec = vec_init(0, 1, 0);
-	else if ((n.x == 0 && n.y == 0 && n.z == -1))
-		basis_vec = vec_init(0, -1, 0);
-	else
-		basis_vec = vec_init(0, 0, 1);
-	spot->e1 = vec_unit(vec_cross(basis_vec, n));
-	spot->e2 = vec_unit(vec_cross(n, spot->e1));
-	p_[E_ONE] = vec_dot(vec_sub(spot->p, pl->center), spot->e1);
-	p_[E_TWO] = vec_dot(vec_sub(spot->p, pl->center), spot->e2);
+	get_spot_e_vector(spot, &cp->normal, vec_init(0, 0, 1));
+	c_p = vec_sub(&spot->p, &cp->center);
+	p_[E_ONE] = vec_dot(&c_p, &spot->e_[ONE]);
+	p_[E_TWO] = vec_dot(&c_p, &spot->e_[TWO]);
 	theta = atan2(p_[E_TWO], p_[E_ONE]);
-	spot->u = (theta / (M_PI));
-	spot->u += spot->u < 0;
-	spot->v = vec_len(vec_sub(spot->p, pl->center)) / pl->radius;
-	spot->u = fmod(spot->u, size) / size;
-	spot->v = fmod(spot->v, size) / size;
+	spot->uv_dir[U] = (theta / (M_PI));
+	spot->uv_dir[U] += spot->uv_dir[U] < 0;
+	spot->uv_dir[V] = vec_len(&c_p) / cp->radius;
+	spot->uv_dir[U] = fmod(spot->uv_dir[U], size) / size;
+	spot->uv_dir[V] = fmod(spot->uv_dir[V], size) / size;
 }
 
-static void	_get_plane_uv(t_moment *spot, t_point center, double size)
-{
-	const t_vector		p = vec_sub(spot->p, center);
-	const t_vector		n = spot->normal;
-	t_vector			basis_vec;
-
-	if ((n.x == 0 && n.y == 1 && n.z == 0))
-		basis_vec = vec_init(0, 0, -1);
-	else if ((n.x == 0 && n.y == -1 && n.z == 0))
-		basis_vec = vec_init(0, 0, 1);
-	else
-		basis_vec = vec_init(0, 1, 0);
-	spot->e1 = vec_unit(vec_cross(basis_vec, n));
-	spot->e2 = vec_unit(vec_cross(n, spot->e1));
-	spot->u = fmod(vec_dot(spot->e1, p), size) / size;
-	spot->v = fmod(vec_dot(spot->e2, p), size) / size;
-	spot->u += spot->u < 0;
-	spot->v += spot->v < 0;
-	spot->v = 1 - spot->v;
-}
-
-int	ray_at_cap(t_object *obj, t_ray ray, t_moment *spot)
+int	ray_at_cap(t_object *obj, t_ray *ray, t_moment *spot)
 {
 	t_plane *const	cp = obj->elem;
 	t_point			hit_p;
 	t_vector		vec[2];
 	double			val[3];
 
-	val[DENOMINATOR] = vec_dot(ray.dir, cp->normal);
+	val[DENOMINATOR] = vec_dot(&ray->dir, &cp->normal);
 	if (fabs(val[DENOMINATOR]) < EPSILON)
 		return (FALSE);
-	vec[O_C] = vec_sub(cp->center, ray.orig);
-	val[NUMERATOR] = vec_dot(vec[O_C], cp->normal);
+	vec[O_C] = vec_sub(&cp->center, &ray->orig);
+	val[NUMERATOR] = vec_dot(&vec[O_C], &cp->normal);
 	val[TARGET] = val[NUMERATOR] / val[DENOMINATOR];
 	if (!is_t_in_range(spot, val[TARGET]))
 		return (FALSE);
 	hit_p = get_hit_point(ray, val[TARGET]);
-	vec[C_P] = vec_sub(hit_p, cp->center);
-	if (obj->type & CP && (vec_len_pow(vec[C_P]) > cp->radius * cp->radius))
+	vec[C_P] = vec_sub(&hit_p, &cp->center);
+	if (vec_len_pow(&vec[C_P]) > cp->radius * cp->radius)
 		return (FALSE);
-	spot->t = val[TARGET];
+	spot->t_[VAL] = val[TARGET];
 	spot->p = hit_p;
 	spot->normal = cp->normal;
-	_get_cap_uv(spot, cp, 10);
+	_get_cap_uv(spot, cp, 1);
 	get_bump_rgb(spot, obj);
 	flip_normal_face(ray, spot);
 	return (TRUE);
 }
 
-int	ray_at_plane(t_object *obj, t_ray ray, t_moment *spot)
+static void	_get_plane_uv(t_moment *spot, t_point center, double size)
+{
+	t_vector	c_p;
+
+	c_p = vec_sub(&spot->p, &center);
+	get_spot_e_vector(spot, &spot->normal, vec_init(0, 1, 0));
+	spot->uv_dir[U] = fmod(vec_dot(&spot->e_[ONE], &c_p), size) / size;
+	spot->uv_dir[V] = fmod(vec_dot(&spot->e_[TWO], &c_p), size) / size;
+	spot->uv_dir[U] += spot->uv_dir[U] < 0;
+	spot->uv_dir[V] += spot->uv_dir[V] < 0;
+	spot->uv_dir[V] = 1 - spot->uv_dir[V];
+}
+
+int	ray_at_plane(t_object *obj, t_ray *ray, t_moment *spot)
 {
 	t_plane *const	pl = obj->elem;
 	t_vector		o_c;
 	double			val[3];
 
-	val[DENOMINATOR] = vec_dot(ray.dir, pl->normal);
+	val[DENOMINATOR] = vec_dot(&ray->dir, &pl->normal);
 	if (fabs(val[DENOMINATOR]) < EPSILON)
 		return (FALSE);
-	o_c = vec_sub(pl->center, ray.orig);
-	val[NUMERATOR] = vec_dot(o_c, pl->normal);
+	o_c = vec_sub(&pl->center, &ray->orig);
+	val[NUMERATOR] = vec_dot(&o_c, &pl->normal);
 	val[TARGET] = val[NUMERATOR] / val[DENOMINATOR];
 	if (!is_t_in_range(spot, val[TARGET]))
 		return (FALSE);
-	spot->t = val[TARGET];
+	spot->t_[VAL] = val[TARGET];
 	spot->p = get_hit_point(ray, val[TARGET]);
 	spot->normal = pl->normal;
 	_get_plane_uv(spot, pl->center, 10);
@@ -109,34 +94,3 @@ int	ray_at_plane(t_object *obj, t_ray ray, t_moment *spot)
 	flip_normal_face(ray, spot);
 	return (TRUE);
 }
-
-// int	ray_at_plane(t_object *obj, t_ray ray, t_moment *spot) // backup
-// {
-//     t_plane *const	pl = obj->elem;
-//     t_point			hit_p;
-//     t_vector		vec[2];
-//     double			val[3];
-//
-//     val[DENOMINATOR] = vec_dot(ray.dir, pl->normal);
-//     if (fabs(val[DENOMINATOR]) < EPSILON)
-//         return (FALSE);
-//     vec[O_C] = vec_sub(pl->center, ray.orig);
-//     val[NUMERATOR] = vec_dot(vec[O_C], pl->normal);
-//     val[TARGET] = val[NUMERATOR] / val[DENOMINATOR];
-//     if (!is_t_in_range(spot, val[TARGET]))
-//         return (FALSE);
-//     hit_p = ray_at(ray, val[TARGET]);
-//     vec[C_P] = vec_sub(hit_p, pl->center);
-//     if (obj->type & CP && (vec_len_pow(vec[C_P]) > pl->radius * pl->radius))
-//         return (FALSE);
-//     spot->t = val[TARGET];
-//     spot->p = hit_p;
-//     spot->normal = pl->normal;
-//     if (obj->type & PL)
-//         _get_plane_uv(spot, pl->center, 10);
-//     else
-//         _get_cap_uv(spot, pl, 10);
-//     get_bump_rgb(spot, obj);
-//     flip_normal_face(ray, spot);
-//     return (TRUE);
-// }

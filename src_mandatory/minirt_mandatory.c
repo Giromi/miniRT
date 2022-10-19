@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minirt.c                                           :+:      :+:    :+:   */
+/*   minirt_mandatory.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/12 21:38:54 by minsuki2          #+#    #+#             */
-/*   Updated: 2022/10/18 15:03:32 by minsuki2         ###   ########.fr       */
+/*   Updated: 2022/10/19 15:54:12 by sesim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ int	main(int argc, char **argv)
 		ft_strerror("err: wrong arguments");
 	ft_memset(&info, 0, sizeof(t_info));
 	info.mlx.ptr = mlx_init();
-	info.mlx.win = mlx_new_window(info.mlx.ptr, WIN_W, WIN_H, "min!RT");
+	info.mlx.win = mlx_new_window(info.mlx.ptr, WIN_W, WIN_H, "miniRT");
 	info.mlx.img.img_ptr = mlx_new_image(info.mlx.ptr, IMG_W, IMG_H);
 	info.mlx.img.addr = mlx_get_data_addr(info.mlx.img.img_ptr, \
 											&(info.mlx.img.bits_per_pixel), \

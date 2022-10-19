@@ -6,7 +6,7 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/16 18:03:29 by sesim             #+#    #+#             */
-/*   Updated: 2022/10/18 12:16:36 by sesim            ###   ########.fr       */
+/*   Updated: 2022/10/19 14:39:54 by sesim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@
 
 static void	_check_unit(t_vector *res, int flag)
 {
+	t_vector	res_val;
+
 	if (flag == RGB)
 	{
 		if (res->x > 255 || res->x < 0 \
@@ -33,7 +35,8 @@ static void	_check_unit(t_vector *res, int flag)
 		{
 			if (res->x == 0 && res->y == 0 && res->z == 0)
 				ft_strerror("err: normal vector value is zero");
-			*res = vec_unit(vec_init(res->x, res->y, res->z));
+			res_val = vec_init(res->x, res->y, res->z);
+			*res = vec_unit(&res_val);
 		}
 	}
 }

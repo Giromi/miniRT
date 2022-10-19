@@ -6,7 +6,7 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/16 18:07:00 by sesim             #+#    #+#             */
-/*   Updated: 2022/10/18 20:16:56 by minsuki2         ###   ########.fr       */
+/*   Updated: 2022/10/19 16:30:50 by sesim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,19 +22,19 @@ static t_vector	_sigma_brightness(t_info *info, t_light *cur_light)
 		return (vec_init(0, 0, 0));
 	get_specular(info, cur_light, light);
 	brightness = cur_light->brightness * LUMEN;
-	light[COMPUTE] = vec_add(light[DIFFUSE], light[SPECULAR]);
-	return (vec_mul_const(light[COMPUTE], brightness));
+	light[COMPUTE] = vec_add(&light[DIFFUSE], &light[SPECULAR]);
+	return (vec_mul_const(&light[COMPUTE], brightness));
 }
 
-static t_color	_checkerboard_value(t_moment spot)
+static t_color	_checkerboard_value(t_moment *spot)
 {
 	const int		width = 10;
 	const int		height = 10;
-	const double	u2 = floor(spot.u * width);
-	const double	v2 = floor(spot.v * height);
+	const double	u2 = floor(spot->uv_dir[U] * width);
+	const double	v2 = floor(spot->uv_dir[V] * height);
 
 	if (fmod(u2 + v2, 2.) == 0)
-		return (spot.albedo);
+		return (spot->albedo);
 	return (vec_init(1, 1, 1));
 }
 
@@ -43,21 +43,23 @@ t_vector	phong_lighting(t_info *info)
 	t_light		*lights;
 	t_color		color[2];
 	t_vector	vec[3];
+	t_vector	shiness;
 
 	color[LIGHT] = vec_init(0, 0, 0);
 	lights = info->light;
 	while (lights)
 	{
-		color[LIGHT] = vec_add(color[LIGHT], _sigma_brightness(info, lights));
+		shiness = _sigma_brightness(info, lights);
+		color[LIGHT] = vec_add(&color[LIGHT], &shiness);
 		lights = lights->next;
 	}
-	color[LIGHT] = vec_add(color[LIGHT], info->ambient);
-	if (info->spot.checker)
-		color[OBJECT] = _checkerboard_value((info->spot));
+	color[LIGHT] = vec_add(&color[LIGHT], &info->ambient);
+	if (info->spot.checker )
+		color[OBJECT] = _checkerboard_value(&info->spot);
 	else
 		color[OBJECT] = info->spot.albedo;
-	vec[COLOR] = vec_mul(color[LIGHT], color[OBJECT]);
+	vec[COLOR] = vec_mul(&color[LIGHT], &color[OBJECT]);
 	vec[ALBEDO] = vec_min(vec[COLOR], vec_init(1, 1, 1));
-	vec[LIGHT] = vec_mul_const(vec[ALBEDO], 255);
+	vec[LIGHT] = vec_mul_const(&vec[ALBEDO], 255);
 	return (vec[LIGHT]);
 }

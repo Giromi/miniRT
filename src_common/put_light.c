@@ -6,7 +6,7 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/16 18:15:05 by sesim             #+#    #+#             */
-/*   Updated: 2022/10/18 15:32:07 by minsuki2         ###   ########.fr       */
+/*   Updated: 2022/10/19 14:30:32 by sesim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,20 +44,23 @@ static t_light	*_light_init(t_vector l_origin, t_vector l_color, double br)
 
 void	put_a(t_info *info, char **argv, int cnt, int type)
 {
+	t_color	albedo;
 	t_color	color;
 	double	brightness;
 
 	if (cnt != 3 || type != A)
 		ft_strerror("err: wrong 'ambient' element arguments");
 	brightness = ft_atod(argv[1]);
-	color = vec_div_const(ft_atovec(argv[2], RGB), 255);
-	info->ambient = vec_mul_const(color, brightness);
+	color = ft_atovec(argv[2], RGB);
+	albedo = vec_div_const(&color, 255);
+	info->ambient = vec_mul_const(&albedo, brightness);
 }
 
 void	put_l(t_info *info, char **argv, int cnt, int type)
 {
 	t_light		*tmp;
 	t_vector	origin;
+	t_color		albedo;
 	t_color		color;
 	double		brightness;
 
@@ -65,7 +68,8 @@ void	put_l(t_info *info, char **argv, int cnt, int type)
 		ft_strerror("err: wrong 'light' element arguments");
 	origin = ft_atovec(argv[1], XYZ);
 	brightness = ft_atod(argv[2]);
-	color = vec_div_const(ft_atovec(argv[3], RGB), 255);
-	tmp = _light_init(origin, color, brightness);
+	color = ft_atovec(argv[3], RGB);
+	albedo = vec_div_const(&color, 255);
+	tmp = _light_init(origin, albedo, brightness);
 	_light_add(&(info->light), tmp);
 }

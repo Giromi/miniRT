@@ -6,14 +6,14 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/16 17:49:42 by sesim             #+#    #+#             */
-/*   Updated: 2022/10/18 20:41:49 by minsuki2         ###   ########.fr       */
+/*   Updated: 2022/10/19 16:28:04 by sesim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vector.h"
 #include "minirt.h"
 
-static int	_ray_at_obj(t_object *obj, t_ray ray, t_moment *spot)
+static int	_ray_at_obj(t_object *obj, t_ray *ray, t_moment *spot)
 {
 	int	hit_result;
 
@@ -33,7 +33,7 @@ static int	_ray_at_obj(t_object *obj, t_ray ray, t_moment *spot)
 	return (hit_result);
 }
 
-int	is_ray_hit(t_object *obj, t_ray ray, t_moment *spot)
+int	is_ray_hit(t_object *obj, t_ray *ray, t_moment *spot)
 {
 	int	hit_flag;
 
@@ -44,7 +44,7 @@ int	is_ray_hit(t_object *obj, t_ray ray, t_moment *spot)
 		{
 			hit_flag = TRUE;
 			spot->checker = (obj->type & CH);
-			spot->tmax = spot->t;
+			spot->t_[MAX] = spot->t_[VAL];
 		}
 		obj = obj->next;
 	}

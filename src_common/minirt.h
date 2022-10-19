@@ -6,7 +6,7 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 21:10:46 by minsuki2          #+#    #+#             */
-/*   Updated: 2022/10/18 20:36:10 by minsuki2         ###   ########.fr       */
+/*   Updated: 2022/10/19 18:26:09 by sesim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@
 # define LUMEN 3
 # define COMMENT '#'
 
-# define KS 0.1
+# define KS 0.5
 # define KSN 64
 
 enum e_options
@@ -102,6 +102,8 @@ enum e_two_idx
 	C_Q		=		1,
 	C_H		=		1,
 	O_C		=		1,
+	ONE		=		0,
+	TWO		=		1,
 	E_ONE	=		0,
 	E_TWO	=		1,
 	LIGHT	=		0,
@@ -120,6 +122,9 @@ enum e_three_idx
 	V_N			=		0,
 	V_W			=		1,
 	W_N			=		2,
+	MIN			=		0,
+	VAL			=		1,
+	MAX			=		2,
 	CENTER		=		0,
 	COLOR		=		1,
 	ALBEDO		=		2,
@@ -161,7 +166,6 @@ typedef struct s_ray
 
 typedef struct s_cam
 {
-	// struct s_cam	*prev;
 	struct s_cam	*next;
 	t_vector		mlx_vec[2];
 	t_vector		normal;
@@ -195,7 +199,6 @@ typedef t_model		t_conlinder;
 
 typedef struct s_object
 {
-	// struct s_object	*prev;
 	struct s_object	*next;
 	t_image			*bump;
 	t_image			*tex;
@@ -206,16 +209,12 @@ typedef struct s_object
 
 typedef struct s_moment
 {
+	t_vector	e_[2];
 	t_vector	normal;	// 빛의 방향으로 변경
 	t_vector	albedo;
-	t_vector	e1;
-	t_vector	e2;
 	t_point		p;
-	double		tmin;
-	double		tmax;
-	double		t;
-	double		u;
-	double		v;
+	double		t_[3];
+	double		uv_dir[2];
 	int			checker;
 	int			type;
 }	t_moment;
@@ -232,7 +231,6 @@ typedef struct s_info
 {
 	t_moment		spot;
 	t_mlx			mlx;
-	t_image			bump;
 	t_camera		*camera;
 	t_object		*obj;
 	t_light			*light;
@@ -269,23 +267,24 @@ t_conlinder	*cone_init(t_point center, t_vector normal, \
 
 /***** draw funcs *****/
 void		ft_draw(t_info *info, t_mlx *mlx);
-void		flip_normal_face(t_ray ray, t_moment *spot);
+void		flip_normal_face(t_ray *ray, t_moment *spot);
 
 /***** draw utils funcs *****/
 t_vector	convert_color_to_normal(int color);
-int			convert_color(t_vector clr);
+int			convert_color(t_vector *clr);
 
 /***** ray funcs *****/
-int			is_ray_hit(t_object *obj, t_ray ray, t_moment *spot);
-int			ray_at_plane(t_object *obj, t_ray ray, t_moment *spot);
-int			ray_at_cap(t_object *obj, t_ray ray, t_moment *spot);
-int			ray_at_sphere(t_object *obj, t_ray ray, t_moment *spot);
-int			ray_at_conlinder(t_object *obj, t_ray ray, t_moment *spot, \
+int			is_ray_hit(t_object *obj, t_ray *ray, t_moment *spot);
+int			ray_at_plane(t_object *obj, t_ray *ray, t_moment *spot);
+int			ray_at_cap(t_object *obj, t_ray *ray, t_moment *spot);
+int			ray_at_sphere(t_object *obj, t_ray *ray, t_moment *spot);
+int			ray_at_conlinder(t_object *obj, t_ray *ray, t_moment *spot, \
 					void (*get_abc)(double *term, t_ray *ray, t_model *cy));
-int			ray_at_cap(t_object *obj, t_ray ray, t_moment *spot);
-t_point		get_hit_point(t_ray ray, double t);
+int			ray_at_cap(t_object *obj, t_ray *ray, t_moment *spot);
+t_point		get_hit_point(t_ray *ray, double t);
 
 /***** ray utils funcs 1 *****/
+void		get_spot_e_vector(t_moment *spot, t_vector *obj_n, t_vector std_n);
 void		get_bump_rgb(t_moment *spot, t_object *obj);
 int			is_t_in_range(t_moment *spot, double root);
 int			is_h_in_range(t_model *cny, t_ray *ray, t_vector *coor, \
@@ -310,6 +309,9 @@ int			ft_atoi_exit(const char *str);
 t_vector	ft_atovec(char *str, int flag);
 
 
+void		my_mlx_pixel_put(t_image *img, int x, int y, t_color color);
+t_color		cur_point_color(t_info *info);
+void		set_ray_vec(t_ray *ray, t_camera *cam, double u, double v);
 
 void		print_light(t_light *light); // 지워야함
 void		debugPrintVec(char *str, t_vector *vector);
