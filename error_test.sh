@@ -16,6 +16,7 @@ my_minirt()
 	echo "CASE : $i"
 	echo ---------------------------
 	echo
+	cat "$i"
 	./miniRT "$i"
 	echo
 	echo ---------------------------

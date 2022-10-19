@@ -6,7 +6,7 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/12 21:38:54 by minsuki2          #+#    #+#             */
-/*   Updated: 2022/10/19 19:52:09 by minsuki2         ###   ########.fr       */
+/*   Updated: 2022/10/19 20:54:36 by minsuki2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,8 @@ void	slave_whip(t_info *info, t_thread *slave)
 	while (--i)
 		pthread_join(slave[i].hand, NULL);
 	if (check)
-		ft_strerror("err: pthread_create error");
+		ft_strerror("err: pthread_create error");		// error 동시에 join하고 출력하는 함수
+														// or my_pthread_join 만들기
 }
 
 int	main(int argc, char **argv)

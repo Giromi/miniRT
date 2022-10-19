@@ -6,12 +6,12 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/18 12:04:50 by sesim             #+#    #+#             */
-/*   Updated: 2022/10/18 12:15:42 by sesim            ###   ########.fr       */
+/*   Updated: 2022/10/19 21:38:13 by minsuki2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MY_FUNC
-# define MY_FUNC
+#ifndef MY_FUNC_H
+# define MY_FUNC_H
 
 # include "libft.h"
 

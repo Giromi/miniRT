@@ -6,20 +6,19 @@
 #    By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/09 11:16:18 by sesim             #+#    #+#              #
-#    Updated: 2022/10/16 20:10:46 by sesim            ###   ########.fr        #
+#    Updated: 2022/10/19 22:01:03 by minsuki2         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC = cc
 CFLAGS = -Wall -Wextra -Werror -g
 AR = ar rcs
-RM = rm -f
+RM = rm -vf
 NAME = libft.a
 SHELL = /bin/bash
 
 LIBFT_DIR = ./libft_src/
 GNL_DIR = ./gnl_src/
-PRINTF_DIR = ./ft_printf_src/
 
 SRCS = $(LIBFT_DIR)ft_atoi.c \
 	   $(LIBFT_DIR)ft_adtoi.c \
@@ -72,11 +71,6 @@ SRCS = $(LIBFT_DIR)ft_atoi.c \
 	   $(GNL_DIR)get_next_line.c \
 	   $(GNL_DIR)get_one_line.c \
 	   $(GNL_DIR)get_next_line_utils.c \
-	   $(PRINTF_DIR)ft_printf.c \
-	   $(PRINTF_DIR)hex_form.c \
-	   $(PRINTF_DIR)char_form.c \
-	   $(PRINTF_DIR)num_form.c \
-	   $(PRINTF_DIR)unum_form.c
 
 OBJS = $(SRCS:%.c=%.o)
 
@@ -86,13 +80,14 @@ OBJS = $(SRCS:%.c=%.o)
 all : $(NAME)
 
 $(NAME) : $(OBJS)
-	$(AR) $@ $^
+	@$(AR) $@ $^
 
 clean :
-	$(RM) $(OBJS)
+	@echo ">>>>>>libft clean deleted list<<<<<<<"
+	@$(RM) $(OBJS)
 
 fclean : clean
-	$(RM) $(NAME)
+	@$(RM) $(NAME)
 
 re :
 	$(MAKE) fclean
