@@ -6,7 +6,7 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/16 17:58:45 by sesim             #+#    #+#             */
-/*   Updated: 2022/10/19 18:26:29 by sesim            ###   ########.fr       */
+/*   Updated: 2022/10/19 19:13:48 by minsuki2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,18 +46,18 @@ static void	_record_init(t_moment *spot)
 	spot->t_[MAX] = MAX_VIEW;
 }
 
-t_color	cur_point_color(t_info *info)
+t_color	cur_point_color(t_info *info, t_record *rec)
 {
 	t_vector	background[2];
 	t_vector	color[2];
 	double		t;
 
-	_record_init(&(info->spot));
-	if (is_ray_hit(info->obj, &info->ray, &info->spot))
-		return (phong_lighting(info));
+	_record_init(&rec->spot);
+	if (is_ray_hit(info->obj, &rec->ray, &rec->spot))
+		return (phong_lighting(info, rec));
 	else
 	{
-		t = 0.5 * (info->ray.dir.y + 1.0);
+		t = 0.5 * (rec->ray.dir.y + 1.0);
 		color[UP] = vec_init(128, 178, 255);
 		color[DOWN] = vec_init(255, 255, 255);
 		background[UP] = vec_mul_const(&color[UP], t);
@@ -71,6 +71,7 @@ void	ft_draw(t_info *info, t_mlx *mlx)
 	int			idx[2];
 	double		vdx[2];
 	t_color		color;
+	t_record	rec;
 
 	idx[Y] = -1;
 	while (++idx[Y] < WIN_H)
@@ -80,8 +81,8 @@ void	ft_draw(t_info *info, t_mlx *mlx)
 		{
 			vdx[U] = (double)idx[X] / (WIN_W - 1);
 			vdx[V] = (double)idx[Y] / (WIN_H - 1);
-			set_ray_vec(&info->ray, info->camera, vdx[U], vdx[V]);
-			color = cur_point_color(info);
+			set_ray_vec(&rec.ray, info->camera, vdx[U], vdx[V]);
+			color = cur_point_color(info, &rec);
 			my_mlx_pixel_put(&mlx->img, idx[X], (WIN_H - 1 - idx[Y]), color);
 		}
 	}

@@ -6,7 +6,7 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 11:26:26 by sesim             #+#    #+#             */
-/*   Updated: 2022/10/19 18:35:13 by sesim            ###   ########.fr       */
+/*   Updated: 2022/10/19 20:06:56 by minsuki2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,10 @@
 void	*ft_rendering(void *param)
 {
 	t_thread *const	slave = (t_thread *)param;
-	t_info *const	info = slave->info;
 	int				idx[2];
 	double			vdx[2];
 	int				section;
-	// t_color			color;
+	t_color			color;
 
 	section = WIN_H / PHILO_N;
 	idx[Y] = (section * slave->idx) - 1;
@@ -33,10 +32,11 @@ void	*ft_rendering(void *param)
 		{
 			vdx[U] = (double)idx[X] / (WIN_W - 1);
 			vdx[V] = (double)idx[Y] / (WIN_H - 1);
-			set_ray_vec(&info->ray, info->camera, vdx[U], vdx[V]);
-			color = cur_point_color(slave->info);
-			my_mlx_pixel_put(&info->mlx.img, idx[X], (WIN_H - 1 - idx[Y]), color);
+			set_ray_vec(&slave->rec.ray, slave->info->camera, vdx[U], vdx[V]);
+			color = cur_point_color(slave->info, &slave->rec);
+			my_mlx_pixel_put(&slave->info->mlx.img, idx[X], (WIN_H - 1 - idx[Y]), color);
 		}
 	}
+	printf("msg: slave <%d> done\n", slave->idx);
 	return (NULL);
 }

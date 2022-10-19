@@ -6,7 +6,7 @@
 #    By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/18 11:05:23 by sesim             #+#    #+#              #
-#    Updated: 2022/10/19 18:10:49 by sesim            ###   ########.fr        #
+#    Updated: 2022/10/19 19:08:44 by minsuki2         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -108,7 +108,7 @@ all: | $(LIBFT_DIR)$(LIBFT) $(LIBMLX) $(NAME)
 
 $(NAME): $(OBJS)
 	@echo "[$@] linking ..."
-	@$(CC) $(CFLAGS) -o $@ $^ -L. -lmlx -L$(LIBFT_DIR) -lft $(INCS) $(FW_FLAGS)
+	$(CC) $(CFLAGS) -o $@ $^ -L. -lmlx -L$(LIBFT_DIR) -lft $(INCS) $(FW_FLAGS)
 
 $(LIBMLX):
 	@make -C $(LIBMLX_DIR)

@@ -6,7 +6,7 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 21:10:46 by minsuki2          #+#    #+#             */
-/*   Updated: 2022/10/19 18:33:11 by sesim            ###   ########.fr       */
+/*   Updated: 2022/10/19 19:42:14 by minsuki2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,10 @@
 typedef struct s_thread
 {
 	t_info		*info;
-	t_moment	spot;
-	t_ray		ray;
+	t_record	rec;
 	pthread_t	hand;
 	int			idx;
+	int			section;
 }	t_thread;
 
 void	*ft_rendering(void *param);

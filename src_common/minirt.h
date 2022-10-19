@@ -6,7 +6,7 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 21:10:46 by minsuki2          #+#    #+#             */
-/*   Updated: 2022/10/19 18:26:09 by sesim            ###   ########.fr       */
+/*   Updated: 2022/10/19 19:36:07 by minsuki2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -227,15 +227,19 @@ typedef struct s_light
 	double			brightness;
 }	t_light;
 
-typedef struct s_info
+typedef struct s_record
 {
 	t_moment		spot;
+	t_ray			ray;
+}	t_record;
+
+typedef struct s_info
+{
 	t_mlx			mlx;
 	t_camera		*camera;
 	t_object		*obj;
 	t_light			*light;
 	t_color			ambient;
-	t_ray			ray;
 }	t_info;
 
 /***** init funcs *****/
@@ -291,9 +295,9 @@ int			is_h_in_range(t_model *cny, t_ray *ray, t_vector *coor, \
 															t_function *func);
 
 /***** light funcs *****/
-t_vector	phong_lighting(t_info *info);
-int			get_diffuse(t_info *info, t_light *cur_light, t_vector *light);
-void		get_specular(t_info *info, t_light *cur_light, t_vector *light);
+t_vector	phong_lighting(t_info *info, t_record *rec);
+int			get_diffuse(t_object *obj, t_record *rec, t_light *cur_light, t_vector *light);
+void		get_specular(t_record *rec, t_light *cur_light, t_vector *light);
 
 /*****  math funcs  *****/
 void		get_sp_abc(double *term, t_ray *ray, t_model *sp);
@@ -310,7 +314,7 @@ t_vector	ft_atovec(char *str, int flag);
 
 
 void		my_mlx_pixel_put(t_image *img, int x, int y, t_color color);
-t_color		cur_point_color(t_info *info);
+t_color		cur_point_color(t_info *info, t_record *rec);
 void		set_ray_vec(t_ray *ray, t_camera *cam, double u, double v);
 
 void		print_light(t_light *light); // 지워야함
