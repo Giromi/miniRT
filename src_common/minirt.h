@@ -6,7 +6,7 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 21:10:46 by minsuki2          #+#    #+#             */
-/*   Updated: 2022/10/19 19:36:07 by minsuki2         ###   ########.fr       */
+/*   Updated: 2022/10/19 20:35:39 by minsuki2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -315,8 +315,7 @@ t_vector	ft_atovec(char *str, int flag);
 
 void		my_mlx_pixel_put(t_image *img, int x, int y, t_color color);
 t_color		cur_point_color(t_info *info, t_record *rec);
-void		set_ray_vec(t_ray *ray, t_camera *cam, double u, double v);
-
+void		set_ray_vec(t_ray *ray, t_camera *cam, int x, int y);
 void		print_light(t_light *light); // 지워야함
 void		debugPrintVec(char *str, t_vector *vector);
 
