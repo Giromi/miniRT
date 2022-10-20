@@ -6,7 +6,7 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 21:10:46 by minsuki2          #+#    #+#             */
-/*   Updated: 2022/10/20 21:35:42 by minsuki2         ###   ########.fr       */
+/*   Updated: 2022/10/20 23:44:02 by minsuki2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,7 @@ enum e_two_idx
 	DOWN	=		1,
 	HORI	=		0,
 	VERT	=		1,
+	LOOK	=		2,
 	RADIUS	=		0,
 	HEIGHT	=		1,
 	C_P		=		0,
@@ -342,6 +343,7 @@ t_vector	ft_atovec(char *str, int flag);
 void		ft_draw(t_info *info, t_mlx *mlx);
 
 
+int			veccmp(t_vector *vec, t_vector std);
 
 
 void		print_light(t_light *light); // 지워야함
