@@ -6,7 +6,7 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/16 17:58:45 by sesim             #+#    #+#             */
-/*   Updated: 2022/10/19 21:20:32 by minsuki2         ###   ########.fr       */
+/*   Updated: 2022/10/20 15:19:44 by sesim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,46 +68,3 @@ t_color	cur_point_color(t_info *info, t_record *rec)
 		return (vec_add(&background[0], &background[1]));
 	}
 }
-
-void	ft_draw(t_info *info, t_mlx *mlx)
-{
-	int			idx[2];
-	t_color		color;
-	t_record	rec;
-
-	idx[Y] = -1;
-	while (++idx[Y] < WIN_H)
-	{
-		idx[X] = -1;
-		while (++idx[X] < WIN_W)
-		{
-			set_ray_vec(&rec.ray, info->camera, idx[X], idx[Y]);
-			color = cur_point_color(info, &rec);
-			my_mlx_pixel_put(&mlx->img, idx[X], (WIN_H - 1 - idx[Y]), color);
-		}
-	}
-}
-
-// void	ft_draw(t_info *info, t_mlx *mlx)
-// {
-//     int			idx[2];
-//     double		vdx[2];
-//     t_color		color;
-//     t_record	rec;
-//
-//     idx[Y] = -1;
-//     while (++idx[Y] < WIN_H)
-//     {
-//         idx[X] = -1;
-//         while (++idx[X] < WIN_W)
-//         {
-//             vdx[U] = (double)idx[X] / (WIN_W - 1);
-//             vdx[V] = (double)idx[Y] / (WIN_H - 1);
-//             set_ray_vec(&rec.ray, info->camera, vdx);
-//             color = cur_point_color(info, &rec);
-//             my_mlx_pixel_put(&mlx->img, idx[X], (WIN_H - 1 - idx[Y]), color);
-//         }
-//     }
-// }
-//
-//

@@ -6,7 +6,7 @@
 #    By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/18 11:05:23 by sesim             #+#    #+#              #
-#    Updated: 2022/10/19 22:05:40 by minsuki2         ###   ########.fr        #
+#    Updated: 2022/10/20 15:31:55 by sesim            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,10 +33,12 @@ VECTOR_DIR			:=		vector/
 MY_FUNC_DIR			:=		my_funcs/
 
 # Source files
-MANDA_SRCS 			:=		minirt_mandatory.c
+MANDA_SRCS 			:=		minirt_mandatory.c		\
+							mlx_func_mandatory.c
 
 BONUS_SRCS 			:=		minirt_bonus.c			\
-							compute_slave_bonus.c
+							compute_slave_bonus.c	\
+							mlx_func_bonus.c
 
 PARSE_SRCS			:=		put_info.c				\
 							init_func.c				\

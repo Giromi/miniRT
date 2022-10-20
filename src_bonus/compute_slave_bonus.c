@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   compute_slave.c                                    :+:      :+:    :+:   */
+/*   compute_slave_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 11:26:26 by sesim             #+#    #+#             */
-/*   Updated: 2022/10/19 20:35:56 by minsuki2         ###   ########.fr       */
+/*   Updated: 2022/10/20 15:31:28 by sesim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,14 @@
 #include "my_func.h"
 #include "minirt.h"
 #include "minirt_bonus.h"
+#include <unistd.h>
 
-void	*ft_rendering(void *param)
+static void	*_ft_rendering(void *param)
 {
+	t_color			color;
 	t_thread *const	slave = (t_thread *)param;
 	int				idx[2];
 	int				section;
-	t_color			color;
 
 	section = WIN_H / PHILO_N;
 	idx[Y] = (section * slave->idx) - 1;
@@ -35,6 +36,24 @@ void	*ft_rendering(void *param)
 												(WIN_H - 1 - idx[Y]), color);
 		}
 	}
-	printf("msg: slave <%d> done\n", slave->idx);
 	return (NULL);
+}
+
+static void	_my_slave_die(t_thread *slave, char *err, int cnt)
+{
+	while (--cnt)
+		pthread_join(slave[cnt].hand, NULL);
+	ft_strerror(err);
+}
+
+void	slave_whip(t_thread *slave)
+{
+	int	i;
+
+	i = -1;
+	while (++i < PHILO_N)
+		if (pthread_create(&slave[i].hand, NULL, _ft_rendering, &slave[i]))
+			_my_slave_die(slave, "err: pthread_create error", i);
+	while (i--)
+		pthread_join(slave[i].hand, NULL);
 }

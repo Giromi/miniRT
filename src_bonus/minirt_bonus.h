@@ -6,7 +6,7 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 21:10:46 by minsuki2          #+#    #+#             */
-/*   Updated: 2022/10/19 20:49:49 by minsuki2         ###   ########.fr       */
+/*   Updated: 2022/10/20 14:46:37 by sesim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,18 +17,19 @@
 # include "minirt.h"
 
 # ifndef PHILO_N
-#  define PHILO_N 6
+#  define PHILO_N 20
 # endif
 
 typedef struct s_thread
 {
-	t_info		*info;
 	t_record	rec;
+	t_info		*info;
 	pthread_t	hand;
 	int			idx;
 	int			section;
 }	t_thread;
 
-void	*ft_rendering(void *param);
+/*****  thread funcs  *****/
+void	slave_whip(t_thread *slave);
 
 #endif

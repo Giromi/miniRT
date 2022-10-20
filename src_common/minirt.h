@@ -6,7 +6,7 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 21:10:46 by minsuki2          #+#    #+#             */
-/*   Updated: 2022/10/19 20:35:39 by minsuki2         ###   ########.fr       */
+/*   Updated: 2022/10/20 14:31:40 by sesim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -250,7 +250,8 @@ t_conlinder	*cny_init(t_point center, t_vector normal, \
 t_object	*obj_init(t_object_type type, t_vector albedo, t_model *element);
 
 /***** put funcs *****/
-void		put_info(t_info *info, char **argv, int *form_check);
+void		info_init(t_info *info, char *file);
+void		info_error(int *form_check);
 void		put_a(t_info *info, char **argv, int cnt, int type);
 void		put_l(t_info *info, char **argv, int cnt, int type);
 void		put_c(t_info *info, char **argv, int cnt, int type);
@@ -270,7 +271,9 @@ t_conlinder	*cone_init(t_point center, t_vector normal, \
 						double radius, double height);
 
 /***** draw funcs *****/
-void		ft_draw(t_info *info, t_mlx *mlx);
+void		my_mlx_pixel_put(t_image *img, int x, int y, t_color color);
+t_color		cur_point_color(t_info *info, t_record *rec);
+void		set_ray_vec(t_ray *ray, t_camera *cam, int x, int y);
 void		flip_normal_face(t_ray *ray, t_moment *spot);
 
 /***** draw utils funcs *****/
@@ -306,6 +309,9 @@ void		get_cn_abc(double *term, t_ray *ray, t_model *cy);
 int			get_2d_root(t_function	*func, t_ray *ray, t_model *elem, \
 						void (*get_abc)(double *, t_ray *, t_model *));
 
+/*****  mlx funcs  *****/
+int			key_press(int keycode, void *param);
+
 /*****  utils funcs  *****/
 void		is_sign(char *str, int *idx, double *sign);
 double		ft_atod(char *str);
@@ -313,9 +319,13 @@ int			ft_atoi_exit(const char *str);
 t_vector	ft_atovec(char *str, int flag);
 
 
-void		my_mlx_pixel_put(t_image *img, int x, int y, t_color color);
-t_color		cur_point_color(t_info *info, t_record *rec);
-void		set_ray_vec(t_ray *ray, t_camera *cam, int x, int y);
+
+/*****  mandatory funcs  *****/
+void		ft_draw(t_info *info, t_mlx *mlx);
+
+
+
+
 void		print_light(t_light *light); // 지워야함
 void		debugPrintVec(char *str, t_vector *vector);
 

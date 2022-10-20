@@ -6,12 +6,13 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/16 18:11:47 by sesim             #+#    #+#             */
-/*   Updated: 2022/10/19 14:30:50 by sesim            ###   ########.fr       */
+/*   Updated: 2022/10/20 14:14:02 by sesim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vector.h"
 #include "my_func.h"
+#include "get_next_line.h"
 #include "minirt.h"
 
 static int	_check_options(char *format)
@@ -55,7 +56,7 @@ static int	_check_format(char *format, int *form_check)
 	return (bit);
 }
 
-void	put_info(t_info *info, char **argv, int *form_check)
+static void	_put_info(t_info *info, char **argv, int *form_check)
 {
 	static void	(*run[7])(t_info *, char **, int, int) = \
 				{put_a, put_l, put_c, put_pl, put_sp, put_cny};
@@ -74,4 +75,31 @@ void	put_info(t_info *info, char **argv, int *form_check)
 	while (argv[++cnt])
 		;
 	run[idx](info, argv, cnt, type);
+}
+
+void	info_init(t_info *info, char *file)
+{
+	char		**split;
+	char		*line;
+	int			form_check[3];
+	int			fd;
+
+	fd = my_open_rt(file, O_RDONLY);
+	ft_bzero(form_check, sizeof(form_check));
+	line = get_one_line(fd);
+	if (line == NULL)
+		ft_strerror("err: empty file");
+	while (line)
+	{
+		if (line[0] && line[0] != COMMENT)
+		{
+			split = my_split(line, ' ');
+			_put_info(info, split, form_check);
+			split_free(split);
+		}
+		free(line);
+		line = get_one_line(fd);
+	}
+	close(fd);
+	info_error(form_check);
 }

@@ -6,16 +6,15 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/12 21:38:54 by minsuki2          #+#    #+#             */
-/*   Updated: 2022/10/19 20:54:36 by minsuki2         ###   ########.fr       */
+/*   Updated: 2022/10/20 14:46:52 by sesim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vector.h"
 #include "my_func.h"
-#include "get_next_line.h"
 #include "minirt_bonus.h"
 
-static void	_info_error(int *form_check)
+void	info_error(int *form_check)
 {
 	if (form_check[A] != 1)
 		ft_strerror("err: wrong ambeint format");
@@ -25,82 +24,19 @@ static void	_info_error(int *form_check)
 		ft_strerror("err: wrong camera format");
 }
 
-void	info_init(t_info *info, char *file)
+static t_thread	*_slave_hire(t_info *info)
 {
-	char		**split;
-	char		*line;
-	int			form_check[3];
-	int			fd;
-
-	fd = my_open_rt(file, O_RDONLY);
-	ft_bzero(form_check, sizeof(form_check));
-	line = get_one_line(fd);
-	if (line == NULL)
-		ft_strerror("err: empty file");
-	while (line)
-	{
-		if (line[0] && line[0] != COMMENT)
-		{
-			split = my_split(line, ' ');
-			put_info(info, split, form_check);
-			split_free(split);
-		}
-		free(line);
-		line = get_one_line(fd);
-	}
-	close(fd);
-	_info_error(form_check);
-}
-
-void	main_loop(t_info *info, t_mlx *mlx, int key)
-{
-	mlx_destroy_image(mlx->ptr, mlx->img.img_ptr);
-	mlx_clear_window(mlx->ptr, mlx->win);
-	mlx->img.img_ptr = mlx_new_image(mlx->ptr, WIN_W, WIN_H);
-	mlx->img.addr = mlx_get_data_addr(mlx->img.img_ptr, \
-									&(mlx->img.bits_per_pixel), \
-									&(mlx->img.line_length), \
-									&(mlx->img.endian));
-	if (key == 8)
-		info->camera = info->camera->next;
-	ft_draw(info, mlx);
-	mlx_put_image_to_window(mlx->ptr, mlx->win, mlx->img.img_ptr, 0, 0);
-}
-
-int	key_press(int keycode, void *param)
-{
-	t_info *const	info = param;
-
-	if (keycode == KEY_ESC)
-		exit(0);
-	else if (keycode == 8)
-	{
-		printf("C clicked\n");
-		main_loop(info, &info->mlx, keycode);
-	}
-	return (0);
-}
-
-
-void	slave_whip(t_info *info, t_thread *slave)
-{
+	t_thread	*slave;
 	int			i;
-	int			check;
 
+	slave = my_calloc(PHILO_N, sizeof(t_thread));
 	i = -1;
 	while (++i < PHILO_N)
 	{
 		slave[i].idx = i;
 		slave[i].info = info;
-		check = pthread_create(&slave[i].hand, NULL, ft_rendering, &slave[i]);
-		if (check)
-			break ;
 	}
-	while (--i)
-		pthread_join(slave[i].hand, NULL);
-	if (check)
-		ft_strerror("err: pthread_create error");		// error 동시에 join하고 출력하는 함수
-														// or my_pthread_join 만들기
+	return (slave);
 }
 
 int	main(int argc, char **argv)
@@ -119,8 +55,8 @@ int	main(int argc, char **argv)
 											&(info.mlx.img.line_length), \
 											&(info.mlx.img.endian));
 	info_init(&info, argv[1]);
-	slave = my_calloc(PHILO_N, sizeof(t_thread));
-	slave_whip(&info, slave);
+	slave = _slave_hire(&info);
+	slave_whip(slave);
 	mlx_put_image_to_window(info.mlx.ptr, info.mlx.win, \
 							info.mlx.img.img_ptr, 0, 0);
 	mlx_hook(info.mlx.win, EVENT_KEY_PRESS, 0, key_press, slave);

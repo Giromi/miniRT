@@ -6,7 +6,7 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/12 21:38:54 by minsuki2          #+#    #+#             */
-/*   Updated: 2022/10/19 15:54:12 by sesim            ###   ########.fr       */
+/*   Updated: 2022/10/20 14:31:07 by sesim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,7 @@
 #include "get_next_line.h"
 #include "minirt.h"
 
-
-static void	_info_error(int *form_check)
+void	info_error(int *form_check)
 {
 	if (form_check[A] != 1)
 		ft_strerror("err: wrong ambeint format");
@@ -26,60 +25,23 @@ static void	_info_error(int *form_check)
 		ft_strerror("err: wrong camera format");
 }
 
-void	info_init(t_info *info, char *file)
+void	ft_draw(t_info *info, t_mlx *mlx)
 {
-	char		**split;
-	char		*line;
-	int			form_check[3];
-	int			fd;
+	int			idx[2];
+	t_color		color;
+	t_record	rec;
 
-	fd = my_open_rt(file, O_RDONLY);
-	ft_bzero(form_check, sizeof(form_check));
-	line = get_one_line(fd);
-	if (line == NULL)
-		ft_strerror("err: empty file");
-	while (line)
+	idx[Y] = -1;
+	while (++idx[Y] < WIN_H)
 	{
-		if (line[0] && line[0] != COMMENT)
+		idx[X] = -1;
+		while (++idx[X] < WIN_W)
 		{
-			split = my_split(line, ' ');
-			put_info(info, split, form_check);
-			split_free(split);
+			set_ray_vec(&rec.ray, info->camera, idx[X], idx[Y]);
+			color = cur_point_color(info, &rec);
+			my_mlx_pixel_put(&mlx->img, idx[X], (WIN_H - 1 - idx[Y]), color);
 		}
-		free(line);
-		line = get_one_line(fd);
 	}
-	close(fd);
-	_info_error(form_check);
-}
-
-void	main_loop(t_info *info, t_mlx *mlx, int key)
-{
-	mlx_destroy_image(mlx->ptr, mlx->img.img_ptr);
-	mlx_clear_window(mlx->ptr, mlx->win);
-	mlx->img.img_ptr = mlx_new_image(mlx->ptr, WIN_W, WIN_H);
-	mlx->img.addr = mlx_get_data_addr(mlx->img.img_ptr, \
-									&(mlx->img.bits_per_pixel), \
-									&(mlx->img.line_length), \
-									&(mlx->img.endian));
-	if (key == 8)
-		info->camera = info->camera->next;
-	ft_draw(info, mlx);
-	mlx_put_image_to_window(mlx->ptr, mlx->win, mlx->img.img_ptr, 0, 0);
-}
-
-int	key_press(int keycode, void *param)
-{
-	t_info *const	info = param;
-
-	if (keycode == KEY_ESC)
-		exit(0);
-	else if (keycode == 8)
-	{
-		printf("C clicked\n");
-		main_loop(info, &info->mlx, keycode);
-	}
-	return (0);
 }
 
 int	main(int argc, char **argv)
