@@ -6,7 +6,7 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 21:10:46 by minsuki2          #+#    #+#             */
-/*   Updated: 2022/10/20 23:44:02 by minsuki2         ###   ########.fr       */
+/*   Updated: 2022/10/21 00:31:55 by minsuki2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,6 @@ enum e_two_idx
 	DOWN	=		1,
 	HORI	=		0,
 	VERT	=		1,
-	LOOK	=		2,
 	RADIUS	=		0,
 	HEIGHT	=		1,
 	C_P		=		0,
@@ -128,7 +127,7 @@ enum e_two_idx
 	R_HALF	=		0
 };
 
-enum e_three_idx
+enum e_over_three_idx
 {
 	B			=		1,
 	V_N			=		0,
@@ -146,7 +145,10 @@ enum e_three_idx
 	TARGET		=		2,
 	COMPUTE		=		0,
 	DIFFUSE		=		2,
-	SPECULAR	=		3
+	SPECULAR	=		3,
+	EAST_WEST	=		0,
+	SOUTH_NORTH	=		1,
+	UP_DOWN		=		2
 };
 
 typedef int			t_object_type;

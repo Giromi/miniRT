@@ -6,7 +6,7 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 15:34:56 by sesim             #+#    #+#             */
-/*   Updated: 2022/10/20 23:52:32 by minsuki2         ###   ########.fr       */
+/*   Updated: 2022/10/21 01:16:34 by minsuki2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,29 +106,40 @@ int		is_couple_rot_key(int old_key, int key)
 // }
 //
 //
-void	get_local_lhv(t_camera *cam, t_vector view_vec[2])
+void	get_local_e_w_s_n_u_d(t_camera *cam, t_vector view_vec[2])
 {
-	if (veccmp(&view_vec[LOOK], vec_init(0, 0, -1)))
-		view_vec[HORI] = vec_init(1, 0, 0);
-	else if (veccmp(&view_vec[LOOK], vec_init(0, 0, 1)))
-		view_vec[HORI] = vec_init(-1, 0, 0);
-	else if (veccmp(&view_vec[LOOK], vec_init(-1, 0, 0)))
-		view_vec[HORI] = vec_init(0, 0, -1);
-	else if (veccmp(&view_vec[LOOK], vec_init(1, 0, 0)))
-		view_vec[HORI] = vec_init(0, 0, 1);
-	view_vec[HORI] = vec_mul_const(&view_vec[HORI], WEIGHT_VAL_TRANSLATED_CAM);
-	view_vec[VERT] = vec_init(0, 1, 0);
-	view_vec[LOOK] = cam->normal;
+	int i;
+
+	if (veccmp(&cam->normal, vec_init(0, 0, -1))
+		|| veccmp(&cam->normal, vec_init(0, 1, 0))
+		|| veccmp(&cam->normal, vec_init(0, -1, 0)))
+		view_vec[EAST_WEST] = vec_init(1, 0, 0);
+	else if (veccmp(&cam->normal, vec_init(0, 0, 1)))
+		view_vec[EAST_WEST] = vec_init(-1, 0, 0);
+	else if (veccmp(&cam->normal, vec_init(-1, 0, 0)))
+		view_vec[EAST_WEST] = vec_init(0, 0, -1);
+	else if (veccmp(&cam->normal, vec_init(1, 0, 0)))
+		view_vec[EAST_WEST] = vec_init(0, 0, 1);
+
+	if (veccmp(&cam->normal, vec_init(0, -1, 0)) \
+		|| (veccmp(&cam->normal, vec_init(0, 1, 0))))
+		view_vec[SOUTH_NORTH] = vec_init(0, 0, -1);
+	else
+		view_vec[SOUTH_NORTH] = cam->normal;
+	view_vec[UP_DOWN] = vec_init(0, 1, 0);
+	i = -1;
+	while (++i < 3)
+		view_vec[i] = vec_mul_const(&view_vec[i], WEIGHT_VAL_TRANSLATED_CAM);
 }
 
 
 static void	_translate_camera(t_camera *cam, int old_key, int key)
 {
 	t_vector	view_vec[3];
-	// if (key != KEY_W && key != KEY_A && key != KEY_S && key != KEY_D && \
-	// 		key != KEY_SPC && key != KEY_C)
-	// 	return ;
-	get_local_lhv(cam, view_vec);
+
+	if (!is_translate_key(key) && !is_rotate_key(key) && !is_view_key(key))
+		return ;
+	get_local_e_w_s_n_u_d(cam, view_vec);
 	if (key == 29)
 	{
 		cam->normal = vec_mul_const(&cam->normal, -1);
@@ -136,35 +147,47 @@ static void	_translate_camera(t_camera *cam, int old_key, int key)
 			cam->old_normal = cam->normal;
 	}
 	if (key == 18)
-		cam->old_normal = vec_init(0, 0, -1);
+		cam->old_normal = vec_init(0, 0, (cam->normal.z >= 0) - (cam->normal.z < 0));
 	else if (key == 19)
-		cam->old_normal = vec_init(-1, 0, 0);
+		cam->old_normal = vec_init((cam->normal.x >= 0) - (cam->normal.x < 0), 0, 0);
 	else if (key == 20)
-		cam->old_normal = vec_init(0, -1, 0);
+		cam->old_normal = vec_init(0, (cam->normal.y >= 0) - (cam->normal.y < 0), 0);
+	// -> 바라보는 방향으로 초기화 해주기(바꾸고 싶다면 0 버튼 누르기)
 
 	if (is_view_key(key) || is_translate_key(key) \
 		|| (is_rotate_key(key) && !is_couple_rot_key(old_key, key)))
 		cam->normal = cam->old_normal;
+	// -> 사용자가 움직이려고 하면 최대한
+	// 일단 첫트에서만 이렇게 오일러 회전으로 통과하기
 
 		// if (veccmp(&cam->normal, vec_init(0, 0, -1)))
 	if (key == KEY_W)
-		cam->orig = vec_add(&cam->orig, &view_vec[LOOK]);
-		// cam->orig.z += ((cam->normal.z > 0) - (cam->normal.z < 0)) * WEIGHT_VAL_TRANSLATED_CAM;
+		cam->orig = vec_add(&cam->orig, &view_vec[SOUTH_NORTH]);
 	else if (key == KEY_S)
-		cam->orig = vec_sub(&cam->orig, &view_vec[LOOK]);
-		// cam->orig.z -= ((cam->normal.z > 0) - (cam->normal.z < 0)) * WEIGHT_VAL_TRANSLATED_CAM;
+		cam->orig = vec_sub(&cam->orig, &view_vec[SOUTH_NORTH]);
 	else if (key == KEY_A)
-		cam->orig = vec_sub(&cam->orig, &view_vec[HORI]);
-		// cam->orig.x += ((cam->normal.x > 0) - (cam->normal.x < 0)) * WEIGHT_VAL_TRANSLATED_CAM;
+		cam->orig = vec_sub(&cam->orig, &view_vec[EAST_WEST]);
 	else if (key == KEY_D)
-		cam->orig = vec_add(&cam->orig, &view_vec[HORI]);
-		// cam->orig.x -= ((cam->normal.x > 0) - (cam->normal.x < 0)) * WEIGHT_VAL_TRANSLATED_CAM;
+		cam->orig = vec_add(&cam->orig, &view_vec[EAST_WEST]);
 	else if (key == KEY_SPC)
-		cam->orig = vec_add(&cam->orig, &view_vec[VERT]);
-		// cam->orig.y += ((cam->normal.y > 0) - (cam->normal.y < 0)) * WEIGHT_VAL_TRANSLATED_CAM;
+		cam->orig = vec_add(&cam->orig, &view_vec[UP_DOWN]);
 	else if (key == KEY_C)
-		cam->orig = vec_sub(&cam->orig, &view_vec[VERT]);
-		// cam->orig.y -= ((cam->normal.y > 0) - (cam->normal.y < 0)) * WEIGHT_VAL_TRANSLATED_CAM;
+		cam->orig = vec_sub(&cam->orig, &view_vec[UP_DOWN]);
+	//		-> 만약에 마크처럼 움직이고 싶으면 이걸 사용
+
+	// if (key == KEY_W)
+	//     // cam->orig.z += ((cam->normal.z > 0) - (cam->normal.z < 0)) * WEIGHT_VAL_TRANSLATED_CAM;
+	// else if (key == KEY_S)
+	//     // cam->orig.z -= ((cam->normal.z > 0) - (cam->normal.z < 0)) * WEIGHT_VAL_TRANSLATED_CAM;
+	// else if (key == KEY_A)
+	//     // cam->orig.x += ((cam->normal.x > 0) - (cam->normal.x < 0)) * WEIGHT_VAL_TRANSLATED_CAM;
+	// else if (key == KEY_D)
+	//     // cam->orig.x -= ((cam->normal.x > 0) - (cam->normal.x < 0)) * WEIGHT_VAL_TRANSLATED_CAM;
+	// else if (key == KEY_SPC)
+	//     // cam->orig.y += ((cam->normal.y > 0) - (cam->normal.y < 0)) * WEIGHT_VAL_TRANSLATED_CAM;
+	// else if (key == KEY_C)
+	//     // cam->orig.y -= ((cam->normal.y > 0) - (cam->normal.y < 0)) * WEIGHT_VAL_TRANSLATED_CAM;
+	//     -> 만약에 그냥 그대로 더해주고 싶으면 이걸 사용...
 
 	// || (is_rotate_key(key) && old != key) <- 그냥 이렇게?
 	if (key == KEY_UP)
@@ -190,6 +213,7 @@ static void	_translate_camera(t_camera *cam, int old_key, int key)
 	// cam->normal.y += 2 * (cam->normal.y < -1) - 2 * (cam->normal.y > 1);
 	// cam->normal.z += 2 * (cam->normal.y < -1) - 2 * (cam->normal.y > 1);
 	debugPrintVec("normal", &cam->normal);
+	debugPrintVec("old_normal", &cam->old_normal);
 	cam->start_point = vec_once_add_point(cam->orig, \
 									&cam->mlx_vec[R_HALF][HORI], \
 									&cam->mlx_vec[R_HALF][VERT], &cam->normal);

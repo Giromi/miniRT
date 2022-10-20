@@ -6,7 +6,7 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 21:25:13 by minsuki2          #+#    #+#             */
-/*   Updated: 2022/10/20 22:01:28 by minsuki2         ###   ########.fr       */
+/*   Updated: 2022/10/21 01:02:35 by minsuki2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,11 +48,27 @@ int	veccmp(t_vector *vec, t_vector std)
 	return (vec->x == std.x && vec->y == std.y && vec->z == std.z);
 }
 
-t_vector	is_vec_std(t_vector *vec, t_vector std)
+// t_vector	is_vec_std(t_vector *vec, t_vector std)
+// {
+//     if (veccmp(vec, std))
+//         return (std);
+//     return (vec_init(0, 0, 0));
+// }
+
+void	set_old_normal_vec(t_camera *cam)
 {
-	if (vec->x == std.x && vec->y == std.y && vec->z == std.z)
-		return (std);
-	return (vec_init(0, 0, 0));
+	if (veccmp(&cam->normal, vec_init(1, 0, 0)))
+		cam->old_normal = vec_init(1, 0, 0);
+	else if (veccmp(&cam->normal, vec_init(-1, 0, 0)))
+		cam->old_normal = vec_init(-1, 0, 0);
+	else if (veccmp(&cam->normal, vec_init(0, 1, 0)))
+		cam->old_normal = vec_init(0, 1, 0);
+	else if (veccmp(&cam->normal, vec_init(0, -1, 0)))
+		cam->old_normal = vec_init(0, -1, 0);
+	else if (veccmp(&cam->normal, vec_init(0, 0, 1)))
+		cam->old_normal = vec_init(0, 0, 1);
+	else if (veccmp(&cam->old_normal, vec_init(0, 0, 0)))
+		cam->old_normal = vec_init(0, 0, -1);
 }
 
 static t_camera	*_camera_init(t_point coor, t_vector normal, int fov)
@@ -67,14 +83,7 @@ static t_camera	*_camera_init(t_point coor, t_vector normal, int fov)
 	init->start_point = vec_once_add_point(init->orig, \
 									&init->mlx_vec[R_HALF][HORI], \
 									&init->mlx_vec[R_HALF][VERT], &normal);
-	init->old_normal = is_vec_std(&init->normal, vec_init(1, 0, 0));
-	init->old_normal = is_vec_std(&init->normal, vec_init(0, 1, 0));
-	init->old_normal = is_vec_std(&init->normal, vec_init(0, 0, 1));
-	init->old_normal = is_vec_std(&init->normal, vec_init(-1, 0, 0));
-	init->old_normal = is_vec_std(&init->normal, vec_init(0, -1, 0));
-	// fmax(init->normal)
-	if (veccmp(&init->old_normal, vec_init(0, 0, 0)))
-		init->old_normal = vec_init(0, 0, -1);
+	set_old_normal_vec(init);
 	return (init);
 }
 
