@@ -6,7 +6,7 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/16 17:58:45 by sesim             #+#    #+#             */
-/*   Updated: 2022/10/20 15:19:44 by sesim            ###   ########.fr       */
+/*   Updated: 2022/10/20 17:20:33 by sesim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,8 @@ void	set_ray_vec(t_ray *ray, t_camera *cam, int x, int y)
 	ray->orig = cam->orig;
 	vdx[U] = (double)x / (WIN_W - 1);
 	vdx[V] = (double)y / (WIN_H - 1);
-	ray_vec[U] = vec_mul_const(&cam->mlx_vec[U], vdx[U]);
-	ray_vec[V] = vec_mul_const(&cam->mlx_vec[V], vdx[V]);
+	ray_vec[U] = vec_mul_const(&cam->mlx_vec[VAL][U], vdx[U]);
+	ray_vec[V] = vec_mul_const(&cam->mlx_vec[VAL][V], vdx[V]);
 	rev_orig = vec_mul_const(&cam->orig, -1);
 	ray->dir = vec_once_add_point(cam->start_point, &ray_vec[U], &ray_vec[V], \
 									&rev_orig);

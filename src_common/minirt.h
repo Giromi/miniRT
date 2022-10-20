@@ -6,7 +6,7 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 21:10:46 by minsuki2          #+#    #+#             */
-/*   Updated: 2022/10/20 14:31:40 by sesim            ###   ########.fr       */
+/*   Updated: 2022/10/20 18:54:32 by sesim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@
 
 # define KS 0.5
 # define KSN 64
+# define WEIGHT_VAL_TRANSLATED_CAM	0.3
+# define WEIGHT_VAL_ROTATED_CAM	0.2
 
 enum e_options
 {
@@ -71,13 +73,21 @@ enum e_keycode
 	KEY_A			=		0,
 	KEY_S			=		1,
 	KEY_D			=		2,
+	KEY_C			=		8,
 	KEY_Q			=		12,
 	KEY_W			=		13,
 	KEY_E			=		14,
 	KEY_R			=		15,
 	KEY_I			=		34,
+	KEY_V			=		9,
+	KEY_SHIFT		=		57,
+	KEY_SPC			=		49,
+	KEY_CTRL		=		256,
+	KEY_COMMA		=		43,
+	KEY_DOT			=		47,
 	KEY_TAB			=		48
 };
+
 
 enum e_tool
 {
@@ -113,7 +123,8 @@ enum e_two_idx
 	LEN		=		0,
 	KD		=		1,
 	GAP		=		0,
-	OFFSET	=		1
+	OFFSET	=		1,
+	R_HALF	=		0
 };
 
 enum e_three_idx
@@ -166,8 +177,9 @@ typedef struct s_ray
 
 typedef struct s_cam
 {
+	struct s_cam	*prev;
 	struct s_cam	*next;
-	t_vector		mlx_vec[2];
+	t_vector		mlx_vec[2][2];
 	t_vector		normal;
 	t_point			orig;
 	t_point			start_point;
@@ -199,6 +211,7 @@ typedef t_model		t_conlinder;
 
 typedef struct s_object
 {
+	struct s_object	*prev;
 	struct s_object	*next;
 	t_image			*bump;
 	t_image			*tex;
@@ -310,7 +323,10 @@ int			get_2d_root(t_function	*func, t_ray *ray, t_model *elem, \
 						void (*get_abc)(double *, t_ray *, t_model *));
 
 /*****  mlx funcs  *****/
-int			key_press(int keycode, void *param);
+void		set_mlx_vector_r_half(t_vector mlx_vec[2][2], t_vector cam_normal,
+					double *viewport);
+int			key_compatible_param(int keycode, void *param);
+void		key_event(t_info *info, int key);
 
 /*****  utils funcs  *****/
 void		is_sign(char *str, int *idx, double *sign);
@@ -328,5 +344,6 @@ void		ft_draw(t_info *info, t_mlx *mlx);
 
 void		print_light(t_light *light); // 지워야함
 void		debugPrintVec(char *str, t_vector *vector);
+void	print_prev_cam(t_camera *cam); // 지워야함
 
 #endif

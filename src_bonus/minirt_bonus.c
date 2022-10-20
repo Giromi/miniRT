@@ -6,7 +6,7 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/12 21:38:54 by minsuki2          #+#    #+#             */
-/*   Updated: 2022/10/20 14:46:52 by sesim            ###   ########.fr       */
+/*   Updated: 2022/10/20 16:56:15 by sesim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ int	main(int argc, char **argv)
 	slave_whip(slave);
 	mlx_put_image_to_window(info.mlx.ptr, info.mlx.win, \
 							info.mlx.img.img_ptr, 0, 0);
-	mlx_hook(info.mlx.win, EVENT_KEY_PRESS, 0, key_press, slave);
+	mlx_hook(info.mlx.win, EVENT_KEY_PRESS, 0, key_compatible_param, slave);
 	mlx_loop(info.mlx.ptr);
 	return (0);
 }

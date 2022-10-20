@@ -6,7 +6,7 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/16 17:49:42 by sesim             #+#    #+#             */
-/*   Updated: 2022/10/20 14:47:35 by sesim            ###   ########.fr       */
+/*   Updated: 2022/10/20 16:13:04 by sesim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,18 +35,22 @@ static int	_ray_at_obj(t_object *obj, t_ray *ray, t_moment *spot)
 
 int	is_ray_hit(t_object *obj, t_ray *ray, t_moment *spot)
 {
-	int	hit_flag;
+	t_object	*curr;
+	int			hit_flag;
 
 	hit_flag = FALSE;
-	while (obj)
+	curr = obj;
+	while (curr)
 	{
-		if (_ray_at_obj(obj, ray, spot))
+		if (_ray_at_obj(curr, ray, spot))
 		{
 			hit_flag = TRUE;
-			spot->checker = (obj->type & CH);
+			spot->checker = (curr->type & CH);
 			spot->t_[MAX] = spot->t_[VAL];
 		}
-		obj = obj->next;
+		curr = curr->next;
+		if (curr == obj)
+			break ;
 	}
 	return (hit_flag);
 }

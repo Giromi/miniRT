@@ -6,7 +6,7 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 21:23:01 by minsuki2          #+#    #+#             */
-/*   Updated: 2022/10/20 14:04:07 by sesim            ###   ########.fr       */
+/*   Updated: 2022/10/20 16:17:20 by sesim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,17 +55,24 @@ void	bump_init(t_mlx *mlx, t_object *new, char **argv, int cnt)
 
 void	obj_add(t_object **list, t_object *new)
 {
-	t_object	*spot;
+	t_object	*curr;
 
 	if (list == NULL)
 		return ;
 	if (*list == NULL)
 	{
 		*list = new;
-		return ;
+		(*list)->next = *list;
+		(*list)->prev = *list;
 	}
-	spot = *list;
-	while (spot->next)
-		spot = spot->next;
-	spot->next = new;
+	else
+	{
+		curr = *list;
+		while (curr->next && curr->next != *list)
+			curr = curr->next;
+		curr->next = new;
+		new->next = *list;
+		new->prev = curr;
+		(*list)->prev = new;
+	}
 }

@@ -36,6 +36,30 @@ void debugPrintDouble(char *str1, char *str2, double a, double b)
 	printf("%s = %lf\n", str2, b);
 }
 
+void	print_prev_cam(t_camera *cam) // 지워야함
+{
+	t_camera	*curr;
+
+	curr = cam;
+	printf("==========print_cam start==========\n");
+	while (curr)
+	{
+		printf("-------CAM------\n");
+		printf("orign x : %lf ", (curr->orig.x));
+		printf("orign y : %lf ", (curr->orig.y));
+		printf("orign z : %lf \n", (curr->orig.z));
+		printf("viewport_w : %lf \n", (curr->viewport[0]));
+		printf("viewport_h : %lf \n", (curr->viewport[1]));
+		printf("normal x : %lf ", curr->normal.x);
+		printf("normal y : %lf ", curr->normal.y);
+		printf("normal z : %lf \n", curr->normal.z);
+		if (curr->prev == cam)
+			break ;
+		curr = curr->prev;
+	}
+	printf("==========print_cam end==========\n");
+}
+
 void	print_cam(t_camera *cam) // 지워야함
 {
 	t_camera	*curr;
