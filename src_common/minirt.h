@@ -6,7 +6,7 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 21:10:46 by minsuki2          #+#    #+#             */
-/*   Updated: 2022/10/21 00:31:55 by minsuki2         ###   ########.fr       */
+/*   Updated: 2022/10/21 01:55:01 by minsuki2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@
 # define KS 0.5
 # define KSN 64
 # define WEIGHT_VAL_TRANSLATED_CAM	0.3
-# define WEIGHT_VAL_ROTATED_CAM	0.2
+# define WEIGHT_VAL_ROTATED_CAM	30
 
 enum e_options
 {
