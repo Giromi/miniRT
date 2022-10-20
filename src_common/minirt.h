@@ -6,7 +6,7 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 21:10:46 by minsuki2          #+#    #+#             */
-/*   Updated: 2022/10/20 18:54:32 by sesim            ###   ########.fr       */
+/*   Updated: 2022/10/20 21:35:42 by minsuki2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,6 +167,7 @@ typedef struct s_mlx
 	t_image	img;
 	void	*ptr;
 	void	*win;
+	int		old_key;
 }	t_mlx;
 
 typedef struct s_ray
@@ -181,6 +182,7 @@ typedef struct s_cam
 	struct s_cam	*next;
 	t_vector		mlx_vec[2][2];
 	t_vector		normal;
+	t_vector		old_normal;
 	t_point			orig;
 	t_point			start_point;
 	double			viewport[2];

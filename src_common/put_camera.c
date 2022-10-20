@@ -6,7 +6,7 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 21:25:13 by minsuki2          #+#    #+#             */
-/*   Updated: 2022/10/20 17:56:05 by sesim            ###   ########.fr       */
+/*   Updated: 2022/10/20 22:01:28 by minsuki2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,18 @@ void	set_viewport(double *viewport, int fov)
 	viewport[H] = viewport[W] * WIN_H / WIN_W;
 }
 
+int	veccmp(t_vector *vec, t_vector std)
+{
+	return (vec->x == std.x && vec->y == std.y && vec->z == std.z);
+}
+
+t_vector	is_vec_std(t_vector *vec, t_vector std)
+{
+	if (vec->x == std.x && vec->y == std.y && vec->z == std.z)
+		return (std);
+	return (vec_init(0, 0, 0));
+}
+
 static t_camera	*_camera_init(t_point coor, t_vector normal, int fov)
 {
 	t_camera	*init;
@@ -55,6 +67,14 @@ static t_camera	*_camera_init(t_point coor, t_vector normal, int fov)
 	init->start_point = vec_once_add_point(init->orig, \
 									&init->mlx_vec[R_HALF][HORI], \
 									&init->mlx_vec[R_HALF][VERT], &normal);
+	init->old_normal = is_vec_std(&init->normal, vec_init(1, 0, 0));
+	init->old_normal = is_vec_std(&init->normal, vec_init(0, 1, 0));
+	init->old_normal = is_vec_std(&init->normal, vec_init(0, 0, 1));
+	init->old_normal = is_vec_std(&init->normal, vec_init(-1, 0, 0));
+	init->old_normal = is_vec_std(&init->normal, vec_init(0, -1, 0));
+	// fmax(init->normal)
+	if (veccmp(&init->old_normal, vec_init(0, 0, 0)))
+		init->old_normal = vec_init(0, 0, -1);
 	return (init);
 }
 
