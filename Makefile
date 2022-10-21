@@ -6,7 +6,7 @@
 #    By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/18 11:05:23 by sesim             #+#    #+#              #
-#    Updated: 2022/10/20 17:31:45 by sesim            ###   ########.fr        #
+#    Updated: 2022/10/21 15:50:46 by sesim            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -74,10 +74,13 @@ MY_FUNC_SRCS		:=		my_alloc_func.c			\
 
 MLX_FUNC_SRCS		:=		mlx_key_func.c
 
+ROT_FUNC_SRCS		:=		rotate_func.c
+
 INTER_SRCS			:= 		$(UTIL_SRCS)									\
 							$(PARSE_SRCS)									\
 							$(LIGHT_SRCS)									\
 							$(MLX_FUNC_SRCS)									\
+							$(ROT_FUNC_SRCS)									\
 							$(addprefix $(MY_FUNC_DIR), $(MY_FUNC_SRCS))	\
 							$(addprefix $(VECTOR_DIR), $(VECTOR_SRCS))
 

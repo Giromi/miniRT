@@ -6,7 +6,7 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 21:10:46 by minsuki2          #+#    #+#             */
-/*   Updated: 2022/10/19 13:38:55 by sesim            ###   ########.fr       */
+/*   Updated: 2022/10/21 15:44:17 by sesim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,13 @@ typedef struct s_vec
 
 typedef t_vector	t_color;
 typedef t_vector	t_point;
+typedef t_vector	t_matrix;
 
 /***** vector funcs *****/
 t_vector	vec_once_add_point(t_point o, t_vector *a, \
 								t_vector *b, t_vector *c);
 t_vector	vec_mul_const(t_vector *u, double n);
+t_vector	vec_mul_matrix(t_matrix *matrix, t_vector *n);
 t_vector	vec_div_const(t_vector *u, double n);
 t_vector	vec_cross(t_vector *u, t_vector *v);
 t_vector	vec_init(double x, double y, double z);

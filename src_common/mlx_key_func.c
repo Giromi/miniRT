@@ -6,36 +6,38 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 15:34:56 by sesim             #+#    #+#             */
-/*   Updated: 2022/10/20 18:59:42 by sesim            ###   ########.fr       */
+/*   Updated: 2022/10/21 17:07:54 by sesim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vector.h"
 #include "my_func.h"
+#include "rotation_func.h"
+#include "mlx.h"
 #include "minirt.h"
 
-void	rot_z_axis(t_vector *normal, double theta)
-{
-	double	x;
-	double	y;
+// void	rot_z_axis(t_vector *normal, double theta)
+// {
+// 	double	x;
+// 	double	y;
 
-	x = normal->x;
-	y = normal->y;
-	normal->x = x * cos(theta * M_PI / 180) - y * sin(theta * M_PI / 180);
-	normal->y = x * sin(theta * M_PI / 180) + y * cos(theta * M_PI / 180);
-}
+// 	x = normal->x;
+// 	y = normal->y;
+// 	normal->x = x * cos(theta * M_PI / 180) - y * sin(theta * M_PI / 180);
+// 	normal->y = x * sin(theta * M_PI / 180) + y * cos(theta * M_PI / 180);
+// }
 
-void	rot_y_axis(t_vector *normal, double theta)
-{
-	double	z;
-	double	x;
+// void	rot_y_axis(t_vector *normal, double theta)
+// {
+// 	double	z;
+// 	double	x;
 
-	z = normal->z;
-	x = normal->x;
+// 	z = normal->z;
+// 	x = normal->x;
 	
-	normal->x = x * cos(theta * M_PI / 180) + z * sin(theta * M_PI / 180);
-	normal->z = -x * sin(theta * M_PI / 180) + z * cos(theta * M_PI / 180);
-}
+// 	normal->x = x * cos(theta * M_PI / 180) + z * sin(theta * M_PI / 180);
+// 	normal->z = -x * sin(theta * M_PI / 180) + z * cos(theta * M_PI / 180);
+// }
 
 void	rot_x_axis(t_vector *normal, double theta)
 {
@@ -46,6 +48,20 @@ void	rot_x_axis(t_vector *normal, double theta)
 	z = normal->z;
 	normal->y = y * cos(theta * M_PI / 180) - z * sin(theta * M_PI / 180);
 	normal->z = y * sin(theta * M_PI / 180) + z * cos(theta * M_PI / 180);
+}
+
+int	is_rotate_key(int key)
+{
+	return (key == KEY_UP || key == KEY_DOWN \
+			|| key == KEY_LEFT || key == KEY_RIGHT \
+			|| key == KEY_COMMA || key == KEY_DOT);
+}
+
+int	is_translate_key(int key)
+{
+	return (key == KEY_W || key == KEY_S \
+			|| key == KEY_A || key == KEY_D \
+			|| key == KEY_SPC || key == KEY_C);
 }
 
 static void	_change_camera(t_info *info, int key)
@@ -81,19 +97,21 @@ static void	_translate_camera(t_camera *cam, int key)
 	cam->orig.y += (key == KEY_SPC) * WEIGHT_VAL_TRANSLATED_CAM;
 	cam->orig.y -= (key == KEY_CTRL) * WEIGHT_VAL_TRANSLATED_CAM;
 
+	
 	if (key == KEY_UP)
-		rot_x_axis(&cam->normal, 30);
+		q_rotation(cam, 30.0, PITCH);
 	else if (key == KEY_DOWN)
+		q_rotation(cam, -30.0, PITCH);
+	else if (key == KEY_LEFT)
 		rot_x_axis(&cam->normal, -30);
-	// else if (key == KEY_LEFT)
-	// 	rot_z_axis(&cam->normal, -30);
-	// else if (key == KEY_RIGHT)
-	// 	rot_z_axis(&cam->normal, 30);
-	else if (key == KEY_COMMA)
-		rot_y_axis(&cam->normal, -30);
-	else if (key == KEY_DOT)
-		rot_y_axis(&cam->normal, 30);
-	if (key == KEY_UP || key == KEY_DOWN || key == KEY_LEFT || key == KEY_RIGHT || key == KEY_COMMA || key == KEY_DOT)
+	else if (key == KEY_RIGHT)
+		rot_x_axis(&cam->normal, 30);
+	printf("normal : %lf %lf %lf\n", cam->normal.x, cam->normal.y, cam->normal.z);
+	// else if (key == KEY_COMMA)
+	// 	rot_y_axis(&cam->normal, -30);
+	// else if (key == KEY_DOT)
+	// 	rot_y_axis(&cam->normal, 30);
+	if (is_translate_key(key) || is_rotate_key(key))
 		set_mlx_vector_r_half(cam->mlx_vec, cam->normal, cam->viewport);
 
 	// cam->normal.y += (key == KEY_UP) * WEIGHT_VAL_ROTATED_CAM;

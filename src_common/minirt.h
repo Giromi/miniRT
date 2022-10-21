@@ -6,7 +6,7 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 21:10:46 by minsuki2          #+#    #+#             */
-/*   Updated: 2022/10/20 18:54:32 by sesim            ###   ########.fr       */
+/*   Updated: 2022/10/21 15:37:06 by sesim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ enum e_return_val
 {
 	ERROR = -1,
 	FALSE,
-	TRUE,
+	TRUE
 };
 
 enum e_event
@@ -183,6 +183,7 @@ typedef struct s_cam
 	t_vector		normal;
 	t_point			orig;
 	t_point			start_point;
+	double			q_comp[4];
 	double			viewport[2];
 	double			focal_len;
 	int				fov;
@@ -190,11 +191,11 @@ typedef struct s_cam
 
 typedef struct s_func
 {
+	t_point	hit_p;
 	double	term[3];
 	double	root[2];
 	double	h_prime;
 	int		idx;
-	t_point	hit_p;
 }	t_function;
 
 typedef struct s_model

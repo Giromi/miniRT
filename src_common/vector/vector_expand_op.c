@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   vector2.c                                          :+:      :+:    :+:   */
+/*   vector_expand_op.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/16 18:30:32 by sesim             #+#    #+#             */
-/*   Updated: 2022/10/19 13:37:16 by sesim            ###   ########.fr       */
+/*   Updated: 2022/10/21 18:22:58 by sesim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,16 @@ t_vector	vec_mul_const(t_vector *u, double n)
 	init.x = u->x * n;
 	init.y = u->y * n;
 	init.z = u->z * n;
+	return (init);
+}
+
+t_vector	vec_mul_matrix(t_matrix *matrix, t_vector *n)
+{
+	t_vector	init;
+
+	init.x = n->x * matrix[0].x + n->y * matrix[0].y + n->z * matrix[0].z;
+	init.y = n->x * matrix[1].x + n->y * matrix[1].y + n->z * matrix[1].z;
+	init.z = n->x * matrix[2].x + n->y * matrix[2].y + n->z * matrix[2].z;
 	return (init);
 }
 

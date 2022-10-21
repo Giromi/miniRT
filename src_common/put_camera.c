@@ -6,7 +6,7 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 21:25:13 by minsuki2          #+#    #+#             */
-/*   Updated: 2022/10/20 17:56:05 by sesim            ###   ########.fr       */
+/*   Updated: 2022/10/21 14:54:27 by sesim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ static t_camera	*_camera_init(t_point coor, t_vector normal, int fov)
 	t_camera	*init;
 
 	init = (t_camera *)my_calloc(1, sizeof(t_camera));
+	init->q_comp[W] = 1;
 	init->orig = coor;
 	init->normal = normal;
 	set_viewport(init->viewport, fov);
