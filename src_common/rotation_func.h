@@ -6,7 +6,7 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/21 11:38:54 by sesim             #+#    #+#             */
-/*   Updated: 2022/10/21 16:12:14 by sesim            ###   ########.fr       */
+/*   Updated: 2022/10/24 18:39:04 by sesim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,13 @@
 
 enum e_quaternoin_elem
 {
-	I	=	1,
+	I			=	1,
 	J,
-	K
+	K,
+	ORIGIN_Q	=	0,
+	CONJUGATE_Q	=	1,
+	COS			=	0,
+	SIN			=	1
 };
 
 enum e_rotation_axis
@@ -30,6 +34,14 @@ enum e_rotation_axis
 	YAW,
 	ROLL
 };
+
+typedef struct s_q_comp
+{
+	double	w;
+	double	i;
+	double	j;
+	double	k;
+}	t_q_comp;
 
 void	q_rotation(t_camera *cam, double angle, int flag);
 

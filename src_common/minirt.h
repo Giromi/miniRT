@@ -6,7 +6,7 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 21:10:46 by minsuki2          #+#    #+#             */
-/*   Updated: 2022/10/21 15:37:06 by sesim            ###   ########.fr       */
+/*   Updated: 2022/10/24 18:41:52 by sesim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,7 +129,9 @@ enum e_two_idx
 
 enum e_three_idx
 {
+	T			=		0,
 	B			=		1,
+	N			=		2,
 	V_N			=		0,
 	V_W			=		1,
 	W_N			=		2,
@@ -180,7 +182,7 @@ typedef struct s_cam
 	struct s_cam	*prev;
 	struct s_cam	*next;
 	t_vector		mlx_vec[2][2];
-	t_vector		normal;
+	t_vector		vec[3];
 	t_point			orig;
 	t_point			start_point;
 	double			q_comp[4];
@@ -324,7 +326,7 @@ int			get_2d_root(t_function	*func, t_ray *ray, t_model *elem, \
 						void (*get_abc)(double *, t_ray *, t_model *));
 
 /*****  mlx funcs  *****/
-void		set_mlx_vector_r_half(t_vector mlx_vec[2][2], t_vector cam_normal,
+void		set_mlx_vector_r_half(t_vector mlx_vec[2][2], t_vector *cam_normal,
 					double *viewport);
 int			key_compatible_param(int keycode, void *param);
 void		key_event(t_info *info, int key);

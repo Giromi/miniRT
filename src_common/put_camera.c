@@ -6,7 +6,7 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 21:25:13 by minsuki2          #+#    #+#             */
-/*   Updated: 2022/10/24 14:40:00 by sesim            ###   ########.fr       */
+/*   Updated: 2022/10/24 18:41:07 by sesim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,23 +14,25 @@
 #include "my_func.h"
 #include "minirt.h"
 
-void	set_mlx_vector_r_half(t_vector mlx_vec[2][2], t_vector cam_normal,
+void	set_mlx_vector_r_half(t_vector mlx_vec[2][2], t_vector *cam_vec,
 					double *viewport)
 {
 	t_vector	unit_mlx_vec[2];
 	t_vector	cross_val[2];
 	t_vector	basis_vec;
 
-	if ((cam_normal.x == 0 && cam_normal.y == 1 && cam_normal.z == 0))
+	if ((cam_vec[N].x == 0 && cam_vec[N].y == 1 && cam_vec[N].z == 0))
 		basis_vec = vec_init(0, 0, 1);
-	else if ((cam_normal.x == 0 && cam_normal.y == -1 && cam_normal.z == 0))
+	else if ((cam_vec[N].x == 0 && cam_vec[N].y == -1 && cam_vec[N].z == 0))
 		basis_vec = vec_init(0, 0, -1);
 	else
 		basis_vec = vec_init(0, 1, 0);
-	cross_val[ONE] = vec_cross(&cam_normal, &basis_vec);
+	cross_val[ONE] = vec_cross(&cam_vec[N], &basis_vec);
 	unit_mlx_vec[HORI] = vec_unit(&cross_val[ONE]);
-	cross_val[TWO] = vec_cross(&unit_mlx_vec[HORI], &cam_normal);
+	cam_vec[T] = unit_mlx_vec[HORI];
+	cross_val[TWO] = vec_cross(&unit_mlx_vec[HORI], &cam_vec[N]);
 	unit_mlx_vec[VERT] = vec_unit(&cross_val[TWO]);
+	cam_vec[B] = unit_mlx_vec[VERT];
 	mlx_vec[VAL][HORI] = vec_mul_const(&unit_mlx_vec[HORI], viewport[HORI]);
 	mlx_vec[VAL][VERT] = vec_mul_const(&unit_mlx_vec[VERT], viewport[VERT]);
 	mlx_vec[R_HALF][HORI] = vec_div_const(&mlx_vec[VAL][HORI], -2);
@@ -50,9 +52,9 @@ static t_camera	*_camera_init(t_point coor, t_vector normal, int fov)
 	init = (t_camera *)my_calloc(1, sizeof(t_camera));
 	init->q_comp[W] = 1;
 	init->orig = coor;
-	init->normal = normal;
+	init->vec[N] = normal;
 	set_viewport(init->viewport, fov);
-	set_mlx_vector_r_half(init->mlx_vec, init->normal, init->viewport);
+	set_mlx_vector_r_half(init->mlx_vec, &init->vec[N], init->viewport);
 	init->start_point = vec_once_add_point(init->orig, \
 									&init->mlx_vec[R_HALF][HORI], \
 									&init->mlx_vec[R_HALF][VERT], &normal);

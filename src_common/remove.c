@@ -50,9 +50,9 @@ void	print_prev_cam(t_camera *cam) // 지워야함
 		printf("orign z : %lf \n", (curr->orig.z));
 		printf("viewport_w : %lf \n", (curr->viewport[0]));
 		printf("viewport_h : %lf \n", (curr->viewport[1]));
-		printf("normal x : %lf ", curr->normal.x);
-		printf("normal y : %lf ", curr->normal.y);
-		printf("normal z : %lf \n", curr->normal.z);
+		printf("normal x : %lf ", curr->vec[N].x);
+		printf("vec[N] y : %lf ", curr->vec[N].y);
+		printf("vec[N] z : %lf \n", curr->vec[N].z);
 		if (curr->prev == cam)
 			break ;
 		curr = curr->prev;
@@ -74,9 +74,9 @@ void	print_cam(t_camera *cam) // 지워야함
 		printf("orign z : %lf \n", (curr->orig.z));
 		printf("viewport_w : %lf \n", (curr->viewport[0]));
 		printf("viewport_h : %lf \n", (curr->viewport[1]));
-		printf("normal x : %lf ", curr->normal.x);
-		printf("normal y : %lf ", curr->normal.y);
-		printf("normal z : %lf \n", curr->normal.z);
+		printf("normal x : %lf ", curr->vec[N].x);
+		printf("vec[N] y : %lf ", curr->vec[N].y);
+		printf("vec[N] z : %lf \n", curr->vec[N].z);
 		if (curr->next == cam)
 			break ;
 		curr = curr->next;
