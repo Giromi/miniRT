@@ -6,7 +6,7 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 15:34:56 by sesim             #+#    #+#             */
-/*   Updated: 2022/10/21 17:07:54 by sesim            ###   ########.fr       */
+/*   Updated: 2022/10/24 14:48:34 by sesim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,18 +99,18 @@ static void	_translate_camera(t_camera *cam, int key)
 
 	
 	if (key == KEY_UP)
-		q_rotation(cam, 30.0, PITCH);
+		q_rotation(cam, 5.0, PITCH);
 	else if (key == KEY_DOWN)
-		q_rotation(cam, -30.0, PITCH);
+		q_rotation(cam, -5.0, PITCH);
 	else if (key == KEY_LEFT)
-		rot_x_axis(&cam->normal, -30);
+		q_rotation(cam, 5.0, YAW);
 	else if (key == KEY_RIGHT)
-		rot_x_axis(&cam->normal, 30);
-	printf("normal : %lf %lf %lf\n", cam->normal.x, cam->normal.y, cam->normal.z);
-	// else if (key == KEY_COMMA)
-	// 	rot_y_axis(&cam->normal, -30);
-	// else if (key == KEY_DOT)
-	// 	rot_y_axis(&cam->normal, 30);
+		q_rotation(cam, -5.0, YAW);
+	else if (key == KEY_COMMA)
+		q_rotation(cam, -5.0, ROLL);
+	else if (key == KEY_DOT)
+		q_rotation(cam, 5.0, ROLL);
+	// printf("normal : %lf %lf %lf\n", cam->normal.x, cam->normal.y, cam->normal.z);
 	if (is_translate_key(key) || is_rotate_key(key))
 		set_mlx_vector_r_half(cam->mlx_vec, cam->normal, cam->viewport);
 

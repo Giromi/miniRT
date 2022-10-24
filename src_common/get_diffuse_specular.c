@@ -6,7 +6,7 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/16 18:05:13 by sesim             #+#    #+#             */
-/*   Updated: 2022/10/19 19:36:43 by minsuki2         ###   ########.fr       */
+/*   Updated: 2022/10/24 10:54:06 by sesim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,21 +24,21 @@ static int	_in_shadow(t_object *objs, t_ray *light_ray, double light_len)
 	return (FALSE);
 }
 
-static void	_convert_reflect_vec(t_vector *reflect, t_vector l, t_vector n)
+static void	_convert_reflect_vec(t_vector *reflect, t_vector *l, t_vector *n)
 {
 	double	alpha;
 
-	alpha = vec_dot(&l, &n);
-	reflect[COMPUTE] = vec_mul_const(&n, 2 * alpha);
-	reflect[DIR] = vec_sub(&reflect[COMPUTE], &l);
+	alpha = vec_dot(l, n);
+	reflect[COMPUTE] = vec_mul_const(n, 2 * alpha);
+	reflect[DIR] = vec_sub(&reflect[COMPUTE], l);
 }
 
-static t_ray	_ray_init(t_point orig, t_vector dir)
+static t_ray	_ray_init(t_point *orig, t_vector *dir)
 {
 	t_ray	init;
 
-	init.orig = orig;
-	init.dir = vec_unit(&dir);
+	init.orig = *orig;
+	init.dir = vec_unit(dir);
 	return (init);
 }
 
@@ -51,7 +51,7 @@ int	get_diffuse(t_object *objs, t_record *rec, t_light *cur_light, t_vector *lig
 	light[DIR] = vec_sub(&cur_light->origin, &rec->spot.p);
 	vec[GAP] = vec_mul_const(&rec->spot.normal, EPSILON);
 	vec[OFFSET] = vec_add(&rec->spot.p, &vec[GAP]);
-	ray = _ray_init(vec[OFFSET], light[DIR]);
+	ray = _ray_init(&vec[OFFSET], &light[DIR]);
 	val[LEN] = vec_len(&light[DIR]);
 	if (_in_shadow(objs, &ray, val[LEN]))
 		return (ERROR);
@@ -70,7 +70,7 @@ void	get_specular(t_record *rec, t_light *cur_light, t_vector *light)
 
 	view[COMPUTE] = vec_mul_const(&rec->ray.dir, -1);
 	view[DIR] = vec_unit(&view[COMPUTE]);
-	_convert_reflect_vec(reflect, light[DIR], rec->spot.normal);
+	_convert_reflect_vec(reflect, &light[DIR], &rec->spot.normal);
 	reflect_cos = fmax(vec_dot(&view[DIR], &reflect[DIR]), 0.0);
 	blink_ratio = pow(reflect_cos, KSN);
 	light[SPECULAR] = vec_mul_const(&cur_light->light_color, KS);
