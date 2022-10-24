@@ -1,12 +1,11 @@
 # **************************************************************************** #
 #                                                                              #
 #                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
+#    Makefile                                           :+:      :+:    :+:    # +:+ +:+         +:+      #
 #    By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/18 11:05:23 by sesim             #+#    #+#              #
-#    Updated: 2022/10/21 15:50:46 by sesim            ###   ########.fr        #
+#    Updated: 2022/10/24 19:32:53 by minsuki2         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +13,7 @@
 CC 					:=		cc
 NAME				:=		miniRT
 RM 					:=		rm -vf
-CFLAGS 				:=		-Wall -Wextra -Werror #-g3 -fsanitize=address
+CFLAGS 				:=		-Wall -Wextra -Werror -g3# -fsanitize=address
 FW_FLAGS			:=		-framework openGL -framework AppKit
 
 # Libraries
@@ -72,8 +71,8 @@ MY_FUNC_SRCS		:=		my_alloc_func.c			\
 							my_free_func.c			\
 							my_open_and_err_func.c
 
-MLX_FUNC_SRCS		:=		mlx_key_func.c
-
+MLX_FUNC_SRCS		:=		mlx_key_func.c			\
+							mlx_mouse_func.c
 ROT_FUNC_SRCS		:=		rotate_func.c
 
 INTER_SRCS			:= 		$(UTIL_SRCS)									\

@@ -6,7 +6,7 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 21:25:13 by minsuki2          #+#    #+#             */
-/*   Updated: 2022/10/24 18:41:07 by sesim            ###   ########.fr       */
+/*   Updated: 2022/10/24 22:51:30 by minsuki2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@
 void	set_mlx_vector_r_half(t_vector mlx_vec[2][2], t_vector *cam_vec,
 					double *viewport)
 {
-	t_vector	unit_mlx_vec[2];
 	t_vector	cross_val[2];
 	t_vector	basis_vec;
 
@@ -28,16 +27,15 @@ void	set_mlx_vector_r_half(t_vector mlx_vec[2][2], t_vector *cam_vec,
 	else
 		basis_vec = vec_init(0, 1, 0);
 	cross_val[ONE] = vec_cross(&cam_vec[N], &basis_vec);
-	unit_mlx_vec[HORI] = vec_unit(&cross_val[ONE]);
-	cam_vec[T] = unit_mlx_vec[HORI];
-	cross_val[TWO] = vec_cross(&unit_mlx_vec[HORI], &cam_vec[N]);
-	unit_mlx_vec[VERT] = vec_unit(&cross_val[TWO]);
-	cam_vec[B] = unit_mlx_vec[VERT];
-	mlx_vec[VAL][HORI] = vec_mul_const(&unit_mlx_vec[HORI], viewport[HORI]);
-	mlx_vec[VAL][VERT] = vec_mul_const(&unit_mlx_vec[VERT], viewport[VERT]);
+	cam_vec[T] = vec_unit(&cross_val[ONE]);
+	cross_val[TWO] = vec_cross(&cam_vec[T], &cam_vec[N]);
+	cam_vec[B] = vec_unit(&cross_val[TWO]);
+	mlx_vec[VAL][HORI] = vec_mul_const(&cam_vec[T], viewport[HORI]);
+	mlx_vec[VAL][VERT] = vec_mul_const(&cam_vec[B], viewport[VERT]);
 	mlx_vec[R_HALF][HORI] = vec_div_const(&mlx_vec[VAL][HORI], -2);
 	mlx_vec[R_HALF][VERT] = vec_div_const(&mlx_vec[VAL][VERT], -2);
 }
+
 
 void	set_viewport(double *viewport, int fov)
 {
@@ -51,10 +49,11 @@ static t_camera	*_camera_init(t_point coor, t_vector normal, int fov)
 
 	init = (t_camera *)my_calloc(1, sizeof(t_camera));
 	init->q_comp[W] = 1;
+	init->fov = fov;
 	init->orig = coor;
 	init->vec[N] = normal;
 	set_viewport(init->viewport, fov);
-	set_mlx_vector_r_half(init->mlx_vec, &init->vec[N], init->viewport);
+	set_mlx_vector_r_half(init->mlx_vec, init->vec, init->viewport);
 	init->start_point = vec_once_add_point(init->orig, \
 									&init->mlx_vec[R_HALF][HORI], \
 									&init->mlx_vec[R_HALF][VERT], &normal);

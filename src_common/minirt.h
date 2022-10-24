@@ -1,12 +1,11 @@
 /* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
+/*                                                                            */ /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 21:10:46 by minsuki2          #+#    #+#             */
-/*   Updated: 2022/10/24 18:41:52 by sesim            ###   ########.fr       */
+/*   Updated: 2022/10/24 19:01:31 by minsuki2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +84,9 @@ enum e_keycode
 	KEY_CTRL		=		256,
 	KEY_COMMA		=		43,
 	KEY_DOT			=		47,
-	KEY_TAB			=		48
+	KEY_TAB			=		48,
+	MOU_HEEL_UP		=		4,
+	MOU_HEEL_DOWN	=		5
 };
 
 
@@ -181,7 +182,7 @@ typedef struct s_cam
 {
 	struct s_cam	*prev;
 	struct s_cam	*next;
-	t_vector		mlx_vec[2][2];
+	t_vector		mlx_vec[3][2];
 	t_vector		vec[3];
 	t_point			orig;
 	t_point			start_point;
@@ -328,8 +329,11 @@ int			get_2d_root(t_function	*func, t_ray *ray, t_model *elem, \
 /*****  mlx funcs  *****/
 void		set_mlx_vector_r_half(t_vector mlx_vec[2][2], t_vector *cam_normal,
 					double *viewport);
+void		set_viewport(double *viewport, int fov);
 int			key_compatible_param(int keycode, void *param);
+int			mouse_compatible_param(int x, int y, int button, void *param);
 void		key_event(t_info *info, int key);
+void		mouse_event(t_info *info, int button);
 
 /*****  utils funcs  *****/
 void		is_sign(char *str, int *idx, double *sign);
