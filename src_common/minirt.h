@@ -77,6 +77,8 @@ enum e_keycode
 	KEY_W			=		13,
 	KEY_E			=		14,
 	KEY_R			=		15,
+	KEY_O			=		31,
+	KEY_P			=		35,
 	KEY_I			=		34,
 	KEY_V			=		9,
 	KEY_SHIFT		=		57,
@@ -227,7 +229,7 @@ typedef struct s_object
 typedef struct s_moment
 {
 	t_vector	e_[2];
-	t_vector	normal;	// 빛의 방향으로 변경
+	t_vector	normal;
 	t_vector	albedo;
 	t_point		p;
 	double		t_[3];
@@ -257,24 +259,8 @@ typedef struct s_info
 	t_object		*obj;
 	t_light			*light;
 	t_color			ambient;
+	int				status;
 }	t_info;
-
-/***** init funcs *****/
-t_sphere	*sp_init(t_point center, double radius);
-t_plane		*pl_init(t_point center, t_vector normal, double radius);
-t_conlinder	*cny_init(t_point center, t_vector normal, \
-							double radius, double height);
-t_object	*obj_init(t_object_type type, t_vector albedo, t_model *element);
-
-/***** put funcs *****/
-void		info_init(t_info *info, char *file);
-void		info_error(int *form_check);
-void		put_a(t_info *info, char **argv, int cnt, int type);
-void		put_l(t_info *info, char **argv, int cnt, int type);
-void		put_c(t_info *info, char **argv, int cnt, int type);
-void		put_pl(t_info *info, char **argv, int cnt, int type);
-void		put_sp(t_info *info, char **argv, int cnt, int type);
-void		put_cny(t_info *info, char **argv, int cnt, int type);
 
 /***** obj utils funcs 1 *****/
 void		get_texture_addr(t_object *obj, t_mlx *mlx);
@@ -327,21 +313,15 @@ int			get_2d_root(t_function	*func, t_ray *ray, t_model *elem, \
 						void (*get_abc)(double *, t_ray *, t_model *));
 
 /*****  mlx funcs  *****/
-void		set_mlx_vector_r_half(t_vector mlx_vec[2][2], t_vector *cam_normal,
-					double *viewport);
 void		set_viewport(double *viewport, int fov);
 int			key_compatible_param(int keycode, void *param);
 int			mouse_compatible_param(int x, int y, int button, void *param);
 void		key_event(t_info *info, int key);
 void		mouse_event(t_info *info, int button);
-
-/*****  utils funcs  *****/
-void		is_sign(char *str, int *idx, double *sign);
-double		ft_atod(char *str);
-int			ft_atoi_exit(const char *str);
-t_vector	ft_atovec(char *str, int flag);
-
-
+void		change_obj(t_info *info, int key);
+int			is_translate_key(int key);
+int			is_rotate_key(int key);
+void		translate_center(t_camera *cam, t_point *center, int key);
 
 /*****  mandatory funcs  *****/
 void		ft_draw(t_info *info, t_mlx *mlx);

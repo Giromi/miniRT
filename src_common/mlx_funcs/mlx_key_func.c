@@ -6,7 +6,7 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 15:34:56 by sesim             #+#    #+#             */
-/*   Updated: 2022/10/24 22:13:21 by minsuki2         ###   ########.fr       */
+/*   Updated: 2022/10/25 16:10:29 by sesim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,32 +39,20 @@ int	is_translate_key(int key)
 			|| key == KEY_SPC || key == KEY_C);
 }
 
-static void	_change_camera(t_info *info, int key)
+static void	_switch_camera(t_camera *cam, int key)
 {
-	// if (info->type != CAM_MODE)
-	// 	return ;
 	if (key == KEY_E)
-		info->camera = info->camera->next;
+		cam = cam->next;
 	else if (key == KEY_Q)
-		info->camera = info->camera->prev;
+		cam = cam->prev;
 }
 
-// static void	_change_object(t_info *info, int key)
-// {
-// 	if (info->type != EDIT_MODE)
-// 		reutrn ;
-// 	if (key == KEY_E)
-// 		info->camera = info->camera->next;
-// 	else if (key == KEY_Q)
-// 		info->camera = info->camera->prev;
-// 	_translate_object(info->object)
-// }
 int		is_view_key(int key)
 {
 	return (key == 18 || key == 19 || key == 20 || key == 29);
 }
 
-static void	_move_camera(t_camera *cam, int key)
+void	translate_center(t_camera *cam, t_point *center, int key)
 {
 	t_vector move;
 
@@ -82,9 +70,9 @@ static void	_move_camera(t_camera *cam, int key)
 		move = vec_mul_const(&cam->vec[B], 0.3);
 	else if (key == KEY_C)
 		move = vec_mul_const(&cam->vec[B], -0.3);
-	if (is_translate_key(key))
-		cam->orig = vec_add(&cam->orig, &move);
+	*center = vec_add(center, &move);
 }
+
 
 static void	_view_camera(t_camera *cam, int key)
 {
@@ -120,42 +108,23 @@ static void	_rotate_camera(t_camera *cam, int key)
 	if (!is_rotate_key(key))
 		return ;
 	if (key == KEY_UP)
-		q_rotation(cam, 15.0, PITCH);
+		cam_rotation(cam, cam->vec, 15.0, PITCH);
 	else if (key == KEY_DOWN)
-		q_rotation(cam, -15.0, PITCH);
+		cam_rotation(cam, cam->vec, -15, PITCH);
 	else if (key == KEY_LEFT)
-		q_rotation(cam, 15.0, YAW);
+		cam_rotation(cam, cam->vec, 15, YAW);
 	else if (key == KEY_RIGHT)
-		q_rotation(cam, -15.0, YAW);
+		cam_rotation(cam, cam->vec, -15, YAW);
 	else if (key == KEY_COMMA)
-		q_rotation(cam, -15.0, ROLL);
+		cam_rotation(cam, cam->vec, -15, ROLL);
 	else if (key == KEY_DOT)
-		q_rotation(cam, 15.0, ROLL);
+		cam_rotation(cam, cam->vec, 15, ROLL);
 }
 
-// static void	_zoom_camera(t_camera *cam, int key)
-// {
-//     if (!is_rotate_key(key))
-//         return ;
-//     if (key == KEY_UP)
-//         q_rotation(cam, 15.0, PITCH);
-//     else if (key == KEY_DOWN)
-//         q_rotation(cam, -15.0, PITCH);
-//     else if (key == KEY_LEFT)
-//         q_rotation(cam, 15.0, YAW);
-//     else if (key == KEY_RIGHT)
-//         q_rotation(cam, -15.0, YAW);
-//     else if (key == KEY_COMMA)
-//         q_rotation(cam, -15.0, ROLL);
-//     else if (key == KEY_DOT)
-//         q_rotation(cam, 15.0, ROLL);
-// }
-
-
-
-static void	_translate_camera(t_camera *cam, int key)
+static void	_change_camera(t_camera *cam, int key)
 {
-	_move_camera(cam, key);
+	_switch_camera(cam, key);
+	translate_center(cam, &cam->orig, key);
 	_view_camera(cam, key);
 	_rotate_camera(cam, key);
 	if (is_translate_key(key) || is_rotate_key(key) || is_view_key(key))
@@ -165,11 +134,14 @@ static void	_translate_camera(t_camera *cam, int key)
 									&cam->mlx_vec[R_HALF][VERT], &cam->vec[N]);
 }
 
-
 void	key_event(t_info *info, int key)
 {
-	_change_camera(info, key);
-	_translate_camera(info->camera, key);
-	// _change_object(info, key);
+	if (key == KEY_O)
+		info->status ^= EDIT;
+	else if (key == KEY_P)
+		info->status ^= OBJ;
+	if (info->status & OBJ)
+		change_obj(info, key);
+	else
+		_change_camera(info->camera, key);
 }
-

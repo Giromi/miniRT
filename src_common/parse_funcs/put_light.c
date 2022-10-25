@@ -6,13 +6,14 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/16 18:15:05 by sesim             #+#    #+#             */
-/*   Updated: 2022/10/19 14:30:32 by sesim            ###   ########.fr       */
+/*   Updated: 2022/10/25 12:45:02 by sesim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vector.h"
 #include "my_func.h"
 #include "minirt.h"
+#include "put_func.h"
 
 static void	_light_add(t_light **list, t_light *new)
 {
@@ -31,13 +32,13 @@ static void	_light_add(t_light **list, t_light *new)
 	spot->next = new;
 }
 
-static t_light	*_light_init(t_vector l_origin, t_vector l_color, double br)
+static t_light	*_light_init(t_vector *l_origin, t_vector *l_color, double br)
 {
 	t_light	*light;
 
 	light = my_calloc(1, sizeof(t_light));
-	light->origin = l_origin;
-	light->light_color = l_color;
+	light->origin = *l_origin;
+	light->light_color = *l_color;
 	light->brightness = br;
 	return (light);
 }
@@ -70,6 +71,6 @@ void	put_l(t_info *info, char **argv, int cnt, int type)
 	brightness = ft_atod(argv[2]);
 	color = ft_atovec(argv[3], RGB);
 	albedo = vec_div_const(&color, 255);
-	tmp = _light_init(origin, albedo, brightness);
+	tmp = _light_init(&origin, &albedo, brightness);
 	_light_add(&(info->light), tmp);
 }

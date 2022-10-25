@@ -6,7 +6,7 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/16 18:11:47 by sesim             #+#    #+#             */
-/*   Updated: 2022/10/20 14:14:02 by sesim            ###   ########.fr       */
+/*   Updated: 2022/10/25 12:31:32 by sesim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include "my_func.h"
 #include "get_next_line.h"
 #include "minirt.h"
+#include "put_func.h"
 
 static int	_check_options(char *format)
 {

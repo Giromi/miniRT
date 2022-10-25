@@ -6,14 +6,12 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 21:10:46 by minsuki2          #+#    #+#             */
-/*   Updated: 2022/10/21 15:44:17 by sesim            ###   ########.fr       */
+/*   Updated: 2022/10/25 12:24:29 by sesim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef VECTOR_H
 # define VECTOR_H
-
-# include "my_func.h"
 
 enum e_coor_idx
 {

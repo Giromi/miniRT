@@ -6,13 +6,14 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 21:23:01 by minsuki2          #+#    #+#             */
-/*   Updated: 2022/10/20 16:17:20 by sesim            ###   ########.fr       */
+/*   Updated: 2022/10/25 12:31:29 by sesim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vector.h"
 #include "my_func.h"
 #include "minirt.h"
+#include "put_func.h"
 
 static void	_get_texture_addr(t_object *obj, t_mlx *mlx)
 {

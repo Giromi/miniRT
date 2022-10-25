@@ -6,11 +6,10 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/16 18:07:41 by sesim             #+#    #+#             */
-/*   Updated: 2022/10/18 12:21:34 by sesim            ###   ########.fr       */
+/*   Updated: 2022/10/25 12:16:32 by sesim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "vector.h"
 #include "libft.h"
 
 void	ft_strerror(char *err);

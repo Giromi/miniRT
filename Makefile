@@ -1,15 +1,15 @@
 # **************************************************************************** #
 #                                                                              #
 #                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    # +:+ +:+         +:+      #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
 #    By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2022/10/18 11:05:23 by sesim             #+#    #+#              #
-#    Updated: 2022/10/24 19:32:53 by minsuki2         ###   ########.fr        #
+#    Created: 2022/10/25 09:14:03 by sesim             #+#    #+#              #
+#    Updated: 2022/10/25 14:51:39 by sesim            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-# Cflags
 CC 					:=		cc
 NAME				:=		miniRT
 RM 					:=		rm -vf
@@ -30,6 +30,11 @@ MANDA_DIR			:=		src_mandatory/
 BONUS_DIR			:=		src_bonus/
 VECTOR_DIR			:=		vector/
 MY_FUNC_DIR			:=		my_funcs/
+ROTATION_DIR		:=		rotation_funcs/
+DRAW_DIR			:=		draw_funcs/
+LIGHT_DIR			:=		light_funcs/
+PARSE_DIR			:=		parse_funcs/
+MLX_FUNC_DIR		:=		mlx_funcs/
 
 # Source files
 MANDA_SRCS 			:=		minirt_mandatory.c		\
@@ -39,29 +44,26 @@ BONUS_SRCS 			:=		minirt_bonus.c			\
 							compute_slave_bonus.c	\
 							mlx_func_bonus.c
 
-PARSE_SRCS			:=		put_info.c				\
-							init_func.c				\
+PARSE_SRCS			:=		init_func.c				\
+							put_info.c				\
 							put_camera.c			\
 							put_light.c				\
 							put_objects.c			\
-							remove.c				\
-							put_object_utils.c
+							put_object_utils.c		\
+							remove.c						# 필히  지지울울것것
 
-LIGHT_SRCS			:=		ray_at_utils.c			\
-							phong_light.c			\
-							spread_ray.c			\
+LIGHT_SRCS			:=		spread_ray.c			\
+							ray_at_utils.c			\
 							ray_at_cap_plane.c		\
 							ray_at_sphere.c			\
 							ray_at_conlinder.c		\
+							phong_light.c			\
 							bump_utils.c			\
-							get_diffuse_specular.c
+							get_diffuse_specular.c	\
+							cal_root_funcs.c
 
-UTIL_SRCS			:=		ft_atod.c				\
-							ft_atoi_exit.c			\
-							ft_atovec.c				\
-							draw.c					\
+DRAW_SRCS			:=		draw.c					\
 							draw_utils.c			\
-							math.c
 
 VECTOR_SRCS			:=		vector_arithmetic_op.c	\
 							vector_expand_op.c		\
@@ -69,19 +71,25 @@ VECTOR_SRCS			:=		vector_arithmetic_op.c	\
 
 MY_FUNC_SRCS		:=		my_alloc_func.c			\
 							my_free_func.c			\
-							my_open_and_err_func.c
+							my_open_and_err_func.c	\
+							ft_atoi_exit.c			\
+							ft_atovec.c				\
+							ft_atod.c
 
 MLX_FUNC_SRCS		:=		mlx_key_func.c			\
-							mlx_mouse_func.c
-ROT_FUNC_SRCS		:=		rotate_func.c
+							mlx_mouse_func.c		\
+							mlx_key_obj_func.c
 
-INTER_SRCS			:= 		$(UTIL_SRCS)									\
-							$(PARSE_SRCS)									\
-							$(LIGHT_SRCS)									\
-							$(MLX_FUNC_SRCS)									\
-							$(ROT_FUNC_SRCS)									\
-							$(addprefix $(MY_FUNC_DIR), $(MY_FUNC_SRCS))	\
-							$(addprefix $(VECTOR_DIR), $(VECTOR_SRCS))
+ROT_FUNC_SRCS		:=		rotate_func.c			\
+							rotation_func_utils.c
+
+INTER_SRCS			:=		$(addprefix $(MY_FUNC_DIR), $(MY_FUNC_SRCS))	\
+							$(addprefix $(VECTOR_DIR), $(VECTOR_SRCS))		\
+							$(addprefix $(ROTATION_DIR), $(ROT_FUNC_SRCS))	\
+							$(addprefix $(DRAW_DIR), $(DRAW_SRCS))			\
+							$(addprefix $(LIGHT_DIR), $(LIGHT_SRCS))		\
+							$(addprefix $(PARSE_DIR), $(PARSE_SRCS))		\
+							$(addprefix $(MLX_FUNC_DIR), $(MLX_FUNC_SRCS))
 
 # Include files
 INC_INTER	:=	-I$(LIBMLX_DIR)					\
@@ -89,7 +97,12 @@ INC_INTER	:=	-I$(LIBMLX_DIR)					\
 				-I$(GNL_INC)					\
 				-I$(INTER_DIR)					\
 				-I$(INTER_DIR)$(VECTOR_DIR)		\
-				-I$(INTER_DIR)$(MY_FUNC_DIR)
+				-I$(INTER_DIR)$(MY_FUNC_DIR)	\
+				-I$(INTER_DIR)$(ROTATION_DIR)	\
+				-I$(INTER_DIR)$(DRAW_DIR)		\
+				-I$(INTER_DIR)$(LIGHT_DIR)		\
+				-I$(INTER_DIR)$(PARSE_DIR)
+
 INC_BONUS	:=	-I$(BONUS_DIR)
 
 INTER_PATH_SRCS := $(addprefix $(INTER_DIR), $(INTER_SRCS))
@@ -124,7 +137,7 @@ $(LIBFT_DIR)$(LIBFT):
 
 %.o: %.c
 	@echo [$<] compiling ...
-	@$(CC) $(CFLAGS) $(INCS) -c $< -o $@
+	$(CC) $(CFLAGS) $(INCS) -c $< -o $@
 
 # bonus:
 #     @make BONUS_FLAG=1 all

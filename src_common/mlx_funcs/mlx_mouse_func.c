@@ -3,17 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   mlx_mouse_func.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: minsuki2 <minsuki2@student.42seoul.kr      +#+  +:+       +#+        */
+/*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/24 22:15:56 by minsuki2          #+#    #+#             */
-/*   Updated: 2022/10/24 22:52:51 by minsuki2         ###   ########.fr       */
+/*   Updated: 2022/10/25 12:31:56 by sesim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vector.h"
 #include "my_func.h"
-#include "mlx.h"
 #include "minirt.h"
+#include "put_func.h"
+#include "mlx.h"
 
 void	mouse_event(t_info *info, int button)
 {

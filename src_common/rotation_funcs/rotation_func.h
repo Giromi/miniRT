@@ -6,7 +6,7 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/21 11:38:54 by sesim             #+#    #+#             */
-/*   Updated: 2022/10/24 18:39:04 by sesim            ###   ########.fr       */
+/*   Updated: 2022/10/25 16:07:15 by sesim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,16 @@
 # include "minirt.h"
 
 # define ROT_ANGLE 15
+
+enum e_transform_options
+{
+	CAM		=	0,
+	EDIT	=	0b1,
+	OBJ		=	0b10,
+	PITCH	=	0b100000000,
+	YAW		=	0b1000000000,
+	ROLL	=	0b10000000000
+};
 
 enum e_quaternoin_elem
 {
@@ -28,13 +38,6 @@ enum e_quaternoin_elem
 	SIN			=	1
 };
 
-enum e_rotation_axis
-{
-	PITCH,
-	YAW,
-	ROLL
-};
-
 typedef struct s_q_comp
 {
 	double	w;
@@ -43,6 +46,8 @@ typedef struct s_q_comp
 	double	k;
 }	t_q_comp;
 
-void	q_rotation(t_camera *cam, double angle, int flag);
+void	cam_rotation(t_camera *cam, t_vector *vec, double angle, int flag);
+void	obj_rotation(t_camera *cam, t_vector *vec, double angle, int flag);
+void	cal_quaternion(t_vector *vec, t_q_comp *q_comp);
 
 #endif

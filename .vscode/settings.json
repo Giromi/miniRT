@@ -13,6 +13,8 @@
         "vector.h": "c",
         "my_func.h": "c",
         "minirt_bonus.h": "c",
-        "rotation_func.h": "c"
+        "rotation_func.h": "c",
+        "put_func.h": "c",
+        "__node_handle": "c"
     }
 }

@@ -6,7 +6,7 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 21:10:46 by minsuki2          #+#    #+#             */
-/*   Updated: 2022/10/20 14:46:37 by sesim            ###   ########.fr       */
+/*   Updated: 2022/10/25 12:33:02 by sesim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 # define MINIRT_BONUS_H
 
 # include <pthread.h>
-# include "minirt.h"
 
 # ifndef PHILO_N
 #  define PHILO_N 20

@@ -1,6 +1,7 @@
 #include "vector.h"
 #include "my_func.h"
 #include "minirt.h"
+#include "put_func.h"
 
 void	print_light(t_light *light)
 {
