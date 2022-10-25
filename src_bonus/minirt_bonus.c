@@ -6,7 +6,7 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/12 21:38:54 by minsuki2          #+#    #+#             */
-/*   Updated: 2022/10/25 12:33:05 by sesim            ###   ########.fr       */
+/*   Updated: 2022/10/25 18:47:54 by sesim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include "my_func.h"
 #include "minirt.h"
 #include "put_func.h"
+#include "rotation_func.h"
 #include "minirt_bonus.h"
 
 void	info_error(int *form_check)
@@ -39,6 +40,38 @@ static t_thread	*_slave_hire(t_info *info)
 		slave[i].info = info;
 	}
 	return (slave);
+}
+
+static void	_my_slave_die(t_thread *slave, char *err, int cnt)
+{
+	while (--cnt)
+		pthread_join(slave[cnt].hand, NULL);
+	ft_strerror(err);
+}
+
+void	slave_whip(t_thread *slave)
+{
+	int	i;
+
+	i = -1;
+	if (slave->info->status & ANTI)
+	{
+		while (++i < PHILO_N)
+		{
+			if (pthread_create(&slave[i].hand, NULL, anti_aliaising, &slave[i]))
+				_my_slave_die(slave, "err: pthread_create error", i);
+		}
+	}
+	else
+	{
+		while (++i < PHILO_N)
+		{
+			if (pthread_create(&slave[i].hand, NULL, rendering, &slave[i]))
+				_my_slave_die(slave, "err: pthread_create error", i);
+		}
+	}
+	while (i--)
+		pthread_join(slave[i].hand, NULL);
 }
 
 int	main(int argc, char **argv)

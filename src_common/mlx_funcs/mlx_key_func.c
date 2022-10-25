@@ -6,7 +6,7 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 15:34:56 by sesim             #+#    #+#             */
-/*   Updated: 2022/10/25 16:10:29 by sesim            ###   ########.fr       */
+/*   Updated: 2022/10/25 18:59:46 by sesim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,12 +39,12 @@ int	is_translate_key(int key)
 			|| key == KEY_SPC || key == KEY_C);
 }
 
-static void	_switch_camera(t_camera *cam, int key)
+static void	_switch_camera(t_info *info, int key)
 {
 	if (key == KEY_E)
-		cam = cam->next;
+		info->cam = info->cam->next;
 	else if (key == KEY_Q)
-		cam = cam->prev;
+		info->cam = info->cam->prev;
 }
 
 int		is_view_key(int key)
@@ -121,27 +121,31 @@ static void	_rotate_camera(t_camera *cam, int key)
 		cam_rotation(cam, cam->vec, 15, ROLL);
 }
 
-static void	_change_camera(t_camera *cam, int key)
+static void	_change_camera(t_info *info, int key)
 {
-	_switch_camera(cam, key);
-	translate_center(cam, &cam->orig, key);
-	_view_camera(cam, key);
-	_rotate_camera(cam, key);
+	_switch_camera(info, key);
+	translate_center(info->cam, &info->cam->orig, key);
+	_view_camera(info->cam, key);
+	_rotate_camera(info->cam, key);
 	if (is_translate_key(key) || is_rotate_key(key) || is_view_key(key))
-		_set_mlx_vector_r_half2(cam->mlx_vec, cam->vec, cam->viewport);
-	cam->start_point = vec_once_add_point(cam->orig, \
-									&cam->mlx_vec[R_HALF][HORI], \
-									&cam->mlx_vec[R_HALF][VERT], &cam->vec[N]);
+		_set_mlx_vector_r_half2(info->cam->mlx_vec, info->cam->vec, info->cam->viewport);
+	info->cam->start_point = vec_once_add_point(info->cam->orig, \
+									&info->cam->mlx_vec[R_HALF][HORI], \
+									&info->cam->mlx_vec[R_HALF][VERT], &info->cam->vec[N]);
 }
 
 void	key_event(t_info *info, int key)
 {
-	if (key == KEY_O)
+	if (info->status & ANTI)
+		info->status &= ~ANTI;
+	if ((key == KEY_O) && (!(info->status & ANTI)))
 		info->status ^= EDIT;
 	else if (key == KEY_P)
 		info->status ^= OBJ;
+	else if (key == KEY_I)
+		info->status ^= ANTI;
 	if (info->status & OBJ)
 		change_obj(info, key);
 	else
-		_change_camera(info->camera, key);
+		_change_camera(info, key);
 }

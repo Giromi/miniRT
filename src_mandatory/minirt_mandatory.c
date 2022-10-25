@@ -6,7 +6,7 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/12 21:38:54 by minsuki2          #+#    #+#             */
-/*   Updated: 2022/10/25 12:31:49 by sesim            ###   ########.fr       */
+/*   Updated: 2022/10/25 18:21:24 by sesim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,13 @@ void	info_error(int *form_check)
 		ft_strerror("err: wrong camera format");
 }
 
+
 void	ft_draw(t_info *info, t_mlx *mlx)
 {
-	int			idx[2];
 	t_color		color;
 	t_record	rec;
+	int			idx[2];
+	double		vdx[2];
 
 	idx[Y] = -1;
 	while (++idx[Y] < WIN_H)
@@ -38,7 +40,9 @@ void	ft_draw(t_info *info, t_mlx *mlx)
 		idx[X] = -1;
 		while (++idx[X] < WIN_W)
 		{
-			set_ray_vec(&rec.ray, info->camera, idx[X], idx[Y]);
+			vdx[U] = (double)idx[X] / (WIN_W - 1);
+			vdx[V] = (double)idx[Y] / (WIN_H - 1);
+			set_ray_vec(&rec.ray, info->cam, vdx);
 			color = cur_point_color(info, &rec);
 			my_mlx_pixel_put(&mlx->img, idx[X], (WIN_H - 1 - idx[Y]), color);
 		}

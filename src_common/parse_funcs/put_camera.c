@@ -6,7 +6,7 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 21:25:13 by minsuki2          #+#    #+#             */
-/*   Updated: 2022/10/25 12:31:17 by sesim            ###   ########.fr       */
+/*   Updated: 2022/10/25 17:46:54 by sesim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,6 @@ static t_camera	*_camera_init(t_point coor, t_vector normal, int fov)
 	t_camera	*init;
 
 	init = (t_camera *)my_calloc(1, sizeof(t_camera));
-	init->q_comp[W] = 1;
 	init->fov = fov;
 	init->orig = coor;
 	init->vec[N] = normal;
@@ -100,5 +99,5 @@ void	put_c(t_info *info, char **argv, int cnt, int type)
 	if (fov < 0 || fov > 180)
 		ft_strerror("err: wrong camera angle");
 	tmp = _camera_init(coor, normal, fov);
-	_camera_add(&(info->camera), tmp);
+	_camera_add(&(info->cam), tmp);
 }

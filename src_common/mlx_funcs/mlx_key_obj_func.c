@@ -6,7 +6,7 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/25 14:43:46 by sesim             #+#    #+#             */
-/*   Updated: 2022/10/25 16:43:54 by sesim            ###   ########.fr       */
+/*   Updated: 2022/10/25 17:46:16 by sesim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,18 +55,18 @@ void	change_obj(t_info *info, int key)
 	t_object	*cap;
 	
 	_switch_obj(info, key);
-	translate_center(info->camera, &info->obj->elem->center, key);
-	_rotate_obj(info->obj, info->camera, key);
+	translate_center(info->cam, &info->obj->elem->center, key);
+	_rotate_obj(info->obj, info->cam, key);
 	if (info->obj->type & (CN | CY))
 	{
 		cap = info->obj->next;
-		translate_center(info->camera, &cap->elem->center, key);
-		_rotate_obj(cap, info->camera, key);
+		translate_center(info->cam, &cap->elem->center, key);
+		_rotate_obj(cap, info->cam, key);
 		if (info->obj->type & CY)
 		{
 			cap = info->obj->next->next;
-			translate_center(info->camera, &cap->elem->center, key);
-			_rotate_obj(cap, info->camera, key);
+			translate_center(info->cam, &cap->elem->center, key);
+			_rotate_obj(cap, info->cam, key);
 		}
 	}
 }

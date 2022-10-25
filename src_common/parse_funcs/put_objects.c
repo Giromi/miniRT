@@ -6,7 +6,7 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 21:23:01 by minsuki2          #+#    #+#             */
-/*   Updated: 2022/10/25 12:55:22 by sesim            ###   ########.fr       */
+/*   Updated: 2022/10/25 17:03:11 by sesim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ static void	put_cap(t_info *info, t_object *obj, t_vector *vec, double *format)
 	obj_add(&(info->obj), new);
 	if (obj->type & CY)
 	{
-		vec[4] = _get_cap_point(&vec[CENTER], &vec[NORMAL], format[HEIGHT], 1);
+		vec[4] = _get_cap_point(&vec[CENTER], &vec[NORMAL], format[HEIGHT], -1);
 		cp = pl_init(&vec[4], &vec[NORMAL], format[RADIUS]);
 		new = obj_init(type, &vec[ALBEDO], cp);
 		if (obj->type & BM)

@@ -188,7 +188,6 @@ typedef struct s_cam
 	t_vector		vec[3];
 	t_point			orig;
 	t_point			start_point;
-	double			q_comp[4];
 	double			viewport[2];
 	double			focal_len;
 	int				fov;
@@ -255,7 +254,7 @@ typedef struct s_record
 typedef struct s_info
 {
 	t_mlx			mlx;
-	t_camera		*camera;
+	t_camera		*cam;
 	t_object		*obj;
 	t_light			*light;
 	t_color			ambient;
@@ -276,7 +275,7 @@ t_conlinder	*cone_init(t_point center, t_vector normal, \
 /***** draw funcs *****/
 void		my_mlx_pixel_put(t_image *img, int x, int y, t_color color);
 t_color		cur_point_color(t_info *info, t_record *rec);
-void		set_ray_vec(t_ray *ray, t_camera *cam, int x, int y);
+void		set_ray_vec(t_ray *ray, t_camera *cam, double *vdx);
 void		flip_normal_face(t_ray *ray, t_moment *spot);
 
 /***** draw utils funcs *****/
