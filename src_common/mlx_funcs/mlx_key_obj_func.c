@@ -6,16 +6,16 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/25 14:43:46 by sesim             #+#    #+#             */
-/*   Updated: 2022/10/26 08:09:40 by sesim            ###   ########.fr       */
+/*   Updated: 2022/10/26 12:23:24 by minsuki2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vector.h"
+#include "minirt.h"
 #include "my_func.h"
 #include "rotation_func.h"
 #include "mlx_key_func.h"
 #include "mlx.h"
-#include "minirt.h"
 
 static void	_switch_obj(t_info *info, int key)
 {

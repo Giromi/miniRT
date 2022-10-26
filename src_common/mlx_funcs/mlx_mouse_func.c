@@ -6,13 +6,13 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/24 22:15:56 by minsuki2          #+#    #+#             */
-/*   Updated: 2022/10/26 09:28:09 by sesim            ###   ########.fr       */
+/*   Updated: 2022/10/26 12:23:27 by minsuki2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vector.h"
-#include "my_func.h"
 #include "minirt.h"
+#include "my_func.h"
 #include "put_func.h"
 #include "mlx.h"
 #include "mlx_key_func.h"

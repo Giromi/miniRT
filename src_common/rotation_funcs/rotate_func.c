@@ -6,14 +6,16 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/21 11:10:12 by sesim             #+#    #+#             */
-/*   Updated: 2022/10/26 08:14:11 by sesim            ###   ########.fr       */
+/*   Updated: 2022/10/26 13:12:07 by minsuki2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vector.h"
+#include "minirt.h"
 #include "my_func.h"
 #include "rotation_func.h"
 #include "mlx_key_func.h"
+#include <math.h>
 
 static void	_set_quaternion_q_comp(t_q_comp *q_set, t_vector *axis, \
 									const double *rad)

@@ -6,13 +6,13 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/16 18:03:29 by sesim             #+#    #+#             */
-/*   Updated: 2022/10/25 12:20:20 by sesim            ###   ########.fr       */
+/*   Updated: 2022/10/26 12:19:32 by minsuki2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vector.h"
-#include "my_func.h"
 #include "minirt.h"
+#include "my_func.h"
 
 static void	_check_unit(t_vector *res, int flag)
 {

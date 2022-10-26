@@ -6,7 +6,7 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/16 18:19:51 by sesim             #+#    #+#             */
-/*   Updated: 2022/10/26 11:04:24 by sesim            ###   ########.fr       */
+/*   Updated: 2022/10/26 13:12:31 by minsuki2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include "minirt.h"
 #include "light_func.h"
 #include "draw_func.h"
+#include <math.h>
 
 void	get_spot_e_vector(t_moment *spot, t_vector *obj_n, t_vector std_n)
 {

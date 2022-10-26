@@ -6,13 +6,14 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/16 18:05:13 by sesim             #+#    #+#             */
-/*   Updated: 2022/10/26 09:16:35 by sesim            ###   ########.fr       */
+/*   Updated: 2022/10/26 13:12:52 by minsuki2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vector.h"
 #include "minirt.h"
 #include "light_func.h"
+#include <math.h>
 
 static int	_in_shadow(t_object *objs, t_ray *light_ray, double light_len)
 {

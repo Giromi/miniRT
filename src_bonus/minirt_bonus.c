@@ -6,17 +6,18 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/12 21:38:54 by minsuki2          #+#    #+#             */
-/*   Updated: 2022/10/26 08:20:10 by sesim            ###   ########.fr       */
+/*   Updated: 2022/10/26 13:10:15 by minsuki2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vector.h"
-#include "my_func.h"
 #include "minirt.h"
+#include "my_func.h"
 #include "put_func.h"
 #include "rotation_func.h"
 #include "mlx_key_func.h"
 #include "minirt_bonus.h"
+#include "mlx.h"
 
 void	info_error(int *form_check)
 {
@@ -97,6 +98,7 @@ int	main(int argc, char **argv)
 							info.mlx.img.img_ptr, 0, 0);
 	mlx_hook(info.mlx.win, EVENT_KEY_PRESS, 0, key_compatible_param, slave);
 	mlx_hook(info.mlx.win, EVENT_MOUSE_CLICK, 0, mouse_compatible_param, slave);
+	mlx_hook(info.mlx.win, EVENT_CLICK_EXIT, 0, exit_compatible_param, slave);
 	mlx_loop(info.mlx.ptr);
 	return (0);
 }

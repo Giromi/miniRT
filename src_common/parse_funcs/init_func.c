@@ -6,13 +6,13 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/16 18:03:38 by sesim             #+#    #+#             */
-/*   Updated: 2022/10/25 12:46:55 by sesim            ###   ########.fr       */
+/*   Updated: 2022/10/26 12:21:22 by minsuki2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vector.h"
-#include "my_func.h"
 #include "minirt.h"
+#include "my_func.h"
 #include "put_func.h"
 
 t_sphere	*sp_init(t_point *center, double radius)

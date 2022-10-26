@@ -6,13 +6,13 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 11:26:26 by sesim             #+#    #+#             */
-/*   Updated: 2022/10/26 11:11:05 by sesim            ###   ########.fr       */
+/*   Updated: 2022/10/26 12:36:16 by minsuki2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vector.h"
-#include "my_func.h"
 #include "minirt.h"
+#include "my_func.h"
 #include "rotation_func.h"
 #include "draw_func.h"
 #include "minirt_bonus.h"

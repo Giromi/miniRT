@@ -6,13 +6,13 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/16 18:23:09 by sesim             #+#    #+#             */
-/*   Updated: 2022/10/26 09:16:25 by sesim            ###   ########.fr       */
+/*   Updated: 2022/10/26 12:21:10 by minsuki2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vector.h"
-#include "my_func.h"
 #include "minirt.h"
+#include "my_func.h"
 #include "light_func.h"
 
 static t_vector	_convert_color_to_normal(int color)

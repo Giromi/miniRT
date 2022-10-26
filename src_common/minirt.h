@@ -3,21 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
+/*   By: minsuki2 <minsuki2@student.42seoul.kr      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/26 07:52:52 by sesim             #+#    #+#             */
-/*   Updated: 2022/10/26 11:15:38 by sesim            ###   ########.fr       */
+/*   Created: 2022/10/26 13:14:13 by minsuki2          #+#    #+#             */
+/*   Updated: 2022/10/26 13:14:42 by minsuki2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINIRT_H
 # define MINIRT_H
-
-# include <stdio.h>
-# include <limits.h>
-# include <math.h>
-# include <fcntl.h>
-# include "mlx.h"
 
 # define IMG_W WIN_W
 # define IMG_H WIN_H
@@ -260,8 +254,4 @@ typedef struct s_info
 	t_color			ambient;
 	int				status;
 }	t_info;
-
-/*****  mandatory funcs  *****/
-void		ft_draw(t_info *info, t_mlx *mlx);
-
 #endif

@@ -6,7 +6,7 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/26 08:01:41 by sesim             #+#    #+#             */
-/*   Updated: 2022/10/26 08:11:45 by sesim            ###   ########.fr       */
+/*   Updated: 2022/10/26 12:29:03 by minsuki2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ enum e_transform_options
 void		set_viewport(double *viewport, int fov);
 int			key_compatible_param(int keycode, void *param);
 int			mouse_compatible_param(int x, int y, int button, void *param);
+int			exit_compatible_param(void *param);
 void		key_event(t_info *info, int key);
 void		translate_center(t_camera *cam, t_point *center, int key);
 void		mouse_event(t_info *info, int button);

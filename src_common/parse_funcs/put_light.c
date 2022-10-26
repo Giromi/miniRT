@@ -6,13 +6,13 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/16 18:15:05 by sesim             #+#    #+#             */
-/*   Updated: 2022/10/25 12:45:02 by sesim            ###   ########.fr       */
+/*   Updated: 2022/10/26 12:21:50 by minsuki2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vector.h"
-#include "my_func.h"
 #include "minirt.h"
+#include "my_func.h"
 #include "put_func.h"
 
 static void	_light_add(t_light **list, t_light *new)

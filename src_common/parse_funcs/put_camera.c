@@ -6,14 +6,15 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 21:25:13 by minsuki2          #+#    #+#             */
-/*   Updated: 2022/10/26 08:12:43 by sesim            ###   ########.fr       */
+/*   Updated: 2022/10/26 13:13:27 by minsuki2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vector.h"
-#include "my_func.h"
 #include "minirt.h"
+#include "my_func.h"
 #include "put_func.h"
+#include <math.h>
 
 void	set_mlx_vector_r_half(t_vector mlx_vec[2][2], t_vector *cam_vec,
 					double *viewport)

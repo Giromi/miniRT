@@ -6,12 +6,13 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 13:18:55 by sesim             #+#    #+#             */
-/*   Updated: 2022/10/25 12:21:58 by sesim            ###   ########.fr       */
+/*   Updated: 2022/10/26 12:19:13 by minsuki2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "vector.h"
+#include "minirt.h"
 #include "my_func.h"
 
 static int	_check_val(size_t nb, int pn)

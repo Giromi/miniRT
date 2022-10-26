@@ -6,11 +6,12 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/16 18:30:30 by sesim             #+#    #+#             */
-/*   Updated: 2022/10/25 12:21:05 by sesim            ###   ########.fr       */
+/*   Updated: 2022/10/26 12:20:09 by minsuki2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vector.h"
+#include "minirt.h"
 #include "my_func.h"
 
 t_vector	vec_add(t_vector *u, t_vector *v)

@@ -6,13 +6,14 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/16 18:07:17 by sesim             #+#    #+#             */
-/*   Updated: 2022/10/26 09:16:30 by sesim            ###   ########.fr       */
+/*   Updated: 2022/10/26 13:13:03 by minsuki2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vector.h"
 #include "minirt.h"
 #include "light_func.h"
+#include <math.h>
 
 void	get_sp_abc(double *term, t_ray *ray, t_model *sp)
 {

@@ -6,15 +6,15 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 15:34:56 by sesim             #+#    #+#             */
-/*   Updated: 2022/10/26 08:10:13 by sesim            ###   ########.fr       */
+/*   Updated: 2022/10/26 12:34:14 by minsuki2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vector.h"
+#include "minirt.h"
 #include "my_func.h"
 #include "rotation_func.h"
 #include "mlx.h"
-#include "minirt.h"
 #include "mlx_key_func.h"
 
 int	is_rotate_key(int key)

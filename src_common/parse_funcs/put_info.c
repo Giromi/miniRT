@@ -6,15 +6,17 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/16 18:11:47 by sesim             #+#    #+#             */
-/*   Updated: 2022/10/25 12:31:32 by sesim            ###   ########.fr       */
+/*   Updated: 2022/10/26 13:15:03 by minsuki2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vector.h"
+#include "minirt.h"
 #include "my_func.h"
 #include "get_next_line.h"
-#include "minirt.h"
 #include "put_func.h"
+#include <math.h>
+#include <fcntl.h>
 
 static int	_check_options(char *format)
 {

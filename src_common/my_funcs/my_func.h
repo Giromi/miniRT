@@ -6,7 +6,7 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/18 12:04:50 by sesim             #+#    #+#             */
-/*   Updated: 2022/10/25 12:20:07 by sesim            ###   ########.fr       */
+/*   Updated: 2022/10/26 12:14:35 by minsuki2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ char		**my_split(char *line, char c);
 
 /*****  my free funcs  *****/
 void		split_free(char **split);
+void		info_free(t_info *info, t_mlx *mlx);
 
 /*****  my error funcs  *****/
 void		ft_strerror(char *err);

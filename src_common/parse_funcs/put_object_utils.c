@@ -6,14 +6,15 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 21:23:01 by minsuki2          #+#    #+#             */
-/*   Updated: 2022/10/26 09:16:17 by sesim            ###   ########.fr       */
+/*   Updated: 2022/10/26 13:09:44 by minsuki2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vector.h"
-#include "my_func.h"
 #include "minirt.h"
+#include "my_func.h"
 #include "put_func.h"
+#include "mlx.h"
 
 static void	_get_texture_addr(t_object *obj, t_mlx *mlx)
 {
@@ -51,6 +52,7 @@ void	bump_init(t_mlx *mlx, t_object *new, char **argv, int cnt)
 		new->bump->file_name = ft_strdup(argv[cnt - 1]);
 		_get_bump_addr(new, mlx);
 		_get_texture_addr(new, mlx);
+		free(new->bump->file_name);
 	}
 }
 
