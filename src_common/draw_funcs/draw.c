@@ -6,7 +6,7 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/16 17:58:45 by sesim             #+#    #+#             */
-/*   Updated: 2022/10/25 18:27:02 by sesim            ###   ########.fr       */
+/*   Updated: 2022/10/26 09:20:56 by sesim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,9 @@
 #include "my_func.h"
 #include "rotation_func.h"
 #include "minirt.h"
+#include "light_func.h"
+#include "draw_func.h"
+#include "mlx_key_func.h"
 
 void	my_mlx_pixel_put(t_image *img, int x, int y, t_color color)
 {
@@ -25,7 +28,6 @@ void	my_mlx_pixel_put(t_image *img, int x, int y, t_color color)
 	dst = img->addr + coor[X] + coor[Y];
 	*(unsigned int *)dst = convert_color(&color);
 }
-	
 
 void	set_ray_vec(t_ray *ray, t_camera *cam, double *vdx)
 {

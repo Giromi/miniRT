@@ -6,12 +6,13 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/16 18:19:51 by sesim             #+#    #+#             */
-/*   Updated: 2022/10/25 16:56:47 by sesim            ###   ########.fr       */
+/*   Updated: 2022/10/26 09:16:47 by sesim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vector.h"
 #include "minirt.h"
+#include "light_func.h"
 
 void	get_spot_e_vector(t_moment *spot, t_vector *obj_n, t_vector std_n)
 {

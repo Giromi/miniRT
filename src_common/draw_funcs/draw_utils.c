@@ -6,12 +6,13 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/16 17:53:54 by sesim             #+#    #+#             */
-/*   Updated: 2022/10/19 14:43:14 by sesim            ###   ########.fr       */
+/*   Updated: 2022/10/26 09:20:49 by sesim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vector.h"
 #include "minirt.h"
+#include "draw_func.h"
 
 int	convert_color(t_vector *clr)
 {

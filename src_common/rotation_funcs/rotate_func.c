@@ -6,16 +6,17 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/21 11:10:12 by sesim             #+#    #+#             */
-/*   Updated: 2022/10/25 16:08:24 by sesim            ###   ########.fr       */
+/*   Updated: 2022/10/26 08:14:11 by sesim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vector.h"
 #include "my_func.h"
 #include "rotation_func.h"
+#include "mlx_key_func.h"
 
-static void	_set_quaternion_q_comp(t_q_comp *q_set, t_vector *axis, 
-															const double *rad)
+static void	_set_quaternion_q_comp(t_q_comp *q_set, t_vector *axis, \
+									const double *rad)
 {
 	q_set[ORIGIN_Q].w = rad[COS];
 	q_set[ORIGIN_Q].i = axis->x * rad[SIN];

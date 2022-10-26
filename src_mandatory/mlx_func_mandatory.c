@@ -6,13 +6,14 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 14:30:00 by sesim             #+#    #+#             */
-/*   Updated: 2022/10/20 17:30:02 by sesim            ###   ########.fr       */
+/*   Updated: 2022/10/26 08:16:56 by sesim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vector.h"
 #include "my_func.h"
 #include "minirt.h"
+#include "mlx_key_func.h"
 
 static void	_press_esc(t_info *info, t_mlx *mlx)
 {

@@ -6,12 +6,13 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/16 18:05:13 by sesim             #+#    #+#             */
-/*   Updated: 2022/10/24 10:54:06 by sesim            ###   ########.fr       */
+/*   Updated: 2022/10/26 09:16:35 by sesim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vector.h"
 #include "minirt.h"
+#include "light_func.h"
 
 static int	_in_shadow(t_object *objs, t_ray *light_ray, double light_len)
 {
@@ -42,7 +43,8 @@ static t_ray	_ray_init(t_point *orig, t_vector *dir)
 	return (init);
 }
 
-int	get_diffuse(t_object *objs, t_record *rec, t_light *cur_light, t_vector *light)
+int	get_diffuse(t_object *objs, t_record *rec, \
+				t_light *cur_light, t_vector *light)
 {
 	t_ray		ray;
 	t_vector	vec[2];

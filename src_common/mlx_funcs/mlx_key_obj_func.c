@@ -6,13 +6,14 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/25 14:43:46 by sesim             #+#    #+#             */
-/*   Updated: 2022/10/25 17:46:16 by sesim            ###   ########.fr       */
+/*   Updated: 2022/10/26 08:09:40 by sesim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vector.h"
 #include "my_func.h"
 #include "rotation_func.h"
+#include "mlx_key_func.h"
 #include "mlx.h"
 #include "minirt.h"
 
@@ -53,7 +54,7 @@ static void	_rotate_obj(t_object *obj, t_camera *cam, int key)
 void	change_obj(t_info *info, int key)
 {
 	t_object	*cap;
-	
+
 	_switch_obj(info, key);
 	translate_center(info->cam, &info->obj->elem->center, key);
 	_rotate_obj(info->obj, info->cam, key);

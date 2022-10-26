@@ -6,12 +6,13 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/16 18:29:23 by sesim             #+#    #+#             */
-/*   Updated: 2022/10/25 08:43:57 by sesim            ###   ########.fr       */
+/*   Updated: 2022/10/26 09:16:54 by sesim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vector.h"
 #include "minirt.h"
+#include "light_func.h"
 
 int	is_t_in_range(t_moment *spot, double root)
 {

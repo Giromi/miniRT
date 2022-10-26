@@ -6,12 +6,13 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/16 17:49:42 by sesim             #+#    #+#             */
-/*   Updated: 2022/10/20 16:13:04 by sesim            ###   ########.fr       */
+/*   Updated: 2022/10/26 09:16:58 by sesim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vector.h"
 #include "minirt.h"
+#include "light_func.h"
 
 static int	_ray_at_obj(t_object *obj, t_ray *ray, t_moment *spot)
 {

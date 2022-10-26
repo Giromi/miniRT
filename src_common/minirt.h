@@ -1,11 +1,12 @@
 /* ************************************************************************** */
-/*                                                                            */ /*                                                        :::      ::::::::   */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/11 21:10:46 by minsuki2          #+#    #+#             */
-/*   Updated: 2022/10/24 19:01:31 by minsuki2         ###   ########.fr       */
+/*   Created: 2022/10/26 07:52:52 by sesim             #+#    #+#             */
+/*   Updated: 2022/10/26 09:14:12 by sesim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +91,6 @@ enum e_keycode
 	MOU_HEEL_UP		=		4,
 	MOU_HEEL_DOWN	=		5
 };
-
 
 enum e_tool
 {
@@ -261,17 +261,6 @@ typedef struct s_info
 	int				status;
 }	t_info;
 
-/***** obj utils funcs 1 *****/
-void		get_texture_addr(t_object *obj, t_mlx *mlx);
-void		get_bump_addr(t_object *obj, t_mlx *mlx);
-void		obj_add(t_object **list, t_object *new);
-
-/***** obj utils funcs 2 *****/
-void		init_conlinder(t_vector *vec, double *format, char **argv);
-void		bump_init(t_mlx *mlx, t_object *new, char **argv, int cnt);
-t_conlinder	*cone_init(t_point center, t_vector normal, \
-						double radius, double height);
-
 /***** draw funcs *****/
 void		my_mlx_pixel_put(t_image *img, int x, int y, t_color color);
 t_color		cur_point_color(t_info *info, t_record *rec);
@@ -282,51 +271,8 @@ void		flip_normal_face(t_ray *ray, t_moment *spot);
 t_vector	convert_color_to_normal(int color);
 int			convert_color(t_vector *clr);
 
-/***** ray funcs *****/
-int			is_ray_hit(t_object *obj, t_ray *ray, t_moment *spot);
-int			ray_at_plane(t_object *obj, t_ray *ray, t_moment *spot);
-int			ray_at_cap(t_object *obj, t_ray *ray, t_moment *spot);
-int			ray_at_sphere(t_object *obj, t_ray *ray, t_moment *spot);
-int			ray_at_conlinder(t_object *obj, t_ray *ray, t_moment *spot, \
-					void (*get_abc)(double *term, t_ray *ray, t_model *cy));
-int			ray_at_cap(t_object *obj, t_ray *ray, t_moment *spot);
-t_point		get_hit_point(t_ray *ray, double t);
-
-/***** ray utils funcs 1 *****/
-void		get_spot_e_vector(t_moment *spot, t_vector *obj_n, t_vector std_n);
-void		get_bump_rgb(t_moment *spot, t_object *obj);
-int			is_t_in_range(t_moment *spot, double root);
-int			is_h_in_range(t_model *cny, t_ray *ray, t_vector *coor, \
-															t_function *func);
-
-/***** light funcs *****/
-t_vector	phong_lighting(t_info *info, t_record *rec);
-int			get_diffuse(t_object *obj, t_record *rec, t_light *cur_light, t_vector *light);
-void		get_specular(t_record *rec, t_light *cur_light, t_vector *light);
-
-/*****  math funcs  *****/
-void		get_sp_abc(double *term, t_ray *ray, t_model *sp);
-void		get_cy_abc(double *term, t_ray *ray, t_model *cy);
-void		get_cn_abc(double *term, t_ray *ray, t_model *cy);
-int			get_2d_root(t_function	*func, t_ray *ray, t_model *elem, \
-						void (*get_abc)(double *, t_ray *, t_model *));
-
-/*****  mlx funcs  *****/
-void		set_viewport(double *viewport, int fov);
-int			key_compatible_param(int keycode, void *param);
-int			mouse_compatible_param(int x, int y, int button, void *param);
-void		key_event(t_info *info, int key);
-void		mouse_event(t_info *info, int button);
-void		change_obj(t_info *info, int key);
-int			is_translate_key(int key);
-int			is_rotate_key(int key);
-void		translate_center(t_camera *cam, t_point *center, int key);
-
 /*****  mandatory funcs  *****/
 void		ft_draw(t_info *info, t_mlx *mlx);
-
-
-
 
 void		print_light(t_light *light); // 지워야함
 void		debugPrintVec(char *str, t_vector *vector);

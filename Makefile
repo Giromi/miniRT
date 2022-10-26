@@ -6,14 +6,14 @@
 #    By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/25 09:14:03 by sesim             #+#    #+#              #
-#    Updated: 2022/10/25 14:51:39 by sesim            ###   ########.fr        #
+#    Updated: 2022/10/26 09:28:32 by sesim            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC 					:=		cc
 NAME				:=		miniRT
 RM 					:=		rm -vf
-CFLAGS 				:=		-Wall -Wextra -Werror -g3# -fsanitize=address
+CFLAGS 				:=		-Wall -Wextra -Werror #-g3 -fsanitize=thread
 FW_FLAGS			:=		-framework openGL -framework AppKit
 
 # Libraries
@@ -78,6 +78,7 @@ MY_FUNC_SRCS		:=		my_alloc_func.c			\
 
 MLX_FUNC_SRCS		:=		mlx_key_func.c			\
 							mlx_mouse_func.c		\
+							mlx_key_cam_func.c		\
 							mlx_key_obj_func.c
 
 ROT_FUNC_SRCS		:=		rotate_func.c			\
@@ -98,6 +99,7 @@ INC_INTER	:=	-I$(LIBMLX_DIR)					\
 				-I$(INTER_DIR)					\
 				-I$(INTER_DIR)$(VECTOR_DIR)		\
 				-I$(INTER_DIR)$(MY_FUNC_DIR)	\
+				-I$(INTER_DIR)$(MLX_FUNC_DIR)	\
 				-I$(INTER_DIR)$(ROTATION_DIR)	\
 				-I$(INTER_DIR)$(DRAW_DIR)		\
 				-I$(INTER_DIR)$(LIGHT_DIR)		\
@@ -137,7 +139,7 @@ $(LIBFT_DIR)$(LIBFT):
 
 %.o: %.c
 	@echo [$<] compiling ...
-	$(CC) $(CFLAGS) $(INCS) -c $< -o $@
+	@$(CC) $(CFLAGS) $(INCS) -c $< -o $@
 
 # bonus:
 #     @make BONUS_FLAG=1 all

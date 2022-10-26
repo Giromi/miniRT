@@ -6,7 +6,7 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 21:25:13 by minsuki2          #+#    #+#             */
-/*   Updated: 2022/10/25 17:46:54 by sesim            ###   ########.fr       */
+/*   Updated: 2022/10/26 08:12:43 by sesim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ void	set_mlx_vector_r_half(t_vector mlx_vec[2][2], t_vector *cam_vec,
 	mlx_vec[R_HALF][HORI] = vec_div_const(&mlx_vec[VAL][HORI], -2);
 	mlx_vec[R_HALF][VERT] = vec_div_const(&mlx_vec[VAL][VERT], -2);
 }
-
 
 void	set_viewport(double *viewport, int fov)
 {

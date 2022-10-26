@@ -6,13 +6,14 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 14:05:56 by sesim             #+#    #+#             */
-/*   Updated: 2022/10/25 18:48:11 by sesim            ###   ########.fr       */
+/*   Updated: 2022/10/26 09:27:46 by sesim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include "vector.h"
 #include "minirt.h"
+#include "mlx_key_func.h"
 #include "minirt_bonus.h"
 
 static void	_press_esc(t_thread *slave, t_info *info, t_mlx *mlx)
@@ -28,7 +29,7 @@ static void	_press_esc(t_thread *slave, t_info *info, t_mlx *mlx)
 }
 
 static void	_main_loop(t_thread *slave, t_mlx *mlx, int key, \
-												void (* event)(t_info *, int))
+												void (*event)(t_info *, int))
 {
 	mlx_destroy_image(mlx->ptr, mlx->img.img_ptr);
 	mlx_clear_window(mlx->ptr, mlx->win);
@@ -48,7 +49,6 @@ int	mouse_compatible_param(int button, int x, int y, void *param)
 
 	(void)x;
 	(void)y;
-	printf("button : %d\n", button);
 	_main_loop(slave, &slave->info->mlx, button, mouse_event);
 	return (0);
 }

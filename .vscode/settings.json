@@ -15,6 +15,7 @@
         "minirt_bonus.h": "c",
         "rotation_func.h": "c",
         "put_func.h": "c",
-        "__node_handle": "c"
+        "__node_handle": "c",
+        "light_func.h": "c"
     }
 }

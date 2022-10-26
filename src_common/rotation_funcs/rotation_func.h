@@ -6,7 +6,7 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/21 11:38:54 by sesim             #+#    #+#             */
-/*   Updated: 2022/10/25 18:34:00 by sesim            ###   ########.fr       */
+/*   Updated: 2022/10/26 08:03:32 by sesim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,17 +16,6 @@
 # include "minirt.h"
 
 # define ROT_ANGLE 15
-
-enum e_transform_options
-{
-	CAM		=	0,
-	OBJ		=	0b1,
-	EDIT	=	0b10,
-	ANTI	=	0b100,
-	PITCH	=	0b100000000,
-	YAW		=	0b1000000000,
-	ROLL	=	0b10000000000
-};
 
 enum e_quaternoin_elem
 {

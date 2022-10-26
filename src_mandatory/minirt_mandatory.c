@@ -6,7 +6,7 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/12 21:38:54 by minsuki2          #+#    #+#             */
-/*   Updated: 2022/10/25 18:21:24 by sesim            ###   ########.fr       */
+/*   Updated: 2022/10/26 08:16:39 by sesim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include "my_func.h"
 #include "get_next_line.h"
 #include "minirt.h"
+#include "mlx_key_func.h"
 #include "put_func.h"
 
 void	info_error(int *form_check)
@@ -25,7 +26,6 @@ void	info_error(int *form_check)
 	if (form_check[C] < 1)
 		ft_strerror("err: wrong camera format");
 }
-
 
 void	ft_draw(t_info *info, t_mlx *mlx)
 {
@@ -68,7 +68,6 @@ int	main(int argc, char **argv)
 	mlx_put_image_to_window(info.mlx.ptr, info.mlx.win, \
 							info.mlx.img.img_ptr, 0, 0);
 	mlx_hook(info.mlx.win, EVENT_KEY_PRESS, 0, key_compatible_param, &info);
-	// mlx_hook(info.mlx.win, EVENT_KEY_PRESS, 0, key_compatible_param, &info);
 	mlx_loop(info.mlx.ptr);
 	return (0);
 }
