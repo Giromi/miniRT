@@ -6,14 +6,14 @@
 #    By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/25 09:14:03 by sesim             #+#    #+#              #
-#    Updated: 2022/10/26 09:28:32 by sesim            ###   ########.fr        #
+#    Updated: 2022/10/26 11:17:47 by sesim            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC 					:=		cc
 NAME				:=		miniRT
 RM 					:=		rm -vf
-CFLAGS 				:=		-Wall -Wextra -Werror #-g3 -fsanitize=thread
+CFLAGS 				:=		-Wall -Wextra -Werror -g3 -fsanitize=address
 FW_FLAGS			:=		-framework openGL -framework AppKit
 
 # Libraries
@@ -49,8 +49,7 @@ PARSE_SRCS			:=		init_func.c				\
 							put_camera.c			\
 							put_light.c				\
 							put_objects.c			\
-							put_object_utils.c		\
-							remove.c						# 필히  지지울울것것
+							put_object_utils.c
 
 LIGHT_SRCS			:=		spread_ray.c			\
 							ray_at_utils.c			\

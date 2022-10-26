@@ -6,7 +6,7 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/26 07:52:52 by sesim             #+#    #+#             */
-/*   Updated: 2022/10/26 09:14:12 by sesim            ###   ########.fr       */
+/*   Updated: 2022/10/26 11:15:38 by sesim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -261,21 +261,7 @@ typedef struct s_info
 	int				status;
 }	t_info;
 
-/***** draw funcs *****/
-void		my_mlx_pixel_put(t_image *img, int x, int y, t_color color);
-t_color		cur_point_color(t_info *info, t_record *rec);
-void		set_ray_vec(t_ray *ray, t_camera *cam, double *vdx);
-void		flip_normal_face(t_ray *ray, t_moment *spot);
-
-/***** draw utils funcs *****/
-t_vector	convert_color_to_normal(int color);
-int			convert_color(t_vector *clr);
-
 /*****  mandatory funcs  *****/
 void		ft_draw(t_info *info, t_mlx *mlx);
-
-void		print_light(t_light *light); // 지워야함
-void		debugPrintVec(char *str, t_vector *vector);
-void	print_prev_cam(t_camera *cam); // 지워야함
 
 #endif

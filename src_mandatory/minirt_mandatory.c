@@ -6,7 +6,7 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/12 21:38:54 by minsuki2          #+#    #+#             */
-/*   Updated: 2022/10/26 08:16:39 by sesim            ###   ########.fr       */
+/*   Updated: 2022/10/26 11:04:40 by sesim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include "my_func.h"
 #include "get_next_line.h"
 #include "minirt.h"
+#include "draw_func.h"
 #include "mlx_key_func.h"
 #include "put_func.h"
 

@@ -6,13 +6,14 @@
 /*   By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/26 07:56:07 by sesim             #+#    #+#             */
-/*   Updated: 2022/10/26 09:16:44 by sesim            ###   ########.fr       */
+/*   Updated: 2022/10/26 11:04:07 by sesim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vector.h"
 #include "minirt.h"
 #include "light_func.h"
+#include "draw_func.h"
 
 static void	_get_cap_uv(t_moment *spot, t_model *cp, t_point *c, double size)
 {
