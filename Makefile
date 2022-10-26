@@ -6,14 +6,14 @@
 #    By: sesim <sesim@student.42seoul.kr>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/25 09:14:03 by sesim             #+#    #+#              #
-#    Updated: 2022/10/26 13:15:33 by minsuki2         ###   ########.fr        #
+#    Updated: 2022/10/26 13:28:54 by minsuki2         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC 					:=		cc
 NAME				:=		miniRT
 RM 					:=		rm -vf
-CFLAGS 				:=		-Wall -Wextra -Werror -g3 -fsanitize=address
+CFLAGS 				:=		-Wall -Wextra -Werror
 FW_FLAGS			:=		-framework openGL -framework AppKit
 
 # Libraries
@@ -110,14 +110,9 @@ INTER_PATH_SRCS := $(addprefix $(INTER_DIR), $(INTER_SRCS))
 MANDA_PATH_SRCS := $(addprefix $(MANDA_DIR), $(MANDA_SRCS))
 BONUS_PATH_SRCS := $(addprefix $(BONUS_DIR), $(BONUS_SRCS))
 
-# ifdef BONUS_FLAG
-#     UNION_SRCS	=	$(INTER_PATH_SRCS) $(BONUS_PATH_SRCS)
-#     INCS		=	$(INC_INTER) $(INC_BONUS)
-# else
 UNION_SRCS	=	$(INTER_PATH_SRCS) $(MANDA_PATH_SRCS)
 INCS 		= 	$(INC_INTER)
-# endif
-#
+
 # Object files
 OBJS		=	$(UNION_SRCS:.c=.o)
 
@@ -140,9 +135,6 @@ $(LIBFT_DIR)$(LIBFT):
 	@echo [$<] compiling ...
 	@$(CC) $(CFLAGS) $(INCS) -c $< -o $@
 
-# bonus:
-#     @make BONUS_FLAG=1 all
-
 bonus:
 	@make \
 	"UNION_SRCS		=	$(INTER_PATH_SRCS) $(BONUS_PATH_SRCS)"	\
@@ -160,7 +152,7 @@ clean:
 fclean: clean
 	@echo ">>>>>>fclean deleted list<<<<<<<"
 	@$(RM) $(LIBFT_DIR)$(LIBFT)
-	# @$(RM) $(LIBMLX)
+	@$(RM) $(LIBMLX)
 	@$(RM) $(NAME)
 
 re:
