@@ -71,10 +71,8 @@ static void	_lst_obj_free(t_object *cur, t_mlx *mlx)
                 mlx_destroy_image(mlx->ptr, cur->tex->img_ptr);
 			free(cur->tex);
 		}
-        fprintf(stderr, "%d\n", cur->type);
 		free(cur->elem);
 		free(cur);
-        system("leaks -q miniRT");
 		cur = tmp;
 	}
 }
