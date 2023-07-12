@@ -13,6 +13,9 @@
 #ifndef MINIRT_H
 # define MINIRT_H
 
+// debug
+#include <stdio.h>
+
 # define IMG_W WIN_W
 # define IMG_H WIN_H
 
