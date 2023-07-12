@@ -80,6 +80,17 @@ static void	_put_info(t_info *info, char **argv, int *form_check)
 	run[idx](info, argv, cnt, type);
 }
 
+static void _show_keycode(void) {
+    printf("\n-----------------------------------\n");
+    printf("● Move        : w a s d\n");
+    printf("● Rotation    : ↑ ↓ ← →\n");
+    printf("● Edit mode   : o\n");
+    printf("● Anti mode   : i\n");
+    printf("● obj  mode   : p\n");
+    printf("● cam  mode   : q e 1 2 3 0\n");
+    printf("-----------------------------------\n");
+}
+
 void	info_init(t_info *info, char *file)
 {
 	char		**split;
@@ -104,5 +115,6 @@ void	info_init(t_info *info, char *file)
 		line = get_one_line(fd);
 	}
 	close(fd);
+    _show_keycode();
 	info_error(form_check);
 }

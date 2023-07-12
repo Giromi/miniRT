@@ -47,7 +47,8 @@ void	bump_init(t_mlx *mlx, t_object *new, char **argv, int cnt)
 		new->tex = my_calloc(1, sizeof(t_image));
 		new->bump->file_name = ft_strdup(argv[cnt - 1]);
         new->tex->file_name = ft_strjoin("t", new->bump->file_name);
-        fprintf(stderr, "%s\n%s\n", new->bump->file_name, new->tex->file_name);
+        printf("< Load information > ");
+        printf("Bump map    : %s\nTexture map : %s\n", new->bump->file_name, new->tex->file_name);
 		_get_bump_addr(new, mlx);
 		_get_texture_addr(new, mlx);
 		free(new->bump->file_name);

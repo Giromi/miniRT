@@ -141,6 +141,14 @@ bonus:
 	"INCS			=	$(INC_INTER) $(INC_BONUS)"				\
 	all
 
+
+my_clean:
+	@make clean -C $(LIBFT_DIR)
+	@echo ">>>>>>miniRT clean deleted list<<<<<<<"
+	@$(RM)	$(INTER_PATH_SRCS:.c=.o) \
+			$(MANDA_PATH_SRCS:.c=.o) \
+			$(BONUS_PATH_SRCS:.c=.o)
+
 clean:
 	@make clean -C $(LIBFT_DIR)
 	@make clean -C $(LIBMLX_DIR)
