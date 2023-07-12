@@ -24,8 +24,8 @@ static void	_press_esc(t_thread *slave, t_mlx *mlx)
 	mlx_clear_window(mlx->ptr, mlx->win);
 	mlx_destroy_window(mlx->ptr, mlx->win);
 	info_free(slave->info, mlx);
-	free(slave);
     system("leaks -q miniRT");
+	free(slave);
 	exit(0);
 }
 

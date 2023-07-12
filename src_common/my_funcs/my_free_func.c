@@ -59,18 +59,22 @@ static void	_lst_obj_free(t_object *cur, t_mlx *mlx)
 	while (cur)
 	{
 		tmp = cur->next;
-		if (!(cur->type & CP) && cur->bump && cur->bump->img_ptr)
+		if (!(cur->type & CP) && cur->bump)
 		{
-			mlx_destroy_image(mlx->ptr, cur->bump->img_ptr);
+            if (cur->bump->img_ptr)
+                mlx_destroy_image(mlx->ptr, cur->bump->img_ptr);
 			free(cur->bump);
 		}
-		if (!(cur->type & CP) && cur->tex && cur->tex->img_ptr)
+		if (!(cur->type & CP) && cur->tex)
 		{
-			mlx_destroy_image(mlx->ptr, cur->tex->img_ptr);
+            if (cur->tex->img_ptr)
+                mlx_destroy_image(mlx->ptr, cur->tex->img_ptr);
 			free(cur->tex);
 		}
+        fprintf(stderr, "%d\n", cur->type);
 		free(cur->elem);
 		free(cur);
+        system("leaks -q miniRT");
 		cur = tmp;
 	}
 }
